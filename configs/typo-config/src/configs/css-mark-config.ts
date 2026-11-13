@@ -57,13 +57,13 @@ const config = cssConfig(() => {
          * Defines the **border style** for `<mark>` elements.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : borderConfigVars.defaultStyle                                  as CssKnownProps['borderStyle'       ],
+        borderStyle            : borderConfigVars.style                                         as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for `<mark>` elements.
          * Typically uses the default border width for visual clarity.
          */
-        borderWidth            : borderConfigVars.defaultWidth                                  as CssKnownProps['borderWidth'       ],
+        borderWidth            : borderConfigVars.width                                         as CssKnownProps['borderWidth'       ],
         
         /**
          * Defines the **border color** for `<mark>` elements.
@@ -112,25 +112,25 @@ const config = cssConfig(() => {
          * Defines **left padding** inside `<mark>` elements.
          * Adds breathing room between the **text and left boundary**.
          */
-        paddingInlineStart     : `calc(((1lh - 1em) / 2) - ${borderConfigVars.defaultWidth})`   as CssKnownProps['paddingInlineStart'],
+        paddingInlineStart     : `calc(((1lh - 1em) / 2) - ${borderConfigVars.width})`          as CssKnownProps['paddingInlineStart'],
         
         /**
          * Defines **right padding** inside `<mark>` elements.
          * Adds breathing room between the **text and right boundary**.
          */
-        paddingInlineEnd       : `calc(((1lh - 1em) / 2) - ${borderConfigVars.defaultWidth})`   as CssKnownProps['paddingInlineEnd'  ],
+        paddingInlineEnd       : `calc(((1lh - 1em) / 2) - ${borderConfigVars.width})`          as CssKnownProps['paddingInlineEnd'  ],
         
         /**
          * Defines **top padding** inside `<mark>` elements.
          * Adds breathing room between the **text and top boundary**.
          */
-        paddingBlockStart      : `calc(((1lh - 1em) / 2) - ${borderConfigVars.defaultWidth})`   as CssKnownProps['paddingBlockStart' ],
+        paddingBlockStart      : `calc(((1lh - 1em) / 2) - ${borderConfigVars.width})`          as CssKnownProps['paddingBlockStart' ],
         
         /**
          * Defines **bottom padding** inside `<mark>` elements.
          * Adds breathing room between the **text and bottom boundary**.
          */
-        paddingBlockEnd        : `calc(((1lh - 1em) / 2) - ${borderConfigVars.defaultWidth})`   as CssKnownProps['paddingBlockEnd'   ],
+        paddingBlockEnd        : `calc(((1lh - 1em) / 2) - ${borderConfigVars.width})`          as CssKnownProps['paddingBlockEnd'   ],
         
         
         

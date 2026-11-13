@@ -274,7 +274,7 @@ export interface CssBorderFeatureOptions
      * 
      * Serves as the default for horizontal and vertical border widths (`borderInlineWidth` and `borderBlockWidth`)
      * 
-     * Defaults to `borderConfigVars.defaultWidth`.
+     * Defaults to `borderConfigVars.width`.
      */
     borderWidth            ?: CssKnownProps['borderWidth']
     

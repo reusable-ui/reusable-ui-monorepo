@@ -18,8 +18,8 @@ With **border-config**, you can:
 
 The border system categorizes border configurations into two main groups:
 
-- **Border Widths:** Sizing tokens for stroke thickness (`none`, `hair`, `thin`, `bold`, etc.).
-- **Default Borders:** Fallback tokens governing default borders across standard components (`defaultWidth`, `defaultStyle`, `defaultColor`, `default`, etc.).
+- **Border Widths:** Sizing tokens for stroke thickness (`widthNone`, `widthHair`, `widthThin`, `widthBold`, etc.).
+- **Default Borders:** Fallback tokens governing default borders across standard components (`width`, `style`, `color`, `border`, etc.).
 
 ## ✨ Features
 
@@ -60,16 +60,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Below is an overview of the predefined border tokens:
 
-| Category            | Token          | Value                                           | Description                            |
-| ------------------- | -------------- | ----------------------------------------------- | -------------------------------------- |
-| **Border Widths**   | `none`         | `0px`                                           | No border                              |
-|                     | `hair`         | `1px`                                           | Hairline border                        |
-|                     | `thin`         | `2px`                                           | Thin border                            |
-|                     | `bold`         | `4px`                                           | Bold border                            |
-| **Default Borders** | `defaultWidth` | `.hair`                                         | Default border width                   |
-|                     | `defaultStyle` | `solid`                                         | Default border style                   |
-|                     | `defaultColor` | `currentColor`                                  | Default border color                   |
-|                     | `default`      | `.defaultWidth` `.defaultStyle` `.defaultColor` | Default border (width + style + color) |
+| Category            | Token        | Value                       | Description                            |
+| ------------------- | ------------ | --------------------------- | -------------------------------------- |
+| **Border Widths**   | `widthNone`  | `0px`                       | No border                              |
+|                     | `widthHair`  | `1px`                       | Hairline border                        |
+|                     | `widthThin`  | `2px`                       | Thin border                            |
+|                     | `widthBold`  | `4px`                       | Bold border                            |
+| **Default Borders** | `width`      | `.widthHair`                | Default border width                   |
+|                     | `style`      | `solid`                     | Default border style                   |
+|                     | `color`      | `currentColor`              | Default border color                   |
+|                     | `border`     | `.width` `.style` `.color`  | Default border (width + style + color) |
 
 > **⚠️ Warning:**
 > Do not delete the predefined border tokens, as standard components rely on their existence.
@@ -91,12 +91,12 @@ Using `borderConfigVars` or `borderConfigVarDefs`, you can perform CRUD operatio
 import { borderConfigVars, borderConfigVarDefs } from '@reusable-ui/border-config';
 
 // Gets live CSS variable references (reactive & linked to config):
-const borderWidthRef   = borderConfigVars.hair;    // Resolves to 'var(--bor-hair)'
-const borderDefaultRef = borderConfigVars.default; // Resolves to 'var(--bor-default)'
+const borderWidthRef   = borderConfigVars.widthHair; // Resolves to 'var(--bor-widthHair)'
+const borderDefaultRef = borderConfigVars.border;    // Resolves to 'var(--bor-border)'
 
 // Gets evaluated snapshot values/expressions (for JS logic calculations):
-const borderWidthDef   = borderConfigVarDefs.hair;    // Resolves to '1px'
-const borderDefaultDef = borderConfigVarDefs.default; // Resolves to 'var(--bor-defaultWidth) var(--bor-defaultStyle) var(--bor-defaultColor)'
+const borderWidthDef   = borderConfigVarDefs.widthHair; // Resolves to '1px'
+const borderDefaultDef = borderConfigVarDefs.border;    // Resolves to 'var(--bor-width) var(--bor-style) var(--bor-color)'
 ```
 
 ### Adding and Updating Borders
@@ -107,38 +107,38 @@ To create or update (upsert) a border token, assign a concrete value or expressi
 import { borderConfigVars, borderConfigVarDefs } from '@reusable-ui/border-config';
 
 // Assigning via borderConfigVars:
-borderConfigVars.extraBold      = '8px';
-borderConfigVars.ultraBold      = `calc(${borderConfigVars.extraBold} * 2)`;
-borderConfigVars.highlightColor = 'red';
+borderConfigVars.widthExtraBold = '8px';
+borderConfigVars.widthUltraBold = `calc(${borderConfigVars.widthExtraBold} * 2)`;
+borderConfigVars.colorHighlight = 'red';
 
 // Using string interpolation to construct dynamic expressions:
 // - Ideal for creating formulas driven by one or more variables.
-borderConfigVars.highlight      = `${borderConfigVars.extraBold} ${borderConfigVars.defaultStyle} ${borderConfigVars.highlightColor}`;
+borderConfigVars.borderHighlight = `${borderConfigVars.widthExtraBold} ${borderConfigVars.style} ${borderConfigVars.colorHighlight}`;
 
 // Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
-borderConfigVars.selection      = [[
-  borderConfigVars.ultraBold,
-  borderConfigVars.defaultStyle,
-  borderConfigVars.highlightColor,
-]]; // Resolves to 'var(--bor-ultraBold) var(--bor-defaultStyle) var(--bor-highlightColor)'
+borderConfigVars.borderSelection = [[
+  borderConfigVars.widthUltraBold,
+  borderConfigVars.style,
+  borderConfigVars.colorHighlight,
+]]; // Resolves to 'var(--bor-widthUltraBold) var(--bor-style) var(--bor-colorHighlight)'
 
 
 
 // Alternatively, assigning via borderConfigVarDefs:
-borderConfigVarDefs.extraBold      = '8px';
-borderConfigVarDefs.ultraBold      = `calc(${borderConfigVars.extraBold} * 2)`;
-borderConfigVarDefs.highlightColor = 'red';
+borderConfigVarDefs.widthExtraBold = '8px';
+borderConfigVarDefs.widthUltraBold = `calc(${borderConfigVars.widthExtraBold} * 2)`;
+borderConfigVarDefs.colorHighlight = 'red';
 
 // Using string interpolation to construct dynamic expressions:
 // - Ideal for creating formulas driven by one or more variables.
-borderConfigVarDefs.highlight      = `${borderConfigVars.extraBold} ${borderConfigVars.defaultStyle} ${borderConfigVars.highlightColor}`;
+borderConfigVarDefs.borderHighlight = `${borderConfigVars.widthExtraBold} ${borderConfigVars.style} ${borderConfigVars.colorHighlight}`;
 
 // Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
-borderConfigVarDefs.selection      = [[
-  borderConfigVars.ultraBold,
-  borderConfigVars.defaultStyle,
-  borderConfigVars.highlightColor,
-]]; // Resolves to 'var(--bor-ultraBold) var(--bor-defaultStyle) var(--bor-highlightColor)'
+borderConfigVarDefs.borderSelection = [[
+  borderConfigVars.widthUltraBold,
+  borderConfigVars.style,
+  borderConfigVars.colorHighlight,
+]]; // Resolves to 'var(--bor-widthUltraBold) var(--bor-style) var(--bor-colorHighlight)'
 ```
 
 ### Deleting Borders
@@ -149,13 +149,13 @@ To delete a border token, use the `delete` operator or assign `null` / `undefine
 import { borderConfigVars, borderConfigVarDefs } from '@reusable-ui/border-config';
 
 // Deleting tokens using the delete operator:
-delete borderConfigVars.extraBold;
-delete borderConfigVars.ultraBold;
-delete borderConfigVars.highlightColor;
+delete borderConfigVars.widthExtraBold;
+delete borderConfigVars.widthUltraBold;
+delete borderConfigVars.colorHighlight;
 
 // Deleting tokens using null or undefined assignment:
-borderConfigVarDefs.highlight = null;
-borderConfigVarDefs.selection = undefined;
+borderConfigVarDefs.borderHighlight = null;
+borderConfigVarDefs.borderSelection = undefined;
 ```
 
 ## 📖 Part of the Reusable-UI Framework  

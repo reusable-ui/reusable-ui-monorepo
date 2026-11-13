@@ -32,22 +32,22 @@ const config = cssConfig(() => {
         /**
          * No border.
          */
-        none    : '0px'             as CssBorderWidth,
+        widthNone : '0px'   as CssBorderWidth,
         
         /**
          * Hairline border.
          */
-        hair    : '1px'             as CssBorderWidth,
+        widthHair : '1px'   as CssBorderWidth,
         
         /**
          * Thin border.
          */
-        thin    : '2px'             as CssBorderWidth,
+        widthThin : '2px'   as CssBorderWidth,
         
         /**
          * Bold border.
          */
-        bold    : '4px'             as CssBorderWidth,
+        widthBold : '4px'   as CssBorderWidth,
     };
     
     
@@ -61,17 +61,17 @@ const config = cssConfig(() => {
         /**
          * Default border width.
          */
-        defaultWidth : borderWidths.hair    as CssBorderWidth,
+        width     : borderWidths.widthHair      as CssBorderWidth,
         
         /**
          * Default border style.
          */
-        defaultStyle : 'solid'              as CssBorderStyle,
+        style     : 'solid'                     as CssBorderStyle,
         
         /**
          * Default border color.
          */
-        defaultColor : 'currentColor'       as CssBorderColor,
+        color     : 'currentColor'              as CssBorderColor,
     };
     
     /**
@@ -81,7 +81,7 @@ const config = cssConfig(() => {
         /**
          * Default border (width + style + color).
          */
-        default      : [[ defaultBorders.defaultWidth, defaultBorders.defaultStyle, defaultBorders.defaultColor ]]   as CssBorder,
+        border    : [[ defaultBorders.width, defaultBorders.style, defaultBorders.color ]]      as CssBorder,
     };
     
     
@@ -105,7 +105,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = borderConfigVars.default; // Resolves to "var(--bor-default)"
+ * const value = borderConfigVars.border; // Resolves to "var(--bor-border)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -117,8 +117,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * borderConfigVars.myDefinition = [[
- *    "clamp(", borderConfigVars.thin, ", ", "0.25%", ", ", borderConfigVars.bold, ")"
- * ]]; // Generates "--bor-myDefinition: clamp(var(--bor-thin), 0.25%, var(--bor-bold));"
+ *    "clamp(", borderConfigVars.widthThin, ", ", "0.25%", ", ", borderConfigVars.widthBold, ")"
+ * ]]; // Generates "--bor-myDefinition: clamp(var(--bor-widthThin), 0.25%, var(--bor-widthBold));"
  * ```
  * 
  * #### **Removing a CSS Variable**
@@ -140,16 +140,16 @@ const config = cssConfig(() => {
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --bor-none: 0px;
- *     --bor-hair: 1px;
- *     --bor-thin: 2px;
- *     --bor-bold: 4px;
+ *     --bor-widthNone: 0px;
+ *     --bor-widthHair: 1px;
+ *     --bor-widthThin: 2px;
+ *     --bor-widthBold: 4px;
  *     --bor-color: currentColor;
  *     --bor-style: solid;
- *     --bor-defaultWidth: var(--bor-hair);
- *     --bor-default: var(--bor-style) var(--bor-hair) var(--bor-color);
+ *     --bor-width: var(--bor-widthHair);
+ *     --bor-border: var(--bor-width) var(--bor-style) var(--bor-color);
  *     --bor-myBorder: 10px;
- *     --bor-myDefinition: clamp(var(--bor-thin), 0.25%, var(--bor-bold));
+ *     --bor-myDefinition: clamp(var(--bor-widthThin), 0.25%, var(--bor-widthBold));
  * }
  * ```
  */
@@ -167,7 +167,7 @@ export const borderConfigVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = borderConfigVarDefs.myDefinition; // Resolves to [[ "clamp(", borderConfigVars.thin, ", ", "0.25%", ", ", borderConfigVars.bold, ")" ]]
+ * const definition = borderConfigVarDefs.myDefinition; // Resolves to [[ "clamp(", borderConfigVars.widthThin, ", ", "0.25%", ", ", borderConfigVars.widthBold, ")" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -179,8 +179,8 @@ export const borderConfigVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * borderConfigVarDefs.myDefinition = [[
- *    "clamp(", borderConfigVars.thin, ", ", "0.25%", ", ", borderConfigVars.bold, ")"
- * ]]; // Generates "--bor-myDefinition: clamp(var(--bor-thin), 0.25%, var(--bor-bold));"
+ *    "clamp(", borderConfigVars.widthThin, ", ", "0.25%", ", ", borderConfigVars.widthBold, ")"
+ * ]]; // Generates "--bor-myDefinition: clamp(var(--bor-widthThin), 0.25%, var(--bor-widthBold));"
  * ```
  * 
  * #### **Removing a CSS Variable**
@@ -202,16 +202,16 @@ export const borderConfigVars       = config[0];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --bor-none: 0px;
- *     --bor-hair: 1px;
- *     --bor-thin: 2px;
- *     --bor-bold: 4px;
+ *     --bor-widthNone: 0px;
+ *     --bor-widthHair: 1px;
+ *     --bor-widthThin: 2px;
+ *     --bor-widthBold: 4px;
  *     --bor-color: currentColor;
  *     --bor-style: solid;
- *     --bor-defaultWidth: var(--bor-hair);
- *     --bor-default: var(--bor-style) var(--bor-hair) var(--bor-color);
+ *     --bor-width: var(--bor-widthHair);
+ *     --bor-border: var(--bor-width) var(--bor-style) var(--bor-color);
  *     --bor-myBorder: 10px;
- *     --bor-myDefinition: clamp(var(--bor-thin), 0.25%, var(--bor-bold));
+ *     --bor-myDefinition: clamp(var(--bor-widthThin), 0.25%, var(--bor-widthBold));
  * }
  * ```
  */
@@ -245,14 +245,14 @@ export const borderConfigVarDefs    = config[1];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --bor-none: 0px;
- *     --bor-hair: 1px;
- *     --bor-thin: 2px;
- *     --bor-bold: 4px;
+ *     --bor-widthNone: 0px;
+ *     --bor-widthHair: 1px;
+ *     --bor-widthThin: 2px;
+ *     --bor-widthBold: 4px;
  *     --bor-color: currentColor;
  *     --bor-style: solid;
- *     --bor-defaultWidth: var(--bor-hair);
- *     --bor-default: var(--bor-style) var(--bor-hair) var(--bor-color);
+ *     --bor-width: var(--bor-widthHair);
+ *     --bor-border: var(--bor-width) var(--bor-style) var(--bor-color);
  * }
  * ```
  */
