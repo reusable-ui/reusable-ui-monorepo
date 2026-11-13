@@ -15,22 +15,19 @@ With **color-config**, you can:
 - **Define custom themes** or modify predefined theme colors and their shades on the fly.
 - **Switch between light and dark modes** seamlessly, with automatic color flipping and contrast adjustments.
 
-## 🧩 Color Variable Architecture
+## 🧩 Color Variable Architecture & Naming Convention
 
-The color system operates on a **two-tier pipeline**: it starts with an **Invariant Primary Tier**, which automatically branches out into a **Derived Contextual Tier** to power component surfaces.
+The color configuration divides its tokens into two categories:
 
-```text
-🎨 Theme Color System Pipeline
- ├── 1️⃣ Invariant Primary Tier
- │    ├── ⚪ Common Colors (Non-semantic constants: black, white, grays)
- │    └── 🔵 Root Colors   (Semantic theme sources: primary, success, danger, etc.)
- │
- └── 2️⃣ Derived Contextual Tier
-      ├── 🖼️ Background Colors (*Base, *Mild)
-      ├── 🖋️ Foreground Colors (*Flip, *Text, *Face)
-      ├── 📐 Border Colors     (*Bold, *Thin, *Edge)
-      └── ✨ Effect Colors     (*Soft)
-```
+1. **Primary Colors (Invariant Sources):**
+  Root color tokens — comprising semantic root colors (such as `primary` or `success`) and non-semantic common colors (such as `black`, `white`, or `grays`) — that define the foundational color palette.
+  These remain invariant and unaffected by light/dark modes or dynamic color parameter adjustments.
+  - **Naming Format:** Written in bare format `<color>` (e.g., `primary`, `success`, `gray`, `white`).
+
+2. **Derived Colors (Contextual Shades):**
+  Specialized shade tokens that provide fine-tuned control over specific UI surfaces and states.
+  These are auto-generated from semantic root colors to provide consistent shading tiers across component surfaces.
+  - **Naming Format:** Written with the root color as a namespace prefix followed by the shade role `<color><Shade>` (e.g., `primaryBase`, `primaryMild`, `successFlip`, `dangerText`).
 
 ### 🧠 How It Works
 
@@ -47,7 +44,7 @@ Certain shades (`Flip`, `Face`, `Soft`) are designed for cross-variant reuse, re
   - **`Base`** — Regular background colors, filling regular background surfaces (such as standard buttons and panels).
   - **`Mild`** — Content-heavy background colors, filling content-heavy background surfaces (such as articles and textboxes).
 
-- **Foregrounds:**
+- **Foregrounds & Decorations:**
   - **`Flip`** — Regular text colors, ensuring readability against regular backgrounds (such as standard buttons and panels), while still retaining a subtle trace of the original color.
   - **`Text`** — Content-heavy text colors, ensuring readability against mild backgrounds (such as articles and textboxes), while still retaining a subtle trace of the original color.
   - **`Face`** — Graphic and icon colors, preserving the authentic, high-saturation visual expression of graphic art.  
