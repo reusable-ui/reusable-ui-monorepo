@@ -14,13 +14,19 @@ With **radius-config**, you can:
 - **Access and manipulate** radius configurations dynamically from JavaScript code.
 - **Define custom radius tokens** or modify predefined radius scales and default settings on the fly.
 
-## 🧩 Radius Variable Architecture
+## 🧩 Radius Variable Architecture & Naming Convention
 
-The radius system categorizes corner rounding configurations into three main groups:
+The radius configuration divides its tokens into two categories:
 
-- **Fixed Radii:** Absolute sizing tokens for explicit corner rounding (`radiusNone`, `radiusXs`, `radiusSm`, `radiusMd`, `radiusLg`, `radiusXl`, `radiusXxl`, etc.).
-- **Relative Radii:** Dynamic sizing tokens that scale proportionally to component's width and/or height (`radiusPill`, `radiusCircle`, etc.).
-- **Default Radii:** Fallback tokens governing default corner rounding across standard components (`radius`, etc.).
+1. **General Radius Properties (Defaults):**
+  Base radius properties that define the global default corner rounding configuration across standard components.
+  These serve as the foundational fallback for component corner geometry.
+  - **Naming Format:** Written in bare format `<domain>` (e.g., `radius`).
+
+2. **Specific Radius Properties (Variants):**
+  Specific radius properties that allow for fine-tuned control over explicit radii.
+  These serve as scale variants or styling alternatives to the general radius properties, allowing developers to customize corner rounding for different UI elements and layouts.
+  - **Naming Format:** Written with the domain as a namespace prefix followed by the variant `<domain><Variant>` (e.g., `radiusNone`, `radiusMd`, `radiusPill`, `radiusCircle`).
 
 ## ✨ Features
 
