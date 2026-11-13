@@ -19,7 +19,7 @@ With **spacing-config**, you can:
 The spacing configuration divides its tokens into two categories:
 
 1. **General Spacing Properties (Defaults):**
-  Base spacing properties that define the global default spacing across standard components.
+  Base spacing properties that define the global default spacing configuration across standard components.
   These serve as the foundational fallback for layout sizing.
   - **Naming Format:** Written in bare format `<domain>` (e.g., `spacing`).
 
