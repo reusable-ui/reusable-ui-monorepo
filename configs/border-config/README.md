@@ -14,12 +14,19 @@ With **border-config**, you can:
 - **Access and manipulate** border configurations dynamically from JavaScript code.
 - **Define custom border tokens** or modify predefined border scales and default settings on the fly.
 
-## 🧩 Border Variable Architecture
+## 🧩 Border Variable Architecture & Naming Convention
 
-The border system categorizes border configurations into two main groups:
+The border configuration divides its tokens into two categories:
 
-- **Border Widths:** Sizing tokens for stroke thickness (`widthNone`, `widthHair`, `widthThin`, `widthBold`, etc.).
-- **Default Borders:** Fallback tokens governing default borders across standard components (`width`, `style`, `color`, `border`, etc.).
+1. **General Border Properties (Defaults):**
+  Base border properties that define the global default border configuration across standard components.
+  These serve as the foundational fallback for border framing.
+  - **Naming Format:** Written in bare format `<domain>` (e.g., `width`, `style`, `color`, `border`).
+
+2. **Specific Border Properties (Variants):**
+  Specific border properties that allow for fine-tuned control over explicit border lines.
+  These serve as scale variants and alternatives to the general border properties, allowing developers to customize thickness and styling for different UI elements and layouts.
+  - **Naming Format:** Written with the domain as a namespace prefix followed by the variant `<domain><Variant>` (e.g., `widthNone`, `widthHair`, `widthThin`, `widthBold`).
 
 ## ✨ Features
 
