@@ -25,7 +25,7 @@ The typography configuration divides its tokens into two categories:
 
 2. **Specific Typography Properties (Variants):**
   Specific typography properties that allow for fine-tuned control over the appearance of different text types, such as headings, paragraphs, and other typographic elements.
-  These serve as scale variants and alternatives to the general typography properties, allowing developers to customize typography for different UI elements and layouts.
+  These serve as scale variants or alternatives to the general typography properties, allowing developers to customize typography for different UI elements and layouts.
   - **Naming Format:** Written with the domain as a namespace prefix followed by the variant `<domain><Variant>` (e.g., `fontSizeSm`, `fontSizeMd`, `fontFamilySans`, `fontFamilySerif`).
 
 ## ✨ Features
