@@ -29,37 +29,37 @@ const config = cssConfig(() => {
         /**
          * Sharp corners (no rounding).
          */
-        none    : '0rem'            as CssBorderRadius,
+        radiusNone   : '0rem'       as CssBorderRadius,
         
         /**
          * Extra small radius.
          */
-        xs      : '0.125rem'        as CssBorderRadius,
+        radiusXs     : '0.125rem'   as CssBorderRadius,
         
         /**
          * Small radius.
          */
-        sm      : '0.25rem'         as CssBorderRadius,
+        radiusSm     : '0.25rem'    as CssBorderRadius,
         
         /**
          * Medium radius.
          */
-        md      : '0.375rem'        as CssBorderRadius,
+        radiusMd     : '0.375rem'   as CssBorderRadius,
         
         /**
          * Large radius.
          */
-        lg      : '0.5rem'          as CssBorderRadius,
+        radiusLg     : '0.5rem'     as CssBorderRadius,
         
         /**
          * Extra large radius.
          */
-        xl      : '1rem'            as CssBorderRadius,
+        radiusXl     : '1rem'       as CssBorderRadius,
         
         /**
          * Extra extra large radius.
          */
-        xxl     : '2rem'            as CssBorderRadius,
+        radiusXxl    : '2rem'       as CssBorderRadius,
     };
     
     
@@ -74,12 +74,12 @@ const config = cssConfig(() => {
         /**
          * Pill shape (maximum rounding).
          */
-        pill    : '50rem'           as CssBorderRadius,
+        radiusPill   : '50rem'      as CssBorderRadius,
         
         /**
          * Circle/oval shape (percentage-based rounding).
          */
-        circle  : '50%'             as CssBorderRadius,
+        radiusCircle : '50%'        as CssBorderRadius,
     };
     
     
@@ -93,7 +93,7 @@ const config = cssConfig(() => {
         /**
          * Standard radius.
          */
-        default : fixedRadiuses.md  as CssBorderRadius,
+        radius       : fixedRadiuses.radiusMd   as CssBorderRadius,
     };
     
     
@@ -117,7 +117,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = radiusConfigVars.pill; // Resolves to "var(--r-pill)"
+ * const value = radiusConfigVars.radiusPill; // Resolves to "var(--r-radiusPill)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -129,8 +129,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * radiusConfigVars.myDefinition = [[
- *    "clamp(", radiusConfigVars.sm, ", ", "0.25%", ", ", radiusConfigVars.lg, ")"
- * ]]; // Generates "--r-myDefinition: clamp(var(--r-sm), 0.25%, var(--r-lg));"
+ *    "clamp(", radiusConfigVars.radiusSm, ", ", "0.25%", ", ", radiusConfigVars.radiusLg, ")"
+ * ]]; // Generates "--r-myDefinition: clamp(var(--r-radiusSm), 0.25%, var(--r-radiusLg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
@@ -152,16 +152,16 @@ const config = cssConfig(() => {
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --r-none: 0rem;
- *     --r-xs: 0.125rem;
- *     --r-sm: 0.25rem;
- *     --r-md: 0.375rem;
+ *     --r-radius: var(--r-radiusMd);
+ *     --r-radiusNone: 0rem;
+ *     --r-radiusXs: 0.125rem;
+ *     --r-radiusSm: 0.25rem;
+ *     --r-radiusMd: 0.375rem;
  *     ............
- *     --r-pill: 50rem;
- *     --r-circle: 50%;
- *     --r-default: var(--r-md);
+ *     --r-radiusPill: 50rem;
+ *     --r-radiusCircle: 50%;
  *     --r-myRadius: 10px;
- *     --r-myDefinition: clamp(var(--r-sm), 0.25%, var(--r-lg));
+ *     --r-myDefinition: clamp(var(--r-radiusSm), 0.25%, var(--r-radiusLg));
  * }
  * ```
  */
@@ -179,7 +179,7 @@ export const radiusConfigVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = radiusConfigVarDefs.myDefinition; // Resolves to [[ "clamp(", radiusConfigVars.sm, ", ", "0.25%", ", ", radiusConfigVars.lg, ")" ]]
+ * const definition = radiusConfigVarDefs.myDefinition; // Resolves to [[ "clamp(", radiusConfigVars.radiusSm, ", ", "0.25%", ", ", radiusConfigVars.radiusLg, ")" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -191,8 +191,8 @@ export const radiusConfigVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * radiusConfigVarDefs.myDefinition = [[
- *    "clamp(", radiusConfigVars.sm, ", ", "0.25%", ", ", radiusConfigVars.lg, ")"
- * ]]; // Generates "--r-myDefinition: clamp(var(--r-sm), 0.25%, var(--r-lg));"
+ *    "clamp(", radiusConfigVars.radiusSm, ", ", "0.25%", ", ", radiusConfigVars.radiusLg, ")"
+ * ]]; // Generates "--r-myDefinition: clamp(var(--r-radiusSm), 0.25%, var(--r-radiusLg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
@@ -214,16 +214,16 @@ export const radiusConfigVars       = config[0];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --r-none: 0rem;
- *     --r-xs: 0.125rem;
- *     --r-sm: 0.25rem;
- *     --r-md: 0.375rem;
+ *     --r-radius: var(--r-radiusMd);
+ *     --r-radiusNone: 0rem;
+ *     --r-radiusXs: 0.125rem;
+ *     --r-radiusSm: 0.25rem;
+ *     --r-radiusMd: 0.375rem;
  *     ............
- *     --r-pill: 50rem;
- *     --r-circle: 50%;
- *     --r-default: var(--r-md);
+ *     --r-radiusPill: 50rem;
+ *     --r-radiusCircle: 50%;
  *     --r-myRadius: 10px;
- *     --r-myDefinition: clamp(var(--r-sm), 0.25%, var(--r-lg));
+ *     --r-myDefinition: clamp(var(--r-radiusSm), 0.25%, var(--r-radiusLg));
  * }
  * ```
  */
@@ -257,14 +257,14 @@ export const radiusConfigVarDefs    = config[1];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --r-none: 0rem;
- *     --r-xs: 0.125rem;
- *     --r-sm: 0.25rem;
- *     --r-md: 0.375rem;
+ *     --r-radius: var(--r-radiusMd);
+ *     --r-radiusNone: 0rem;
+ *     --r-radiusXs: 0.125rem;
+ *     --r-radiusSm: 0.25rem;
+ *     --r-radiusMd: 0.375rem;
  *     ............
- *     --r-pill: 50rem;
- *     --r-circle: 50%;
- *     --r-default: var(--r-md);
+ *     --r-radiusPill: 50rem;
+ *     --r-radiusCircle: 50%;
  * }
  * ```
  */

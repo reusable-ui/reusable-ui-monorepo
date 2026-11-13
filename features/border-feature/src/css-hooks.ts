@@ -69,7 +69,7 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
         
         
         
-        borderRadius                     = radiusConfigVars.default,
+        borderRadius                     = radiusConfigVars.radius,
         borderStartStartRadius           = borderRadius,
         borderStartEndRadius             = borderRadius,
         borderEndStartRadius             = borderRadius,

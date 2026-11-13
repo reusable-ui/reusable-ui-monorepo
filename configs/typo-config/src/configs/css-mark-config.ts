@@ -73,9 +73,9 @@ const config = cssConfig(() => {
         
         /**
          * Defines the **border radius** for `<mark>` elements.
-         * Typically uses a **small radius** (`sm`) to create softened edges.
+         * Typically uses a **small radius** (`radiusSm`) to create softened edges.
          */
-        borderRadius           : radiusConfigVars.sm                                            as CssKnownProps['borderRadius'      ],
+        borderRadius           : radiusConfigVars.radiusSm                                      as CssKnownProps['borderRadius'      ],
         
         
         

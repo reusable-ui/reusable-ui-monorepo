@@ -328,7 +328,7 @@ export interface CssBorderFeatureOptions
     
     /**
      * The desired border radius to apply on all corners.
-     * Defaults to `radiusConfigVars.default`.
+     * Defaults to `radiusConfigVars.radius`.
      */
     borderRadius           ?: CssKnownProps['borderRadius']
     

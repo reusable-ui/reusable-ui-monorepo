@@ -18,9 +18,9 @@ With **radius-config**, you can:
 
 The radius system categorizes corner rounding configurations into three main groups:
 
-- **Fixed Radii:** Absolute sizing tokens for explicit corner rounding (`none`, `xs`, `sm`, `md`, `lg`, `xl`, `xxl`, etc.).
-- **Relative Radii:** Dynamic sizing tokens that scale proportionally to component's width and/or height (`pill`, `circle`, etc.).
-- **Default Radii:** Fallback tokens governing default corner rounding across standard components (`default`, etc.).
+- **Fixed Radii:** Absolute sizing tokens for explicit corner rounding (`radiusNone`, `radiusXs`, `radiusSm`, `radiusMd`, `radiusLg`, `radiusXl`, `radiusXxl`, etc.).
+- **Relative Radii:** Dynamic sizing tokens that scale proportionally to component's width and/or height (`radiusPill`, `radiusCircle`, etc.).
+- **Default Radii:** Fallback tokens governing default corner rounding across standard components (`radius`, etc.).
 
 ## ✨ Features
 
@@ -61,18 +61,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Below is an overview of the predefined radius tokens:
 
-| Category           | Token     | Value      | Description                     |
-| ------------------ | --------- | ---------- | --------------------------------|
-| **Fixed Radii**    | `none`    | `0rem`     | Square corners (no rounding)    |
-|                    | `xs`      | `0.125rem` | Micro corner radius             |
-|                    | `sm`      | `0.25rem`  | Small corner radius             |
-|                    | `md`      | `0.375rem` | Medium corner radius            |
-|                    | `lg`      | `0.5rem`   | Large corner radius             |
-|                    | `xl`      | `1rem`     | Extra-large corner radius       |
-|                    | `xxl`     | `2rem`     | Extra-extra-large corner radius |
-| **Relative Radii** | `pill`    | `50rem`    | Fully rounded pill shape        |
-|                    | `circle`  | `50%`      | Circular shape                  |
-| **Default Radii**  | `default` | `.md`      | Default component corner radius |
+| Category           | Token          | Value       | Description                     |
+| ------------------ | -------------- | ----------- | --------------------------------|
+| **Fixed Radii**    | `radiusNone`   | `0rem`      | Square corners (no rounding)    |
+|                    | `radiusXs`     | `0.125rem`  | Micro corner radius             |
+|                    | `radiusSm`     | `0.25rem`   | Small corner radius             |
+|                    | `radiusMd`     | `0.375rem`  | Medium corner radius            |
+|                    | `radiusLg`     | `0.5rem`    | Large corner radius             |
+|                    | `radiusXl`     | `1rem`      | Extra-large corner radius       |
+|                    | `radiusXxl`    | `2rem`      | Extra-extra-large corner radius |
+| **Relative Radii** | `radiusPill`   | `50rem`     | Fully rounded pill shape        |
+|                    | `radiusCircle` | `50%`       | Circular shape                  |
+| **Default Radii**  | `radius`       | `.radiusMd` | Default component corner radius |
 
 > **⚠️ Warning:**
 > Do not delete the predefined radius tokens, as standard components rely on their existence.
@@ -94,12 +94,12 @@ Using `radiusConfigVars` or `radiusConfigVarDefs`, you can perform CRUD operatio
 import { radiusConfigVars, radiusConfigVarDefs } from '@reusable-ui/radius-config';
 
 // Gets live CSS variable references (reactive & linked to config):
-const radiusMediumRef  = radiusConfigVars.md;      // Resolves to 'var(--rad-md)'
-const radiusDefaultRef = radiusConfigVars.default; // Resolves to 'var(--rad-default)'
+const radiusMediumRef  = radiusConfigVars.radiusMd; // Resolves to 'var(--rad-radiusMd)'
+const radiusDefaultRef = radiusConfigVars.radius;   // Resolves to 'var(--rad-radius)'
 
 // Gets evaluated snapshot values/expressions (for JS logic calculations):
-const radiusMediumDef  = radiusConfigVarDefs.md;      // Resolves to '0.375rem'
-const radiusDefaultDef = radiusConfigVarDefs.default; // Resolves to 'var(--rad-md)'
+const radiusMediumDef  = radiusConfigVarDefs.radiusMd; // Resolves to '0.375rem'
+const radiusDefaultDef = radiusConfigVarDefs.radius;   // Resolves to 'var(--rad-radiusMd)'
 ```
 
 ### Adding and Updating Radii
@@ -110,36 +110,36 @@ To create or update (upsert) a radius token, assign a concrete value or expressi
 import { radiusConfigVars, radiusConfigVarDefs } from '@reusable-ui/radius-config';
 
 // Assigning via radiusConfigVars:
-radiusConfigVars.xxxl = '4rem';
+radiusConfigVars.radiusXxxl = '4rem';
 
 // Using string interpolation to construct dynamic expressions:
 // - Ideal for creating formulas driven by one or more variables.
-radiusConfigVars.mega = `calc(${radiusConfigVars.lg} * 1.5)`;
+radiusConfigVars.radiusMega = `calc(${radiusConfigVars.radiusLg} * 1.5)`;
 
 // Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
-radiusConfigVars.giga = [[
+radiusConfigVars.radiusGiga = [[
   'calc(',
-  radiusConfigVars.lg,
+  radiusConfigVars.radiusLg,
   '* 2.5',
   ')',
-]]; // Resolves to 'calc( var(--rad-lg) * 2.5 )'
+]]; // Resolves to 'calc( var(--rad-radiusLg) * 2.5 )'
 
 
 
 // Alternatively, assigning via radiusConfigVarDefs:
-radiusConfigVarDefs.xxxl = '4rem';
+radiusConfigVarDefs.radiusXxxl = '4rem';
 
 // Using string interpolation to construct dynamic expressions:
 // - Ideal for creating formulas driven by one or more variables.
-radiusConfigVarDefs.mega = `calc(${radiusConfigVars.lg} * 1.5)`;
+radiusConfigVarDefs.radiusMega = `calc(${radiusConfigVars.radiusLg} * 1.5)`;
 
 // Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
-radiusConfigVarDefs.giga = [[
+radiusConfigVarDefs.radiusGiga = [[
   'calc(',
-  radiusConfigVars.lg,
+  radiusConfigVars.radiusLg,
   '* 2.5',
   ')',
-]]; // Resolves to 'calc( var(--rad-lg) * 2.5 )'
+]]; // Resolves to 'calc( var(--rad-radiusLg) * 2.5 )'
 ```
 
 ### Deleting Radii
@@ -150,12 +150,12 @@ To delete a radius token, use the `delete` operator or assign `null` / `undefine
 import { radiusConfigVars, radiusConfigVarDefs } from '@reusable-ui/radius-config';
 
 // Deleting tokens using the delete operator:
-delete radiusConfigVars.xxxl;
-delete radiusConfigVars.mega;
+delete radiusConfigVars.radiusXxxl;
+delete radiusConfigVars.radiusMega;
 
 // Deleting tokens using null or undefined assignment:
-radiusConfigVarDefs.xxxl = null;
-radiusConfigVarDefs.mega = undefined;
+radiusConfigVarDefs.radiusXxxl = null;
+radiusConfigVarDefs.radiusMega = undefined;
 ```
 
 ## 📖 Part of the Reusable-UI Framework  
