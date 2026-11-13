@@ -25,7 +25,7 @@ The border configuration divides its tokens into two categories:
 
 2. **Specific Border Properties (Variants):**
   Specific border properties that allow for fine-tuned control over explicit border lines.
-  These serve as scale variants or alternatives to the general border properties, allowing developers to customize thickness and styling for different UI elements and layouts.
+  These serve as scale variants or styling alternatives to the general border properties, allowing developers to customize thickness and styling for different UI elements and layouts.
   - **Naming Format:** Written with the domain as a namespace prefix followed by the variant `<domain><Variant>` (e.g., `widthNone`, `widthHair`, `widthThin`, `widthBold`).
 
 ## ✨ Features
