@@ -61,18 +61,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Below is an overview of the predefined radius tokens:
 
-| Category           | Token          | Value       | Description                     |
-| ------------------ | -------------- | ----------- | --------------------------------|
-| **Fixed Radii**    | `radiusNone`   | `0rem`      | Square corners (no rounding)    |
-|                    | `radiusXs`     | `0.125rem`  | Micro corner radius             |
-|                    | `radiusSm`     | `0.25rem`   | Small corner radius             |
-|                    | `radiusMd`     | `0.375rem`  | Medium corner radius            |
-|                    | `radiusLg`     | `0.5rem`    | Large corner radius             |
-|                    | `radiusXl`     | `1rem`      | Extra-large corner radius       |
-|                    | `radiusXxl`    | `2rem`      | Extra-extra-large corner radius |
-| **Relative Radii** | `radiusPill`   | `50rem`     | Fully rounded pill shape        |
-|                    | `radiusCircle` | `50%`       | Circular shape                  |
-| **Default Radii**  | `radius`       | `.radiusMd` | Default component corner radius |
+| Token          | Value       | Category | Description                      |
+| -------------- | ----------- | -------- | ---------------------------------|
+| `radius`       | `.radiusMd` | General  | Default component corner radius. |
+| `radiusNone`   | `0rem`      | Specific | Square corners (no rounding).    |
+| `radiusXs`     | `0.125rem`  | Specific | Micro corner radius.             |
+| `radiusSm`     | `0.25rem`   | Specific | Small corner radius.             |
+| `radiusMd`     | `0.375rem`  | Specific | Medium corner radius.            |
+| `radiusLg`     | `0.5rem`    | Specific | Large corner radius.             |
+| `radiusXl`     | `1rem`      | Specific | Extra-large corner radius.       |
+| `radiusXxl`    | `2rem`      | Specific | Extra-extra-large corner radius. |
+| `radiusPill`   | `50rem`     | Specific | Fully rounded pill shape.        |
+| `radiusCircle` | `50%`       | Specific | Circular shape.                  |
 
 > **⚠️ Warning:**
 > Do not delete the predefined radius tokens, as standard components rely on their existence.
