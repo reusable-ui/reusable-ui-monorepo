@@ -67,16 +67,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Below is an overview of the predefined border tokens:
 
-| Category            | Token        | Value                       | Description                            |
-| ------------------- | ------------ | --------------------------- | -------------------------------------- |
-| **Border Widths**   | `widthNone`  | `0px`                       | No border                              |
-|                     | `widthHair`  | `1px`                       | Hairline border                        |
-|                     | `widthThin`  | `2px`                       | Thin border                            |
-|                     | `widthBold`  | `4px`                       | Bold border                            |
-| **Default Borders** | `width`      | `.widthHair`                | Default border width                   |
-|                     | `style`      | `solid`                     | Default border style                   |
-|                     | `color`      | `currentColor`              | Default border color                   |
-|                     | `border`     | `.width` `.style` `.color`  | Default border (width + style + color) |
+| Token        | Value                       | Category | Description                             |
+| ------------ | --------------------------- | -------- | --------------------------------------- |
+| `widthNone`  | `0px`                       | Specific | No border.                              |
+| `widthHair`  | `1px`                       | Specific | Hairline border.                        |
+| `widthThin`  | `2px`                       | Specific | Thin border.                            |
+| `widthBold`  | `4px`                       | Specific | Bold border.                            |
+| `width`      | `.widthHair`                | General  | Default border width.                   |
+| `style`      | `solid`                     | General  | Default border style.                   |
+| `color`      | `currentColor`              | General  | Default border color.                   |
+| `border`     | `.width` `.style` `.color`  | General  | Default border (width + style + color). |
 
 > **⚠️ Warning:**
 > Do not delete the predefined border tokens, as standard components rely on their existence.
