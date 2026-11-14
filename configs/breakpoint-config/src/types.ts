@@ -11,37 +11,37 @@ export interface Breakpoint {
     /**
      * Extra small screens (mobile-first).
      */
-    xs   : CssBreakpoint
+    breakpointXs   : CssBreakpoint
     
     /**
      * Small screens (typical smartphones).
      */
-    sm   : CssBreakpoint
+    breakpointSm   : CssBreakpoint
     
     /**
      * Medium screens (tablets & small laptops).
      */
-    md   : CssBreakpoint
+    breakpointMd   : CssBreakpoint
     
     /**
      * Large screens (desktops & larger tablets).
      */
-    lg   : CssBreakpoint
+    breakpointLg   : CssBreakpoint
     
     /**
      * Extra large screens (wider displays).
      */
-    xl   : CssBreakpoint
+    breakpointXl   : CssBreakpoint
     
     /**
      * Double extra large screens (large desktops).
      */
-    xxl  : CssBreakpoint
+    breakpointXxl  : CssBreakpoint
     
     /**
      * Triple extra large screens (ultrawide monitors).
      */
-    xxxl : CssBreakpoint
+    breakpointXxxl : CssBreakpoint
 }
 
 export type BreakpointName = keyof Breakpoint;

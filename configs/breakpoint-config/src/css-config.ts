@@ -20,13 +20,13 @@ import {
 
 const config = cssConfig(() => {
     return {
-        xs   :    '0px'     as CssBreakpoint,
-        sm   :  '576px'     as CssBreakpoint,
-        md   :  '768px'     as CssBreakpoint,
-        lg   :  '992px'     as CssBreakpoint,
-        xl   : '1200px'     as CssBreakpoint,
-        xxl  : '1400px'     as CssBreakpoint,
-        xxxl : '1600px'     as CssBreakpoint,
+        breakpointXs   :    '0px'   as CssBreakpoint,
+        breakpointSm   :  '576px'   as CssBreakpoint,
+        breakpointMd   :  '768px'   as CssBreakpoint,
+        breakpointLg   :  '992px'   as CssBreakpoint,
+        breakpointXl   : '1200px'   as CssBreakpoint,
+        breakpointXxl  : '1400px'   as CssBreakpoint,
+        breakpointXxxl : '1600px'   as CssBreakpoint,
     };
 }, { prefix: defaultBreakpointConfigPrefix });
 
@@ -41,13 +41,13 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = breakpointConfigVars.lg; // Resolves to "var(--brp-lg)"
+ * const value = breakpointConfigVars.breakpointLg; // Resolves to "var(--brp-breakpointLg)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * breakpointConfigVars.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
+ * breakpointConfigVars.breakpointUltrawide = "2560px"; // Generates "--brp-breakpointUltrawide: 2560px;"
  * ```
  * 
  * **Definition Assignment:**
@@ -56,23 +56,23 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete breakpointConfigVars.customBreakpoint;
- * breakpointConfigVars.customBreakpoint = null;
- * breakpointConfigVars.customBreakpoint = undefined;
+ * delete breakpointConfigVars.breakpointUltrawide;
+ * breakpointConfigVars.breakpointUltrawide = null;
+ * breakpointConfigVars.breakpointUltrawide = undefined;
  * ```
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --brp-xs: 0px;
- *     --brp-sm: 576px;
- *     --brp-md: 768px;
- *     --brp-lg: 992px;
- *     --brp-xl: 1200px;
- *     --brp-xxl: 1400px;
- *     --brp-xxxl: 1600px;
- *     --brp-customBreakpoint: 2560px;
+ *     --brp-breakpointXs: 0px;
+ *     --brp-breakpointSm: 576px;
+ *     --brp-breakpointMd: 768px;
+ *     --brp-breakpointLg: 992px;
+ *     --brp-breakpointXl: 1200px;
+ *     --brp-breakpointXxl: 1400px;
+ *     --brp-breakpointXxxl: 1600px;
+ *     --brp-breakpointUltrawide: 2560px;
  * }
  * ```
  */
@@ -90,13 +90,13 @@ export const breakpointConfigVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = breakpointConfigVarDefs.lg; // Resolves to "992px"
+ * const definition = breakpointConfigVarDefs.breakpointLg; // Resolves to "992px"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * breakpointConfigVarDefs.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
+ * breakpointConfigVarDefs.breakpointUltrawide = "2560px"; // Generates "--brp-breakpointUltrawide: 2560px;"
  * ```
  * 
  * **Definition Assignment:**
@@ -105,23 +105,23 @@ export const breakpointConfigVars       = config[0];
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete breakpointConfigVarDefs.customBreakpoint;
- * breakpointConfigVarDefs.customBreakpoint = null;
- * breakpointConfigVarDefs.customBreakpoint = undefined;
+ * delete breakpointConfigVarDefs.breakpointUltrawide;
+ * breakpointConfigVarDefs.breakpointUltrawide = null;
+ * breakpointConfigVarDefs.breakpointUltrawide = undefined;
  * ```
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --brp-xs: 0px;
- *     --brp-sm: 576px;
- *     --brp-md: 768px;
- *     --brp-lg: 992px;
- *     --brp-xl: 1200px;
- *     --brp-xxl: 1400px;
- *     --brp-xxxl: 1600px;
- *     --brp-customBreakpoint: 2560px;
+ *     --brp-breakpointXs: 0px;
+ *     --brp-breakpointSm: 576px;
+ *     --brp-breakpointMd: 768px;
+ *     --brp-breakpointLg: 992px;
+ *     --brp-breakpointXl: 1200px;
+ *     --brp-breakpointXxl: 1400px;
+ *     --brp-breakpointXxxl: 1600px;
+ *     --brp-breakpointUltrawide: 2560px;
  * }
  * ```
  */
@@ -155,13 +155,13 @@ export const breakpointConfigVarDefs    = config[1];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --brp-xs: 0px;
- *     --brp-sm: 576px;
- *     --brp-md: 768px;
- *     --brp-lg: 992px;
- *     --brp-xl: 1200px;
- *     --brp-xxl: 1400px;
- *     --brp-xxxl: 1600px;
+ *     --brp-breakpointXs: 0px;
+ *     --brp-breakpointSm: 576px;
+ *     --brp-breakpointMd: 768px;
+ *     --brp-breakpointLg: 992px;
+ *     --brp-breakpointXl: 1200px;
+ *     --brp-breakpointXxl: 1400px;
+ *     --brp-breakpointXxxl: 1600px;
  * }
  * ```
  */
