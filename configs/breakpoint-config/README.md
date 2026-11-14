@@ -136,6 +136,10 @@ breakpointConfigVars.breakpointCinema = [[
   ')',
 ]]; // Resolves to 'calc( var(--brk-breakpointXxl) + 400px )'
 
+// Custom breakpoints can be added for specific components or use cases, following the same pattern:
+breakpointConfigVars.articleSm = '600px';
+breakpointConfigVars.articleMd = `calc(${breakpointConfigVars.articleSm} + 200px)`;
+
 
 
 // Alternatively, assigning via breakpointConfigVarDefs:
@@ -152,6 +156,10 @@ breakpointConfigVarDefs.breakpointCinema = [[
   '+ 400px',
   ')',
 ]]; // Resolves to 'calc( var(--brk-breakpointXxl) + 400px )'
+
+// Custom breakpoints can be added for specific components or use cases, following the same pattern:
+breakpointConfigVarDefs.articleSm = '600px';
+breakpointConfigVarDefs.articleMd = `calc(${breakpointConfigVars.articleSm} + 200px)`;
 ```
 
 ### Deleting Breakpoints
