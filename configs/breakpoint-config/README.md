@@ -17,9 +17,18 @@ With **breakpoint-config**, you can:
 - **Write responsive styles** conditionally applying styles based on screen or container width thresholds using built-in query utilities.
 - **Define custom breakpoint tokens** or modify predefined breakpoint thresholds on the fly.
 
-## 🧩 Breakpoint Variable Architecture
+## 🧩 Breakpoint Variable Architecture & Naming Convention
 
-The breakpoint system maps named tokens (`xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, etc.) to absolute width thresholds.
+The breakpoint configuration divides its tokens into two categories:
+
+1. **General Breakpoint Properties (Standards):**
+  General-purpose responsive breakpoint thresholds that define global responsive behaviors across standard components for both screen and container widths.
+  - **Naming Format:** Written with the `breakpoint` namespace prefix followed by the variant `breakpoint<Variant>` (e.g., `breakpointXs`, `breakpointSm`, `breakpointMd`, `breakpointLg`, `breakpointXl`, `breakpointXxl`, `breakpointXxxl`).
+
+2. **Component-Specific Breakpoint Properties (Customs):**
+  Optional user-defined breakpoint thresholds that allow for isolated, fine-tuned control over specific component layouts where standard breakpoints do not suffice.
+  - **Naming Format:** Written with a custom component prefix followed by the variant `<customPrefix><Variant>` (e.g., `articleSm`, `articleMd`, `navbarSm`, `navbarLg`, `formSm`, `formLg`).
+
 These thresholds are evaluated against screen or container layouts to drive media queries and responsive adjustments.
 
 Each breakpoint value acts as a **starting threshold** for responsive queries.
