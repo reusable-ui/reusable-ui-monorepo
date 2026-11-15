@@ -23,6 +23,8 @@ interactions/*/src/
 interactions/*/__tests__/
 routes/*/src/
 routes/*/__tests__/
+styles/*/src/
+styles/*/__tests__/
 
 base-components/*/src/
 base-components/*/__tests__/

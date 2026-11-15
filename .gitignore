@@ -12,6 +12,7 @@ effects/*/dist/
 layouts/*/dist/
 interactions/*/dist/
 routes/*/dist/
+styles/*/dist/
 
 base-components/*/dist/
 base-content-components/*/dist/
