@@ -1,7 +1,6 @@
 // Internals:
 
 export * from './css-typography-mount.js'
-export * from './css-secondary-mount.js'
 
 export * from './css-paragraph-mount.js'
 export * from './css-lead-mount.js'

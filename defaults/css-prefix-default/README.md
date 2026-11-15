@@ -85,7 +85,6 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultSpacingConfigPrefix        | s     |
 | defaultBreakpointConfigPrefix     | bp    |
 | defaultTypoConfigPrefix           | t     |
-| defaultSecondaryConfigPrefix      | sec   |
 | defaultParagraphConfigPrefix      | p     |
 | defaultLeadConfigPrefix           | lead  |
 | defaultHeadingConfigPrefix        | h     |

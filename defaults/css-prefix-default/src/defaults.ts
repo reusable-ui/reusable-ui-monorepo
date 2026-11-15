@@ -23,7 +23,6 @@ export const defaultBreakpointConfigPrefix     = 'bp'    // responsive breakpoin
 
 // Primitive Typography:
 export const defaultTypoConfigPrefix           = 't'     // regular typography
-export const defaultSecondaryConfigPrefix      = 'sec'   // secondary typography (longer for clarity)
 
 // Component-like Typography:
 

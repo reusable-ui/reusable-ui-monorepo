@@ -1,7 +1,6 @@
 // Internals:
 
 export * from './css-typography-style.js'
-export * from './css-secondary-style.js'
 
 export * from './css-paragraph-style.js'
 export * from './css-lead-style.js'

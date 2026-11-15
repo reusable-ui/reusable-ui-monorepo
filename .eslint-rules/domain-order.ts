@@ -7,7 +7,6 @@ export const domainOrder = new Set<string>([
 'spacingConfig',
 'breakpointConfig',
 'typoConfig',
-'secondaryConfig',
 'paragraphConfig',
 'leadConfig',
 'headingConfig',

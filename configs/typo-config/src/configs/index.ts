@@ -2,7 +2,6 @@
 
 export *            from './css-config.js'
 export {default}    from './css-config.js'
-export *            from './css-secondary-config.js'
 
 export *            from './css-paragraph-config.js'
 export *            from './css-lead-config.js'
