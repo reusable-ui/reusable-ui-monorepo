@@ -92,7 +92,7 @@ export interface DomainMetadata {
     
     /**
      * Conditional domain prefix used when recomposing identifiers.
-     * May be empty for special cases (e.g. 'TypoConfig' with subdomain).
+     * May be empty for special cases (e.g. 'TypoStyle' with subdomain).
      */
     domainPrefix   : string
     
@@ -113,7 +113,7 @@ export interface DomainMetadata {
  *   • `domain` → the leading part (e.g. 'Color', 'Border').
  *   • `group`  → the trailing suffix (e.g. 'Config', 'Variant', 'Feature', 'State', 'Effect', 'Layout').
  * - Detects an optional subdomain identifier from the filename (e.g. 'Param', 'Level').
- * - Provides a conditional domain+subdomain string for special cases (e.g. 'TypoConfig' discards domain if subdomain exists).
+ * - Provides a conditional domain+subdomain string for special cases (e.g. 'TypoStyle' discards domain if subdomain exists).
  * 
  * Examples:
  * - 'configs/border-config/src/css-config.ts'        → { domain: 'Border', group: 'Config' , subdomain: null    }
@@ -131,20 +131,20 @@ export const getDomainMetadata = (relativeFilename: string): DomainMetadata | nu
     const subdomain    = getSubDomainIdentifier(relativeFilename);
     
     // Extract group suffix (Config, Variant, Feature, State, Effect):
-    const group        = domainIdentifier.match(/(Config|Variant|Feature|State|Effect|Layout)$/)?.[1] ?? '';
+    const group        = domainIdentifier.match(/(Config|Variant|Feature|State|Effect|Layout|Style)$/)?.[1] ?? '';
     
     // Extract domain base (remove group suffix):
     const domain       = domainIdentifier.slice(0, -group.length);
     
-    // Special case: TypoConfig with subdomain → discard domain prefix:
-    const domainPrefix = (domainIdentifier === 'TypoConfig') && subdomain ? '' : domain;
+    // Special case: TypoStyle with subdomain → discard domain prefix:
+    const domainPrefix = (domainIdentifier === 'TypoStyle') && subdomain ? '' : domain;
     
     return {
         domain,
         subdomain,
         group,
         domainPrefix,
-        fullIdentifier: `${domainPrefix}${subdomain ?? ''}${group}`,
+        fullIdentifier: `${domainPrefix}${subdomain ?? ''}${(domainIdentifier === 'TypoStyle') && subdomain ? '' : group}`,
     } satisfies DomainMetadata;
 };
 
@@ -199,7 +199,7 @@ export const getExpectedCSSVariableModules = (domainMetadata: DomainMetadata | n
     const subdomain = domainMetadata?.subdomain ?? null;
     const subdomainSuffix = subdomain ? `-${pascalToKebab(subdomain)}` : '';
     
-    if (domainMetadata?.group === 'Config') {
+    if (domainMetadata?.group && ['Config', 'Style'].includes(domainMetadata.group)) {
         return [
             `css${subdomainSuffix}-config.ts`,
             `css-internal${subdomainSuffix}-config.ts`,
