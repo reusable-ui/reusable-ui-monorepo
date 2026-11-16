@@ -135,8 +135,8 @@ export const enforceCssPrefixDefaults = createRule<[CssPrefixDefaultsOptions], '
                 
                 
                 
-                // Enforce naming convention `default<Domain><Group>Prefix`:
-                if (!/^default([A-Z][a-z]*){1,2}[A-Z][a-z]*Prefix$/.test(name)) {
+                // Enforce naming convention `default<Domain><Group?>Prefix`:
+                if (!/^default([A-Z][a-z]*){1,2}([A-Z][a-z]*)?Prefix$/.test(name)) {
                     context.report({ node: node.id, messageId: 'wrongName' });
                 } // if
                 
