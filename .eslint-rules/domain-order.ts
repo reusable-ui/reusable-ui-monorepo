@@ -7,17 +7,6 @@ export const domainOrder = new Set<string>([
 'spacingConfig',
 'breakpointConfig',
 'typoConfig',
-'paragraphConfig',
-'leadConfig',
-'headingConfig',
-'displayConfig',
-'blockquoteConfig',
-'plainListConfig',
-'markConfig',
-'kbdConfig',
-'codeConfig',
-'horzSeparatorConfig',
-'vertSeparatorConfig',
 
 // Variants:
 'orientationVariant',
@@ -71,4 +60,18 @@ export const domainOrder = new Set<string>([
 
 // Layouts:
 'stackedLayout',
+
+// Styles:
+'typo',
+'paragraph',
+'lead',
+'heading',
+'display',
+'blockquote',
+'plainList',
+'mark',
+'kbd',
+'code',
+'horzSeparator',
+'vertSeparator',
 ]);
