@@ -85,17 +85,6 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultSpacingConfigPrefix        | s     |
 | defaultBreakpointConfigPrefix     | bp    |
 | defaultTypoConfigPrefix           | t     |
-| defaultParagraphConfigPrefix      | p     |
-| defaultLeadConfigPrefix           | lead  |
-| defaultHeadingConfigPrefix        | h     |
-| defaultDisplayConfigPrefix        | disp  |
-| defaultBlockquoteConfigPrefix     | bq    |
-| defaultPlainListConfigPrefix      | pl    |
-| defaultMarkConfigPrefix           | mark  |
-| defaultKbdConfigPrefix            | kbd   |
-| defaultCodeConfigPrefix           | code  |
-| defaultHorzSeparatorConfigPrefix  | hr    |
-| defaultVertSeparatorConfigPrefix  | vr    |
 | defaultOrientationVariantPrefix   | ot    |
 | defaultFlowDirectionVariantPrefix | fd    |
 | defaultSizeVariantPrefix          | sz    |
@@ -139,6 +128,18 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultActiveEffectPrefix         | acte  |
 | defaultViewEffectPrefix           | viewe |
 | defaultStackedLayoutPrefix        | stk   |
+| defaultTypoPrefix                 | ty    |
+| defaultParagraphPrefix            | p     |
+| defaultLeadPrefix                 | lead  |
+| defaultHeadingPrefix              | h     |
+| defaultDisplayPrefix              | disp  |
+| defaultBlockquotePrefix           | bq    |
+| defaultPlainListPrefix            | pl    |
+| defaultMarkPrefix                 | mark  |
+| defaultKbdPrefix                  | kbd   |
+| defaultCodePrefix                 | code  |
+| defaultHorzSeparatorPrefix        | hr    |
+| defaultVertSeparatorPrefix        | vr    |
 
 ## 📖 Naming Convention Guide
 

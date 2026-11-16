@@ -132,6 +132,7 @@
     "routes/links",
     "routes/navigations",
     "barrels/core",
+    "styles/typo-style",
     "__configs/*",
     "__utilities/*",
     "__features/*",

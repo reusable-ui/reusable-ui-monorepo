@@ -269,6 +269,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 @reusable-ui/next-compat-link
 
 // Reusable-ui styles:
+@reusable-ui/typo-style
 
 // base-components:
 @reusable-ui/generic

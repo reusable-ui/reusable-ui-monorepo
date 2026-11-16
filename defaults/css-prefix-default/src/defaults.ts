@@ -24,29 +24,6 @@ export const defaultBreakpointConfigPrefix     = 'bp'    // responsive breakpoin
 // Primitive Typography:
 export const defaultTypoConfigPrefix           = 't'     // regular typography
 
-// Component-like Typography:
-
-// Paragraphs:
-export const defaultParagraphConfigPrefix      = 'p'     // regular paragraph
-export const defaultLeadConfigPrefix           = 'lead'  // big paragraph (longer for clarity)
-
-// Headings:
-export const defaultHeadingConfigPrefix        = 'h'     // regular heading (levels: 1-6)
-export const defaultDisplayConfigPrefix        = 'disp'  // big heading (levels: 1-6, longer for clarity)
-
-// Semantic Blocks:
-export const defaultBlockquoteConfigPrefix     = 'bq'    // blockquote
-export const defaultPlainListConfigPrefix      = 'pl'    // plain list (not <List> component)
-
-// Inline markers:
-export const defaultMarkConfigPrefix           = 'mark'  // generic marker (<mark>)
-export const defaultKbdConfigPrefix            = 'kbd'   // keyboard marker (<kbd>)
-export const defaultCodeConfigPrefix           = 'code'  // inline code marker (<code>, <var>, <samp>)
-
-// Separators:
-export const defaultHorzSeparatorConfigPrefix  = 'hr'    // horizontal rule (native <hr>)
-export const defaultVertSeparatorConfigPrefix  = 'vr'    // vertical rule (synthetic <div class="vr">)
-
 
 
 // Variants:
@@ -142,3 +119,31 @@ export const defaultViewEffectPrefix           = 'viewe' // view → viewe, 5 ch
 
 // Layouts:
 export const defaultStackedLayoutPrefix        = 'stk' // stacked
+
+
+
+// Styles:
+
+// General Typography:
+export const defaultTypoPrefix                 = 'ty'    // regular typography
+
+// Paragraphs:
+export const defaultParagraphPrefix            = 'p'     // regular paragraph
+export const defaultLeadPrefix                 = 'lead'  // big paragraph (longer for clarity)
+
+// Headings:
+export const defaultHeadingPrefix              = 'h'     // regular heading (levels: 1-6)
+export const defaultDisplayPrefix              = 'disp'  // big heading (levels: 1-6, longer for clarity)
+
+// Semantic Blocks:
+export const defaultBlockquotePrefix           = 'bq'    // blockquote
+export const defaultPlainListPrefix            = 'pl'    // plain list (not <List> component)
+
+// Inline markers:
+export const defaultMarkPrefix                 = 'mark'  // generic marker (<mark>)
+export const defaultKbdPrefix                  = 'kbd'   // keyboard marker (<kbd>)
+export const defaultCodePrefix                 = 'code'  // inline code marker (<code>, <var>, <samp>)
+
+// Separators:
+export const defaultHorzSeparatorPrefix        = 'hr'    // horizontal rule (native <hr>)
+export const defaultVertSeparatorPrefix        = 'vr'    // vertical rule (synthetic <div class="vr">)
