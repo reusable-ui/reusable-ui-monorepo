@@ -33,7 +33,7 @@ const createRule = ESLintUtils.RuleCreator(
  *     • `css-internal-variables.ts`
  *     • `css-<subdomain>-variables.ts`
  *     • `css-internal-<subdomain>-variables.ts`
- *   - For config‑specific variables → must be declared only in:
+ *   - For config‑specific and style-specific variables → must be declared only in:
  *     • `css-config.ts`
  *     • `css-internal-config.ts`
  *     • `css-<subdomain>-config.ts`
@@ -193,7 +193,7 @@ export const enforceVariableConventions = createRule({
          */
         const isValidVariableGroupName = (name: string): boolean => {
             // Loose validation (no domain context available):
-            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect|Layout)(Tuple|Vars|VarDefs|VarOptions)$/.test(name);
+            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect|Layout|Style)(Tuple|Vars|VarDefs|VarOptions)$/.test(name);
             
             
             
@@ -376,7 +376,7 @@ export const enforceVariableConventions = createRule({
                             } // if
                         }
                         else {
-                            if (domainMetadata?.group === 'Config') {
+                            if (domainMetadata?.group && ['Config', 'Style'].includes(domainMetadata.group)) {
                                 // Enforce implicit type annotation from `config[0-2]`:
                                 let expectedIndex = NaN;
                                 switch (bindingName.match(/(Vars|VarDefs|VarOptions)$/)?.[1]) {
@@ -518,7 +518,7 @@ export const enforceCssVarsFunctionUsage = createRule({
                     );
                     
                     // Collect imported prefixes from `@reusable-ui/css-prefix-default`:
-                    for (const importedPrefix of importedSpecifiers.map((importedSpecifier) => importedSpecifier.imported.name).filter((importedName) => /^default([A-Z][a-z]*){1,2}[A-Z][a-z]*Prefix$/.test(importedName))) {
+                    for (const importedPrefix of importedSpecifiers.map((importedSpecifier) => importedSpecifier.imported.name).filter((importedName) => /^default([A-Z][a-z]*){1,2}([A-Z][a-z]*)?Prefix$/.test(importedName))) {
                         prefixesImported.add(importedPrefix);
                     } // if
                 } // if
@@ -666,7 +666,7 @@ export const enforceCssConfigFunctionUsage = createRule({
                     );
                     
                     // Collect imported prefixes from `@reusable-ui/css-prefix-default`:
-                    for (const importedPrefix of importedSpecifiers.map((importedSpecifier) => importedSpecifier.imported.name).filter((importedName) => /^default([A-Z][a-z]*){1,2}[A-Z][a-z]*Prefix$/.test(importedName))) {
+                    for (const importedPrefix of importedSpecifiers.map((importedSpecifier) => importedSpecifier.imported.name).filter((importedName) => /^default([A-Z][a-z]*){1,2}([A-Z][a-z]*)?Prefix$/.test(importedName))) {
                         prefixesImported.add(importedPrefix);
                     } // if
                 } // if
@@ -833,7 +833,7 @@ export const noForeignCode = createRule({
                     
                     
                     
-                    if (domainMetadata?.group === 'Config') {
+                    if (domainMetadata?.group && ['Config', 'Style'].includes(domainMetadata.group)) {
                         // CSS config variable candidates:
                         // - Identified by names that match "config".
                         // - CSS config variables should never be functions,
