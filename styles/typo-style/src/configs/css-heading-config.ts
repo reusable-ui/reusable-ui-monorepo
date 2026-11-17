@@ -112,7 +112,7 @@ const config = cssConfig(() => {
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight        : 1.25                                as CssKnownProps['lineHeight'       ],
+        lineHeight        : typoConfigVars.lineHeightSm         as CssKnownProps['lineHeight'       ],
     };
     
     
