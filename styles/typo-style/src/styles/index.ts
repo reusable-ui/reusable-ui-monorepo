@@ -19,4 +19,4 @@ export * from './css-code-style.js'
 export * from './css-horz-separator-style.js'
 export * from './css-vert-separator-style.js'
 
-export * from './css-emphasis-style.js'
+export * from './css-inline-formatting-style.js'
