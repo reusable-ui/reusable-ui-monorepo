@@ -1,14 +1,9 @@
 // Cssfn:
 import {
     // Writes css in javascript:
-    atRoot,
+    rule,
     globalScope,
-    
-    
-    
-    // Reads/writes css variables configuration:
-    usesCssProps,
-}                           from '@cssfn/core'          // Writes css in javascript.
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Reusable-ui configs:
 import {
@@ -21,9 +16,26 @@ import {
 
 export default [
     globalScope({
-        ...atRoot({
-            // Configs:
-            ...usesCssProps(typoConfigVars),
+        ...rule(['html', 'body'], {
+            // Core Typography:
+            fontSize       : typoConfigVars.fontSize,
+            fontFamily     : typoConfigVars.fontFamily,
+            fontWeight     : typoConfigVars.fontWeight,
+            fontStyle      : typoConfigVars.fontStyle,
+            textDecoration : typoConfigVars.textDecoration,
+            lineHeight     : typoConfigVars.lineHeight,
+            overflowWrap   : typoConfigVars.overflowWrap,
+            
+            
+            
+            // Baseline Normalizations & Layout Foundation:
+            margin               : 0,
+            padding              : 0,
+            WebkitTextSizeAdjust : '100%',
+            MozTextSizeAdjust    : '100%',
+            textSizeAdjust       : '100%',
+            WebkitFontSmoothing  : 'antialiased',
+            MozOsxFontSmoothing  : 'grayscale',
         }),
     }),
 ];
