@@ -202,7 +202,7 @@ const config = cssConfig(() => {
  * 
  * **Styling stylesheet:**
  * ```css
- * .plainList {
+ * .plain-list {
  *     ............
  *     opacity: var(--plist-opacity);
  * }
@@ -305,7 +305,7 @@ export const plainListVars       = config[0];
  * 
  * **Styling stylesheet:**
  * ```css
- * .plainList {
+ * .plain-list {
  *     ............
  *     opacity: var(--plist-opacity);
  * }

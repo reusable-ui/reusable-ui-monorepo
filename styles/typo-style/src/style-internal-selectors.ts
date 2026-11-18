@@ -87,9 +87,9 @@ export const getClassBlockquoteSelectors : () => CssSelectorCollection = () => [
 export const getTagPlainListSelectors   : () => CssSelectorCollection = () => [/* not yet implemented */];
 
 /**
- * Generates **class-based list selectors** (`.plainList`).
+ * Generates **class-based list selectors** (`.plain-list`).
  */
-export const getClassPlainListSelectors : () => CssSelectorCollection = () => ['.plainList'];
+export const getClassPlainListSelectors : () => CssSelectorCollection = () => ['.plain-list'];
 
 
 
