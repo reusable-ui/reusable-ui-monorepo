@@ -590,11 +590,6 @@ export interface MarkRuleOptions extends InlineElementRuleOptions {
 export const markRule = (options: MarkRuleOptions): CssRule => {
     // Generate a mark-like styling rule:
     return inlineElementRule(options, {
-        // Layouts:
-        display : 'inline-block', // Keeps elements inline but allows custom spacing.
-        
-        
-        
         // Typos:
         // @ts-ignore
         textBoxTrim : 'trim-both',
