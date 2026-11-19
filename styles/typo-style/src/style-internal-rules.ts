@@ -11,6 +11,7 @@ import {
     rule,
     rules,
     alwaysRule,
+    fallback,
     children,
     
     
@@ -540,7 +541,32 @@ export interface HorzSeparatorRuleOptions extends BlockElementRuleOptions {
  * 
  * @returns A `CssRule` object for styling horizontal-separator-like elements.
  */
-export const horzSeparatorRule = blockElementRule as (options: HorzSeparatorRuleOptions) => CssRule;
+export const horzSeparatorRule = (options: HorzSeparatorRuleOptions): CssRule => {
+    // Generate a horizontal separator styling rule:
+    return blockElementRule(options, {
+        // Sizes:
+        boxSizing  : 'border-box',
+        blockSize  : 'fit-content', // The required height for the separator's thickness.
+        
+        // Fill the entire parent width using progressive enhancement:
+        // - 100%                   : Fallback for older browsers (unaware of margin spacing)
+        // - -moz-available         : Legacy Gecko engine prefix
+        // - -webkit-fill-available : Legacy WebKit/Blink engine prefix
+        // - stretch                : Modern standards-compliant sizing keyword
+        ...fallback({
+            inlineSize : '100%',
+        }),
+        ...fallback({
+            inlineSize : '-moz-available',
+        }),
+        ...fallback({
+            inlineSize : '-webkit-fill-available',
+        }),
+        ...fallback({
+            inlineSize : 'stretch',
+        }),
+    });
+};
 
 
 /**
@@ -563,7 +589,37 @@ export interface VertSeparatorRuleOptions extends HorzSeparatorRuleOptions {
  * 
  * @returns A `CssRule` object for styling vertical-separator-like elements.
  */
-export const vertSeparatorRule = horzSeparatorRule as (options: VertSeparatorRuleOptions) => CssRule;
+export const vertSeparatorRule = (options: VertSeparatorRuleOptions): CssRule => {
+    // Generate a vertical separator styling rule:
+    return inlineElementRule(options, {
+        // Layouts:
+        display : 'inline-block', // Keeps elements inline but allows custom sizing.
+        
+        
+        
+        // Sizes:
+        boxSizing  : 'border-box',
+        inlineSize : 'fit-content', // The required width for the separator's thickness.
+        
+        // Fill the entire parent height using progressive enhancement:
+        // - 100%                   : Fallback for older browsers (unaware of margin spacing)
+        // - -moz-available         : Legacy Gecko engine prefix
+        // - -webkit-fill-available : Legacy WebKit/Blink engine prefix
+        // - stretch                : Modern standards-compliant sizing keyword
+        ...fallback({
+            blockSize : '100%',
+        }),
+        ...fallback({
+            blockSize : '-moz-available',
+        }),
+        ...fallback({
+            blockSize : '-webkit-fill-available',
+        }),
+        ...fallback({
+            blockSize : 'stretch',
+        }),
+    });
+};
 
 
 
