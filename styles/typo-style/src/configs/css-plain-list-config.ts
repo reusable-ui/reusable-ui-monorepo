@@ -131,13 +131,6 @@ const config = cssConfig(() => {
      * List Item (`<li>`) Specific Definitions.
      */
     const staticListItemDefinitions = {
-        // Typos:
-        
-        /**
-         * Defines the **text alignment** for `<li>` elements.
-         * Uses `start` for natural reading flow.
-         */
-        liTextAlign            : 'start'    as CssKnownProps['textAlign'        ],
     };
     
     
@@ -242,7 +235,6 @@ const config = cssConfig(() => {
  *     --plist-paddingInlineStart: 1.5em;
  *     --plist-listStyleTypeUnordered: disc;
  *     --plist-listStyleTypeOrdered: decimal;
- *     --plist-liTextAlign: start;
  *     --plist-fontWeightCustom: 900;
  *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;
  *     --plist-opacity: 0.5;
@@ -346,7 +338,6 @@ export const plainListVars       = config[0];
  *     --plist-paddingInlineStart: 1.5em;
  *     --plist-listStyleTypeUnordered: disc;
  *     --plist-listStyleTypeOrdered: decimal;
- *     --plist-liTextAlign: start;
  *     --plist-fontWeightCustom: 900;
  *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;
  *     --plist-opacity: 0.5;
@@ -392,7 +383,6 @@ export const plainListVarDefs    = config[1];
  *     --plist-paddingInlineStart: 1.5em;
  *     --plist-listStyleTypeUnordered: disc;
  *     --plist-listStyleTypeOrdered: decimal;
- *     --plist-liTextAlign: start;
  * }
  * ```
  */
