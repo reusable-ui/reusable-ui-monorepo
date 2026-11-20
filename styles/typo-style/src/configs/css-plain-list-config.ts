@@ -243,13 +243,13 @@ const config = cssConfig(() => {
  * ```css
  * :root {
  *     --plist-listStylePosition: outside;
+ *     --plist-listStyleTypeUnordered: disc;
+ *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
  *     --plist-marginBlockEnd: 1em;
  *     --plist-paddingInlineStart: 1.5em;
- *     --plist-listStyleTypeUnordered: disc;
- *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-fontWeightCustom: 900;
  *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;
  *     --plist-opacity: 0.5;
@@ -346,13 +346,13 @@ export const plainListVars       = config[0];
  * ```css
  * :root {
  *     --plist-listStylePosition: outside;
+ *     --plist-listStyleTypeUnordered: disc;
+ *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
  *     --plist-marginBlockEnd: 1em;
  *     --plist-paddingInlineStart: 1.5em;
- *     --plist-listStyleTypeUnordered: disc;
- *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-fontWeightCustom: 900;
  *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;
  *     --plist-opacity: 0.5;
@@ -391,13 +391,13 @@ export const plainListVarDefs    = config[1];
  * ```css
  * :root {
  *     --plist-listStylePosition: outside;
+ *     --plist-listStyleTypeUnordered: disc;
+ *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
  *     --plist-marginBlockEnd: 1em;
  *     --plist-paddingInlineStart: 1.5em;
- *     --plist-listStyleTypeUnordered: disc;
- *     --plist-listStyleTypeOrdered: decimal;
  * }
  * ```
  */
