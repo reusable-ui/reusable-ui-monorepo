@@ -511,10 +511,10 @@ export const plainListRule = (options: PlainListRuleOptions): CssRule => {
         
         // Configs:
         ...rule(['ul', '.ul'], {
-            ...usesCssProps(usesPrefixedProps(configVars, 'ul')), // Apply config's cssProps starting with `ul**`.
+            listStyleType : configVars.listStyleTypeUnordered,
         }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
         ...rule(['ol', '.ol'], {
-            ...usesCssProps(usesPrefixedProps(configVars, 'ol')), // Apply config's cssProps starting with `ol**`.
+            listStyleType : configVars.listStyleTypeOrdered,
         }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
     });
 };

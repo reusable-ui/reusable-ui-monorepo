@@ -37,13 +37,13 @@ const config = cssConfig(() => {
          * Defines the **marker style** for unordered lists (`<ul>`).
          * Uses `disc` by default.
          */
-        ulListStyleType    : 'disc'     as CssKnownProps['listStyleType'     ],
+        listStyleTypeUnordered : 'disc'     as CssKnownProps['listStyleType'     ],
         
         /**
          * Defines the **marker style** for ordered lists (`<ol>`).
          * Uses `decimal` numbering by default.
          */
-        olListStyleType    : 'decimal'  as CssKnownProps['listStyleType'     ],
+        listStyleTypeOrdered   : 'decimal'  as CssKnownProps['listStyleType'     ],
         
         
         
@@ -232,8 +232,8 @@ const config = cssConfig(() => {
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
  *     --plist-marginBlockEnd: 1em;
- *     --plist-ulListStyleType: disc;
- *     --plist-olListStyleType: decimal;
+ *     --plist-listStyleTypeUnordered: disc;
+ *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-liTextAlign: start;
  *     --plist-fontWeightCustom: 900;
  *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;
@@ -335,8 +335,8 @@ export const plainListVars       = config[0];
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
  *     --plist-marginBlockEnd: 1em;
- *     --plist-ulListStyleType: disc;
- *     --plist-olListStyleType: decimal;
+ *     --plist-listStyleTypeUnordered: disc;
+ *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-liTextAlign: start;
  *     --plist-fontWeightCustom: 900;
  *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;
@@ -380,8 +380,8 @@ export const plainListVarDefs    = config[1];
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
  *     --plist-marginBlockEnd: 1em;
- *     --plist-ulListStyleType: disc;
- *     --plist-olListStyleType: decimal;
+ *     --plist-listStyleTypeUnordered: disc;
+ *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-liTextAlign: start;
  * }
  * ```
