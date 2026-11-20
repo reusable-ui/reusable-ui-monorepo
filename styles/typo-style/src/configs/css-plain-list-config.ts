@@ -33,6 +33,18 @@ const config = cssConfig(() => {
          */
         listStylePosition  : 'inside'   as CssKnownProps['listStylePosition' ],
         
+        /**
+         * Defines the **marker style** for unordered lists (`<ul>`).
+         * Uses `disc` by default.
+         */
+        ulListStyleType    : 'disc'     as CssKnownProps['listStyleType'     ],
+        
+        /**
+         * Defines the **marker style** for ordered lists (`<ol>`).
+         * Uses `decimal` numbering by default.
+         */
+        olListStyleType    : 'decimal'  as CssKnownProps['listStyleType'     ],
+        
         
         
         // Spacings:
@@ -109,32 +121,6 @@ const config = cssConfig(() => {
     };
     
     /**
-     * Unordered List (`<ul>`) Specific Definitions.
-     */
-    const staticUnorderedListDefinitions = {
-        // Appearances:
-        
-        /**
-         * Defines the **marker style** for unordered lists (`<ul>`).
-         * Uses `disc` by default.
-         */
-        ulListStyleType    : 'disc'     as CssKnownProps['listStyleType'     ],
-    };
-    
-    /**
-     * Ordered List (`<ol>`) Specific Definitions.
-     */
-    const staticOrderedListDefinitions = {
-        // Appearances:
-        
-        /**
-         * Defines the **marker style** for ordered lists (`<ol>`).
-         * Uses `decimal` numbering by default.
-         */
-        olListStyleType    : 'decimal'  as CssKnownProps['listStyleType'     ],
-    };
-    
-    /**
      * List Item (`<li>`) Specific Definitions.
      */
     const staticListItemDefinitions = {
@@ -152,8 +138,6 @@ const config = cssConfig(() => {
     // Merge all list definitions:
     return {
         ...staticListDefinitions,
-        ...staticUnorderedListDefinitions,
-        ...staticOrderedListDefinitions,
         ...staticListItemDefinitions,
     };
 }, { prefix: defaultPlainListPrefix });
