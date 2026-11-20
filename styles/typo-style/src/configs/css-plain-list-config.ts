@@ -29,7 +29,7 @@ const config = cssConfig(() => {
         
         /**
          * Defines the **list style position**.
-         * Typically `inside` to maintain alignment with text blocks.
+         * Typically `outside` to maintain alignment with text blocks.
          */
         listStylePosition  : 'outside'  as CssKnownProps['listStylePosition' ],
         
