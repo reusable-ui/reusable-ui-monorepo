@@ -131,6 +131,8 @@ const config = cssConfig(() => {
      * List Item (`<li>`) Specific Definitions.
      */
     const staticListItemDefinitions = {
+        // Spacings:
+        
         /**
          * Defines the **top margin** when an item follows another item.
          * Implemented using adjacent sibling selector.
