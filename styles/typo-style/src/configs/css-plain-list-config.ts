@@ -31,7 +31,7 @@ const config = cssConfig(() => {
          * Defines the **list style position**.
          * Typically `inside` to maintain alignment with text blocks.
          */
-        listStylePosition  : 'inside'   as CssKnownProps['listStylePosition' ],
+        listStylePosition  : 'outside'  as CssKnownProps['listStylePosition' ],
         
         /**
          * Defines the **marker style** for unordered lists (`<ul>`).
