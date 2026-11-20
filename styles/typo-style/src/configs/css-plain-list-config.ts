@@ -31,19 +31,19 @@ const config = cssConfig(() => {
          * Defines the **list style position**.
          * Typically `outside` to maintain alignment with text blocks.
          */
-        listStylePosition  : 'outside'  as CssKnownProps['listStylePosition' ],
+        listStylePosition      : 'outside'  as CssKnownProps['listStylePosition'],
         
         /**
          * Defines the **marker style** for unordered lists (`<ul>`).
          * Uses `disc` by default.
          */
-        listStyleTypeUnordered : 'disc'     as CssKnownProps['listStyleType'     ],
+        listStyleTypeUnordered : 'disc'     as CssKnownProps['listStyleType'    ],
         
         /**
          * Defines the **marker style** for ordered lists (`<ol>`).
          * Uses `decimal` numbering by default.
          */
-        listStyleTypeOrdered   : 'decimal'  as CssKnownProps['listStyleType'     ],
+        listStyleTypeOrdered   : 'decimal'  as CssKnownProps['listStyleType'    ],
         
         
         
@@ -53,27 +53,27 @@ const config = cssConfig(() => {
          * Defines the **left margin** for lists.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineStart  : '0em'      as CssKnownProps['marginInlineStart' ],
+        marginInlineStart      : '0em'      as CssKnownProps['marginInlineStart'],
         
         /**
          * Defines the **right margin** for lists.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineEnd    : '0em'      as CssKnownProps['marginInlineEnd'   ],
+        marginInlineEnd        : '0em'      as CssKnownProps['marginInlineEnd'  ],
         
         /**
          * Defines the **top margin** when a list follows another text-block element.
          * Implemented using adjacent sibling selector.
          * Ensures structured vertical spacing.
          */
-        marginBlockStart   : '1em'      as CssKnownProps['marginBlockStart'  ],
+        marginBlockStart       : '1em'      as CssKnownProps['marginBlockStart' ],
         
         /**
          * Defines the **bottom margin** when a list precedes another text-block element.
          * Implemented using `:has()` selector, which may have limited browser support.
          * Check compatibility before relying on this approach.
          */
-        marginBlockEnd     : '1em'      as CssKnownProps['marginBlockEnd'    ],
+        marginBlockEnd         : '1em'      as CssKnownProps['marginBlockEnd'   ],
         
         
         
@@ -84,40 +84,40 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize           : undefined  as CssKnownProps['fontSize'          ],
+        fontSize               : undefined  as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font family** for lists.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily         : undefined  as CssKnownProps['fontFamily'        ],
+        fontFamily             : undefined  as CssKnownProps['fontFamily'       ],
         
         /**
          * Defines the **font weight** for lists.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        fontWeight         : undefined  as CssKnownProps['fontWeight'        ],
+        fontWeight             : undefined  as CssKnownProps['fontWeight'       ],
         
         /**
          * Defines the **font style** for lists (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle          : undefined  as CssKnownProps['fontStyle'         ],
+        fontStyle              : undefined  as CssKnownProps['fontStyle'        ],
         
         /**
          * Defines the **text decoration** for lists.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration     : undefined  as CssKnownProps['textDecoration'    ],
+        textDecoration         : undefined  as CssKnownProps['textDecoration'   ],
         
         /**
          * Defines the **line height** for lists.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight         : undefined  as CssKnownProps['lineHeight'        ],
+        lineHeight             : undefined  as CssKnownProps['lineHeight'       ],
     };
     
     /**
@@ -130,7 +130,7 @@ const config = cssConfig(() => {
          * Defines the **text alignment** for `<li>` elements.
          * Uses `start` for natural reading flow.
          */
-        liTextAlign        : 'start'    as CssKnownProps['textAlign'         ],
+        liTextAlign            : 'start'    as CssKnownProps['textAlign'        ],
     };
     
     
