@@ -76,6 +76,13 @@ const config = cssConfig(() => {
         marginBlockEnd         : '1em'      as CssKnownProps['marginBlockEnd'   ],
         
         
+        /**
+         * Defines **left padding** for list indentation.
+         * Provides space for list markers and indentation of list items.
+         */
+        paddingInlineStart     : '1.5em'    as CssKnownProps['paddingInlineStart'],
+        
+        
         
         // Typos:
         
@@ -232,6 +239,7 @@ const config = cssConfig(() => {
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
  *     --plist-marginBlockEnd: 1em;
+ *     --plist-paddingInlineStart: 1.5em;
  *     --plist-listStyleTypeUnordered: disc;
  *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-liTextAlign: start;
@@ -335,6 +343,7 @@ export const plainListVars       = config[0];
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
  *     --plist-marginBlockEnd: 1em;
+ *     --plist-paddingInlineStart: 1.5em;
  *     --plist-listStyleTypeUnordered: disc;
  *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-liTextAlign: start;
@@ -380,6 +389,7 @@ export const plainListVarDefs    = config[1];
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
  *     --plist-marginBlockEnd: 1em;
+ *     --plist-paddingInlineStart: 1.5em;
  *     --plist-listStyleTypeUnordered: disc;
  *     --plist-listStyleTypeOrdered: decimal;
  *     --plist-liTextAlign: start;
