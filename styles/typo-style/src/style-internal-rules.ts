@@ -41,6 +41,9 @@ import {
 import {
     parseRelated,
 }                           from './style-internal-utilities.js'
+import {
+    getPlainListItemFilter,
+}                           from './style-internal-filters.js'
 
 // CSS Selectors:
 import {
@@ -489,6 +492,16 @@ export const plainListRule = (options: PlainListRuleOptions): CssRule => {
     
     // Generate a list-like styling rule:
     return blockElementRule(options, {
+        // Appearances:
+        ...rule(['ul', '.ul'], {
+            listStyleType : configVars.listStyleTypeUnordered,
+        }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
+        ...rule(['ol', '.ol'], {
+            listStyleType : configVars.listStyleTypeOrdered,
+        }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
+        
+        
+        
         // Spacings:
         padding : 0, // Resets default padding.
         
@@ -497,25 +510,42 @@ export const plainListRule = (options: PlainListRuleOptions): CssRule => {
         // Children:
         
         // List item elements (`<li>`, `.li`):
-        ...children(':where(li, .li)', { // Zero specificity to allow easy overrides.
-            // Layouts:
-            display : 'list-item', // Maintains list-item behavior.
-            
-            
-            
-            // Configs:
-            ...usesCssProps(usesPrefixedProps(configVars, 'li')), // Apply config's cssProps starting with `li**`.
+        ...plainListItemRule({
+            elementFilter  : getPlainListItemFilter(),
+            spacingFilters : [{
+                selectors  : '*',
+                exclusions : [],
+            }],
+            configVars     : usesPrefixedProps(configVars, 'item'), // Extract config's cssProps starting with `item**`.
         }),
-        
-        
-        
-        // Configs:
-        ...rule(['ul', '.ul'], {
-            listStyleType : configVars.listStyleTypeUnordered,
-        }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
-        ...rule(['ol', '.ol'], {
-            listStyleType : configVars.listStyleTypeOrdered,
-        }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
+    });
+};
+
+/**
+ * Configuration options for styling list-item-like elements.
+ */
+interface PlainListItemRuleOptions extends BlockElementRuleOptions {
+    /**
+     * Defines selectors and exclusions criteria for list-item-like elements.
+     */
+    elementFilter    : ElementFilter
+}
+
+/**
+ * Generates a styling rule for list-item-like elements, applying configurable exclusions, spacing logic, and CSS variables.
+ *
+ * @param options Configuration object containing:
+ *   - `elementFilter`: Defines selectors and exclusions criteria for list-item-like elements.
+ *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
+ * 
+ * @returns A `CssRule` object for styling list-item-like elements.
+ */
+const plainListItemRule = (options: PlainListItemRuleOptions): CssRule => {
+    // Generate a list-item-like styling rule:
+    return blockElementRule(options, {
+        // Layouts:
+        display : 'list-item', // Maintains list-item behavior.
     });
 };
 

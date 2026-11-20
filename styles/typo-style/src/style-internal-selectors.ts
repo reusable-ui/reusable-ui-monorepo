@@ -91,6 +91,16 @@ export const getTagPlainListSelectors   : () => CssSelectorCollection = () => [/
  */
 export const getClassPlainListSelectors : () => CssSelectorCollection = () => ['.plain-list'];
 
+/**
+ * Generates **tag-based list item selectors** (`<li>`).
+ */
+export const getTagPlainListItemSelectors   : () => CssSelectorCollection = () => ['li'];
+
+/**
+ * Generates **class-based list item selectors** (`.li`).
+ */
+export const getClassPlainListItemSelectors : () => CssSelectorCollection = () => ['.li'];
+
 
 
 // Regular horizontal separators:

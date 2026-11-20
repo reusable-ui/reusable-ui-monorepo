@@ -131,6 +131,19 @@ const config = cssConfig(() => {
      * List Item (`<li>`) Specific Definitions.
      */
     const staticListItemDefinitions = {
+        /**
+         * Defines the **top margin** when an item follows another item.
+         * Implemented using adjacent sibling selector.
+         * Ensures structured vertical spacing.
+         */
+        itemMarginBlockStart   : '0.25em'   as CssKnownProps['marginBlockStart' ],
+        
+        /**
+         * Defines the **bottom margin** when an item precedes another item.
+         * Implemented using `:has()` selector, which may have limited browser support.
+         * Check compatibility before relying on this approach.
+         */
+        itemMarginBlockEnd     : '0.25em'   as CssKnownProps['marginBlockEnd'   ],
     };
     
     

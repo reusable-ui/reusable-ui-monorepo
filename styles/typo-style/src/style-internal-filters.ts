@@ -27,6 +27,8 @@ import {
     // Regular lists:
     getTagPlainListSelectors,
     getClassPlainListSelectors,
+    getTagPlainListItemSelectors,
+    getClassPlainListItemSelectors,
     
     
     
@@ -237,6 +239,20 @@ export const getPlainListFilter : () => ElementFilter = () => ({
         // Include regular lists:
         getTagPlainListSelectors(),
         getClassPlainListSelectors(),
+    ],
+    exclusions  : [
+        // Not yet implemented.
+    ],
+});
+
+/**
+ * Generates filtering rules for selecting list items.
+ */
+export const getPlainListItemFilter : () => ElementFilter = () => ({
+    selectors   : [
+        // Include regular lists:
+        getTagPlainListItemSelectors(),
+        getClassPlainListItemSelectors(),
     ],
     exclusions  : [
         // Not yet implemented.
