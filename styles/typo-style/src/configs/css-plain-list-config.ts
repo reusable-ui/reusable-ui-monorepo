@@ -227,7 +227,7 @@ const config = cssConfig(() => {
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --plist-listStylePosition: inside;
+ *     --plist-listStylePosition: outside;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
@@ -330,7 +330,7 @@ export const plainListVars       = config[0];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --plist-listStylePosition: inside;
+ *     --plist-listStylePosition: outside;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
@@ -375,7 +375,7 @@ export const plainListVarDefs    = config[1];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --plist-listStylePosition: inside;
+ *     --plist-listStylePosition: outside;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
