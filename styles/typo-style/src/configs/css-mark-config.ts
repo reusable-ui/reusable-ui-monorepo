@@ -112,25 +112,25 @@ const config = cssConfig(() => {
          * Defines **left padding** inside `<mark>` elements.
          * Adds breathing room between the **text and left boundary**.
          */
-        paddingInlineStart     : `calc(((1lh - 1em) / 2) - ${borderConfigVars.width})`  as CssKnownProps['paddingInlineStart'],
+        paddingInlineStart     : '0.125em'                                              as CssKnownProps['paddingInlineStart'],
         
         /**
          * Defines **right padding** inside `<mark>` elements.
          * Adds breathing room between the **text and right boundary**.
          */
-        paddingInlineEnd       : `calc(((1lh - 1em) / 2) - ${borderConfigVars.width})`  as CssKnownProps['paddingInlineEnd'  ],
+        paddingInlineEnd       : '0.125em'                                              as CssKnownProps['paddingInlineEnd'  ],
         
         /**
          * Defines **top padding** inside `<mark>` elements.
          * Adds breathing room between the **text and top boundary**.
          */
-        paddingBlockStart      : `calc(((1lh - 1em) / 2) - ${borderConfigVars.width})`  as CssKnownProps['paddingBlockStart' ],
+        paddingBlockStart      : '0.125em'                                              as CssKnownProps['paddingBlockStart' ],
         
         /**
          * Defines **bottom padding** inside `<mark>` elements.
          * Adds breathing room between the **text and bottom boundary**.
          */
-        paddingBlockEnd        : `calc(((1lh - 1em) / 2) - ${borderConfigVars.width})`  as CssKnownProps['paddingBlockEnd'   ],
+        paddingBlockEnd        : '0.125em'                                              as CssKnownProps['paddingBlockEnd'   ],
         
         
         
