@@ -673,3 +673,18 @@ making any style rule referencing that variable invalid.
 - **Assigning `'initial'`:** Keeps the CSS variable present with a value of `initial` (for example, `--p-marginBlockStart: initial;`).
 
 In both cases, referencing the variable produces an invalid value on that rule — allowing inheritable properties to fall back to inheritance and non-inheritable properties to fall back to their default/initial behavior.
+
+## 📖 Part of the Reusable-UI Framework  
+This package is a **typography styling module** inside the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
+For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
+
+## 🤝 Contributing  
+Want to improve **@reusable-ui/typo-style**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+
+## 🛡️ License  
+Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
+
+---
+
+🚀 **@reusable-ui/typo-style simplifies typography styling for UI designs.**  
+Give it a ⭐ on GitHub if you find it useful!  
