@@ -138,6 +138,8 @@ Batch mounting and unmounting:
 // Mounting multiple styles:
 const mountedTypos = mountMany(
     mountTypographyStyle,       // Styles `<html>` and `<body>` elements to establish root typography baselines and ensure cross-browser layout consistency.
+    mountInlineFormattingStyle, // Styles inline text formatting elements (`<em>`, `<strong>`, `<b>`, `<i>`, `<del>`, `<ins>`, etc.) to ensure cross-browser consistency for weights, slants, and decorations.
+    
     mountParagraphStyle,        // Styles standard paragraph elements for optimal readability and line spacing.
     mountLeadStyle,             // Styles lead paragraphs for introductory or summary text with increased visual prominence (extends paragraph styles).
     mountHeadingStyle,          // Styles standard heading elements (`<h1>` to `<h6>`) with structured font sizing to establish a clear visual hierarchy.
@@ -152,7 +154,6 @@ const mountedTypos = mountMany(
     
     mountHorzSeparatorStyle,    // Styles horizontal separator elements (`<hr>` and `<div class="hr">`) to create clean visual divisions between content blocks.
     mountVertSeparatorStyle,    // Styles vertical separator elements (`<div class="vr">`) to create clean visual divisions between side-by-side layout sections.
-    mountInlineFormattingStyle, // Styles inline text formatting elements (`<em>`, `<strong>`, `<b>`, `<i>`, `<del>`, `<ins>`, etc.) to ensure cross-browser consistency for weights, slants, and decorations.
 );
 
 // Unmounting:
