@@ -1,8 +1,19 @@
 {
   "name": "@reusable-ui/typo-style",
   "version": "7.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "Styles common typography elements (paragraphs, headings, blockquotes, inline formatting, and more) for consistent styling and behavior across browsers.",
+  "keywords": [
+    "typography-style",
+    "typography-system",
+    "typography",
+    "styling",
+    "css-variables",
+    "reset",
+    "auto-spacing",
+    "ui-components",
+    "css-in-js",
+    "reusable-ui"
+  ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
   "homepage": "https://reusableui.com",
   "license": "MIT",
