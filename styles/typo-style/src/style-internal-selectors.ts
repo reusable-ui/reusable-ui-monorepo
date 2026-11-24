@@ -155,12 +155,12 @@ export const getClassKbdSelectors : () => CssSelectorCollection = () => ['.kbd']
 
 /**
  * Generates **tag-based code selectors** (`<code>`, `<var>`, and `<samp>`),
- * excluding preformatted blocks (`<pre>` and `.pre`).
+ * excluding inline code styling nested inside preformatted ancestors (`<pre>` and `.pre`) at any depth.
  */
-export const getTagCodeSelectors   : () => CssSelectorCollection = () => [':not(:where(pre, .pre))>:is(code, var, samp)'];
+export const getTagCodeSelectors   : () => CssSelectorCollection = () => [':is(code, var, samp):not(:where(:is(pre, .pre) :is(code, var, samp)))'];
 
 /**
  * Generates **class-based code selectors** (`.code`, `.var`, and `.samp`),
- * excluding preformatted blocks (`<pre>` and `.pre`).
+ * excluding inline code styling nested inside preformatted ancestors (`<pre>` and `.pre`) at any depth.
  */
-export const getClassCodeSelectors : () => CssSelectorCollection = () => [':not(:where(pre, .pre))>:is(.code, .var, .samp)'];
+export const getClassCodeSelectors : () => CssSelectorCollection = () => [':is(.code, .var, .samp):not(:where(:is(pre, .pre) :is(.code, .var, .samp)))'];
