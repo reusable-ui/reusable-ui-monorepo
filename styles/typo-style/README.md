@@ -79,13 +79,13 @@ Use these class names to style an element as if it were the corresponding semant
 | `<kbd>`                     | `.kbd`                   | Keyboard input styling               |
 | `<code>`, `<var>`, `<samp>` | `.code`, `.var`, `.samp` | Code styling                         |
 | `<hr>`                      | `.hr`                    | Horizontal separator styling         |
-| `<del>`, `<s>`              | `.delete`                | Deleted / strikethrough text styling |
-| `<ins>`, `<u>`              | `.insert`                | Inserted / underlined text styling   |
+| `<del>`, `<s>`              | `.del`, `.s`             | Deleted / strikethrough text styling |
+| `<ins>`, `<u>`              | `.ins`, `.u`             | Inserted / underlined text styling   |
 | `<small>`                   | `.small`                 | Fine-print / small text styling      |
-| `<strong>`, `<b>`           | `.strong`                | Strong / bold text styling           |
-| `<em>`, `<i>`               | `.emphasis`              | Emphasized / italic text styling     |
-| `<sub>`                     | `.subscript`             | Subscript text styling               |
-| `<sup>`                     | `.superscript`           | Superscript text styling             |
+| `<strong>`, `<b>`           | `.strong`, `.b`          | Strong / bold text styling           |
+| `<em>`, `<i>`               | `.em`, `.i`              | Emphasized / italic text styling     |
+| `<sub>`                     | `.sub`                   | Subscript text styling               |
+| `<sup>`                     | `.sup`                   | Superscript text styling             |
 
 ```html
 <!-- Visually equivalent to semantic elements without using the semantic tags -->

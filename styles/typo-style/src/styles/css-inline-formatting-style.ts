@@ -19,21 +19,21 @@ export default [
         // General rule for inline text elements:
         ...rule([
             // Text modifications:
-            'del', 's', '.delete',    // Deleted text
-            'ins', 'u', '.insert',    // Inserted text
+            'del', 's', '.del', '.s', // Deleted text
+            'ins', 'u', '.ins', '.u', // Inserted text
             
             
             
             // Emphases:
-            'small', '.small',        // Reduced font size
-            'strong', 'b', '.strong', // Bold text
-            'em', 'i', '.emphasis',   // Italicized text
+            'small', '.small',              // Reduced font size
+            'strong', 'b', '.strong', '.b', // Bold text
+            'em', 'i', '.em', '.i',         // Italicized text
             
             
             
             // Subscript and superscript:
-            'sub', '.subscript',      // Subscript
-            'sup', '.superscript',    // Superscript
+            'sub', '.sub', // Subscript
+            'sup', '.sup', // Superscript
         ], {
             // Layouts:
             display        : 'inline',
@@ -42,13 +42,13 @@ export default [
         
         
         // Text modifications:
-        ...rule(['del', 's', '.delete'], {   // Deleted text
+        ...rule(['del', 's', '.del', '.s'], { // Deleted text
             // Typos:
-            textDecoration : 'line-through', // Applies strikethrough effect.
+            textDecoration : 'line-through',  // Applies strikethrough effect.
         }),
-        ...rule(['ins', 'u', '.insert'], {   // Inserted text
+        ...rule(['ins', 'u', '.ins', '.u'], { // Inserted text
             // Typos:
-            textDecoration : 'underline',    // Applies underline effect.
+            textDecoration : 'underline',     // Applies underline effect.
         }),
         
         
@@ -58,11 +58,11 @@ export default [
             // Typos:
             fontSize       : typoConfigVars.fontSizeSm,       // Reduces font size for de-emphasis.
         }),
-        ...rule(['strong', 'b', '.strong'], {                 // Bold text
+        ...rule(['strong', 'b', '.strong', '.b'], {           // Bold text
             // Typos:
             fontWeight     : typoConfigVars.fontWeightBolder, // Increases font weight for strong emphasis.
         }),
-        ...rule(['em', 'i', '.emphasis'], {                   // Italicized text
+        ...rule(['em', 'i', '.em', '.i'], {                   // Italicized text
             // Typos:
             fontStyle      : 'italic',                        // Applies italics for emphasized text.
         }),
@@ -70,13 +70,13 @@ export default [
         
         
         // Subscript and superscript:
-        ...rule(['sub', '.subscript'], {   // Subscript
+        ...rule(['sub', '.sub'], {    // Subscript
             // Typos:
-            verticalAlign  : 'sub',        // Adjusts vertical alignment for subscript.
+            verticalAlign  : 'sub',   // Adjusts vertical alignment for subscript.
         }),
-        ...rule(['sup', '.superscript'], { // Superscript
+        ...rule(['sup', '.sup'], {    // Superscript
             // Typos:
-            verticalAlign  : 'super',      // Adjusts vertical alignment for superscript.
+            verticalAlign  : 'super', // Adjusts vertical alignment for superscript.
         }),
     }),
 ];
