@@ -98,12 +98,13 @@ Use these class names to style an element as if it were the corresponding semant
 
 Some typography styles have **no default semantic element mapping** and are only activated when you explicitly apply their class name:
 
-| Class Name(s)                 | Example Usage             | Description                                           |
-| ----------------------------- | ------------------------- | ----------------------------------------------------- |
-| `.lead`                       | `<p class="lead">`        | Lead paragraph styling                                |
-| `.display-1` ... `.display-6` | `<h1 class="display-1">`  | Display heading scale (levels 1 through 6)            |
-| `.plain-list`                 | `<ul class="plain-list">` | Plain list styling (separate from `<List>` component) |
-| `.vr`                         | `<div class="vr">`        | Vertical separator styling                            |
+| Class Name(s)                      | Example Usage                 | Description                                           |
+| ---------------------------------- | ----------------------------- | ----------------------------------------------------- |
+| `.lead`                            | `<p class="lead">`            | Lead paragraph styling                                |
+| `.display-1` ... `.display-6`      | `<h1 class="display-1">`      | Display heading scale (levels 1 through 6)            |
+| `.plain-list`                      | `<ul class="plain-list">`     | Plain list styling (separate from `<List>` component) |
+| `.ul.plain-list`, `.ol.plain-list` | `<div class="ul plain-list">` | Unordered or ordered plain list styling               |
+| `.vr`                              | `<div class="vr">`            | Vertical separator styling                            |
 
 ### Precedence When Classes and Semantic Tags Conflict
 
