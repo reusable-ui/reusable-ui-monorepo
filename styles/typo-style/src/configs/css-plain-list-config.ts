@@ -33,18 +33,6 @@ const config = cssConfig(() => {
          */
         listStylePosition      : 'outside'  as CssKnownProps['listStylePosition'],
         
-        /**
-         * Defines the **marker style** for unordered lists (`<ul>`).
-         * Uses `disc` by default.
-         */
-        listStyleTypeUnordered : 'disc'     as CssKnownProps['listStyleType'    ],
-        
-        /**
-         * Defines the **marker style** for ordered lists (`<ol>`).
-         * Uses `decimal` numbering by default.
-         */
-        listStyleTypeOrdered   : 'decimal'  as CssKnownProps['listStyleType'    ],
-        
         
         
         // Spacings:
@@ -128,6 +116,25 @@ const config = cssConfig(() => {
     };
     
     /**
+     * Specific List Definitions.
+     */
+    const staticSpecificListDefinitions = {
+        // Appearances:
+        
+        /**
+         * Defines the **marker style** for unordered lists (`<ul>`).
+         * Uses `disc` by default.
+         */
+        unorderedListStyleType : 'disc'     as CssKnownProps['listStyleType'    ],
+        
+        /**
+         * Defines the **marker style** for ordered lists (`<ol>`).
+         * Uses `decimal` numbering by default.
+         */
+        orderedListStyleType   : 'decimal'  as CssKnownProps['listStyleType'    ],
+    };
+    
+    /**
      * List Item (`<li>`) Specific Definitions.
      */
     const staticListItemDefinitions = {
@@ -153,6 +160,7 @@ const config = cssConfig(() => {
     // Merge all list definitions:
     return {
         ...staticListDefinitions,
+        ...staticSpecificListDefinitions,
         ...staticListItemDefinitions,
     };
 }, { prefix: defaultPlainListPrefix });
@@ -243,8 +251,8 @@ const config = cssConfig(() => {
  * ```css
  * :root {
  *     --plist-listStylePosition: outside;
- *     --plist-listStyleTypeUnordered: disc;
- *     --plist-listStyleTypeOrdered: decimal;
+ *     --plist-unorderedListStyleType: disc;
+ *     --plist-orderedListStyleType: decimal;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
@@ -348,8 +356,8 @@ export const plainListVars       = config[0];
  * ```css
  * :root {
  *     --plist-listStylePosition: outside;
- *     --plist-listStyleTypeUnordered: disc;
- *     --plist-listStyleTypeOrdered: decimal;
+ *     --plist-unorderedListStyleType: disc;
+ *     --plist-orderedListStyleType: decimal;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;
@@ -395,8 +403,8 @@ export const plainListVarDefs    = config[1];
  * ```css
  * :root {
  *     --plist-listStylePosition: outside;
- *     --plist-listStyleTypeUnordered: disc;
- *     --plist-listStyleTypeOrdered: decimal;
+ *     --plist-unorderedListStyleType: disc;
+ *     --plist-orderedListStyleType: decimal;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
  *     --plist-marginBlockStart: 1em;

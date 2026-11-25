@@ -494,10 +494,10 @@ export const plainListRule = (options: PlainListRuleOptions): CssRule => {
     return blockElementRule(options, {
         // Appearances:
         ...rule(['ul', '.ul'], {
-            listStyleType : configVars.listStyleTypeUnordered,
+            ...usesCssProps(usesPrefixedProps(configVars, 'unordered')), // Apply config's cssProps starting with `unordered**`.
         }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
         ...rule(['ol', '.ol'], {
-            listStyleType : configVars.listStyleTypeOrdered,
+            ...usesCssProps(usesPrefixedProps(configVars, 'ordered')), // Apply config's cssProps starting with `ordered**`.
         }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
         
         

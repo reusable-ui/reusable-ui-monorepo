@@ -379,8 +379,6 @@ Here are the default plain list settings you can customize:
 | Token                    | Value                             | Description                                                                        |
 | ------------------------ | --------- | ---------------------------------------------------------------------------------------------------------- |
 | `listStylePosition`      | `outside` | Marker placement (`outside` or `inside`) for plain lists.                                                  |
-| `listStyleTypeUnordered` | `disc`    | Marker style for unordered (`<ul>`) plain lists.                                                           |
-| `listStyleTypeOrdered`   | `decimal` | Marker style for ordered (`<ol>`) plain lists.                                                             |
 | `marginInlineStart`      | `0em`     | Inline-start (left in LTR) margin for plain lists.                                                         |
 | `marginInlineEnd`        | `0em`     | Inline-end (right in LTR) margin for plain lists.                                                          |
 | `marginBlockStart`       | `1em`     | Conditional block-start (top) margin when the plain list follows another block-level typography element.   |
@@ -392,6 +390,8 @@ Here are the default plain list settings you can customize:
 | `fontStyle`              | `initial` | The font style for plain lists.                                                                            |
 | `textDecoration`         | `initial` | The text decoration for plain lists.                                                                       |
 | `lineHeight`             | `initial` | The line height for plain lists.                                                                           |
+| `unorderedListStyleType` | `disc`    | Marker style for unordered (`<ul>`) plain lists.                                                           |
+| `orderedListStyleType`   | `decimal` | Marker style for ordered (`<ol>`) plain lists.                                                             |
 | `itemMarginBlockStart`   | `0.25em`  | Conditional block-start (top) margin when a list item follows another item.                                |
 | `itemMarginBlockEnd`     | `0.25em`  | Conditional block-end (bottom) margin when a list item precedes another item.                              |
 
