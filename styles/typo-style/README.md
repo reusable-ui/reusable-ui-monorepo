@@ -575,16 +575,16 @@ vertSeparatorVars.borderWidth      = '2px'; // Assign `--vr-borderWidth: 2px;`
 
 Here are the default vertical separator settings you can customize:
 
-| Token               | Value                                 | Description                                                |
-| ------------------- | ------------------------------------- | ---------------------------------------------------------- |
-| `opacity`           | `horzSeparatorVars.opacity`           | The opacity level for vertical separators.                 |
-| `borderStyle`       | `horzSeparatorVars.borderStyle`       | Border style for vertical separators.                      |
-| `borderWidth`       | `horzSeparatorVars.borderWidth`       | Border width for vertical separators.                      |
-| `borderColor`       | `horzSeparatorVars.borderColor`       | Border color for vertical separators.                      |
-| `marginInlineStart` | `0em`                                 | Inline-start (left in LTR) margin for vertical separators. |
-| `marginInlineEnd`   | `0em`                                 | Inline-end (right in LTR) margin for vertical separators.  |
-| `marginBlockStart`  | `horzSeparatorVars.marginInlineStart` | Block-start (top) margin for vertical separators.          |
-| `marginBlockEnd`    | `horzSeparatorVars.marginInlineEnd`   | Block-end (bottom) margin for vertical separators.         |
+| Token               | Value                           | Description                                                |
+| ------------------- | ------------------------------- | ---------------------------------------------------------- |
+| `opacity`           | `horzSeparatorVars.opacity`     | The opacity level for vertical separators.                 |
+| `borderStyle`       | `horzSeparatorVars.borderStyle` | Border style for vertical separators.                      |
+| `borderWidth`       | `horzSeparatorVars.borderWidth` | Border width for vertical separators.                      |
+| `borderColor`       | `horzSeparatorVars.borderColor` | Border color for vertical separators.                      |
+| `marginInlineStart` | `0em`                           | Inline-start (left in LTR) margin for vertical separators. |
+| `marginInlineEnd`   | `0em`                           | Inline-end (right in LTR) margin for vertical separators.  |
+| `marginBlockStart`  | `0em`                           | Block-start (top) margin for vertical separators.          |
+| `marginBlockEnd`    | `0em`                           | Block-end (bottom) margin for vertical separators.         |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `borderColor`) to inherit from an ancestor element,  

@@ -58,33 +58,30 @@ const config = cssConfig(() => {
         
         
         // Spacings:
-        // - Swaps the inline ↔ block for forming the vertical version of horizontal separator.
         
         /**
          * Defines the **left margin** for vertical separators.
-         * Typically `0em` to maintain alignment with text blocks.
+         * Ensures structured horizontal spacing before the separator.
          */
-        marginInlineStart      : horzSeparatorVars.marginBlockStart     as CssKnownProps['marginInlineStart' ],
+        marginInlineStart      : '0em'                                  as CssKnownProps['marginInlineStart' ],
         
         /**
          * Defines the **right margin** for vertical separators.
-         * Typically `0em` to maintain alignment with text blocks.
+         * Ensures structured horizontal spacing after the separator.
          */
-        marginInlineEnd        : horzSeparatorVars.marginBlockEnd       as CssKnownProps['marginInlineEnd'   ],
+        marginInlineEnd        : '0em'                                  as CssKnownProps['marginInlineEnd'   ],
         
         /**
-         * Defines the **top margin** when a vertical separator follows another text-block element.
-         * Implemented using adjacent sibling selector.
-         * Ensures structured vertical spacing.
+         * Defines the **top margin** for vertical separators.
+         * Typically `0em` to maintain alignment across side-by-side sections.
          */
-        marginBlockStart       : horzSeparatorVars.marginInlineStart    as CssKnownProps['marginBlockStart'  ],
+        marginBlockStart       : '0em'                                  as CssKnownProps['marginBlockStart'  ],
         
         /**
-         * Defines the **bottom margin** when a vertical separator precedes another text-block element.
-         * Implemented using `:has()` selector, which may have limited browser support.
-         * Check compatibility before relying on this approach.
+         * Defines the **bottom margin** for vertical separators.
+         * Typically `0em` to maintain alignment across side-by-side sections.
          */
-        marginBlockEnd         : horzSeparatorVars.marginInlineEnd      as CssKnownProps['marginBlockEnd'    ],
+        marginBlockEnd         : '0em'                                  as CssKnownProps['marginBlockEnd'    ],
     };
 }, { prefix: defaultVertSeparatorPrefix });
 
