@@ -30,17 +30,6 @@ const config = cssConfig(() => {
      * Defines static heading properties such as font sizes, families, weights, and styles.
      */
     const staticHeadingDefinitions = {
-        // Appearances:
-        
-        /**
-         * Defines the **sub-opacity** for headings.
-         * Applied when a heading follows another heading-like element.
-         * Helps visually differentiate hierarchy within text blocks.
-         */
-        subOpacity        : 0.65                                as CssKnownProps['opacity'          ],
-        
-        
-        
         // Spacings:
         
         /**
@@ -177,10 +166,27 @@ const config = cssConfig(() => {
     
     
     
+    /**
+     * Defines static sub heading properties.
+     */
+    const staticSubHeadingDefinitions = {
+        // Appearances:
+        
+        /**
+         * Defines the **sub-opacity** for headings.
+         * Applied when a heading follows another heading-like element.
+         * Helps visually differentiate hierarchy within text blocks.
+         */
+        subOpacity        : 0.65                                as CssKnownProps['opacity'          ],
+    };
+    
+    
+    
     // Merge all heading definitions:
     return {
         ...staticHeadingDefinitions,
         ...computedHeadingDefinitions,
+        ...staticSubHeadingDefinitions,
     };
 }, { prefix: defaultHeadingPrefix });
 
@@ -269,7 +275,6 @@ const config = cssConfig(() => {
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --h-subOpacity: 0.65;
  *     --h-marginInlineStart: 0em;
  *     --h-marginInlineEnd: 0em;
  *     --h-marginBlockStart: 1.5em;
@@ -283,6 +288,7 @@ const config = cssConfig(() => {
  *     --h-fontSize4: 1.50rem;
  *     --h-fontSize5: 1.25rem;
  *     --h-fontSize6: 1.00rem;
+ *     --h-subOpacity: 0.65;
  *     --h-fontWeightCustom: 900;
  *     --h-boxShadow: 0px 0px 0px calc(var(--h-marginBlockEnd) / 4) gray;
  *     --h-padding: 1rem;
@@ -378,7 +384,6 @@ export const headingVars       = config[0];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --h-subOpacity: 0.65;
  *     --h-marginInlineStart: 0em;
  *     --h-marginInlineEnd: 0em;
  *     --h-marginBlockStart: 1.5em;
@@ -392,6 +397,7 @@ export const headingVars       = config[0];
  *     --h-fontSize4: 1.50rem;
  *     --h-fontSize5: 1.25rem;
  *     --h-fontSize6: 1.00rem;
+ *     --h-subOpacity: 0.65;
  *     --h-fontWeightCustom: 900;
  *     --h-boxShadow: 0px 0px 0px calc(var(--h-marginBlockEnd) / 4) gray;
  *     --h-padding: 1rem;
@@ -429,7 +435,6 @@ export const headingVarDefs    = config[1];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --h-subOpacity: 0.65;
  *     --h-marginInlineStart: 0em;
  *     --h-marginInlineEnd: 0em;
  *     --h-marginBlockStart: 1.5em;
@@ -443,6 +448,7 @@ export const headingVarDefs    = config[1];
  *     --h-fontSize4: 1.50rem;
  *     --h-fontSize5: 1.25rem;
  *     --h-fontSize6: 1.00rem;
+ *     --h-subOpacity: 0.65;
  * }
  * ```
  */

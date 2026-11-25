@@ -35,17 +35,6 @@ const config = cssConfig(() => {
      * Defines static display heading properties such as font sizes, families, weights, and styles.
      */
     const staticDisplayDefinitions = {
-        // Appearances:
-        
-        /**
-         * Defines the **sub-opacity** for display headings.
-         * Applied when a display heading follows another display-heading-like element.
-         * Helps visually differentiate hierarchy within text blocks.
-         */
-        subOpacity        : headingVars.subOpacity          as CssKnownProps['opacity'          ],
-        
-        
-        
         // Spacings:
         
         /**
@@ -182,10 +171,27 @@ const config = cssConfig(() => {
     
     
     
+    /**
+     * Defines static sub display heading properties.
+     */
+    const staticSubDisplayDefinitions = {
+        // Appearances:
+        
+        /**
+         * Defines the **sub-opacity** for display headings.
+         * Applied when a display heading follows another display-heading-like element.
+         * Helps visually differentiate hierarchy within text blocks.
+         */
+        subOpacity        : headingVars.subOpacity          as CssKnownProps['opacity'          ],
+    };
+    
+    
+    
     // Merge all display definitions:
     return {
         ...staticDisplayDefinitions,
         ...computedDisplayDefinitions,
+        ...staticSubDisplayDefinitions,
     };
 }, { prefix: defaultDisplayPrefix });
 
@@ -274,7 +280,6 @@ const config = cssConfig(() => {
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --d-subOpacity: var(--h-subOpacity);
  *     --d-marginInlineStart: var(--h-marginInlineStart);
  *     --d-marginInlineEnd: var(--h-marginInlineEnd);
  *     --d-marginBlockStart: var(--h-marginBlockStart);
@@ -288,6 +293,7 @@ const config = cssConfig(() => {
  *     --d-fontSize4: 3.50rem;
  *     --d-fontSize5: 3.00rem;
  *     --d-fontSize6: 2.50rem;
+ *     --d-subOpacity: var(--h-subOpacity);
  *     --d-fontWeightCustom: 900;
  *     --d-boxShadow: 0px 0px 0px calc(var(--d-marginBlockEnd) / 4) gray;
  *     --d-padding: 1rem;
@@ -383,7 +389,6 @@ export const displayVars       = config[0];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --d-subOpacity: var(--h-subOpacity);
  *     --d-marginInlineStart: var(--h-marginInlineStart);
  *     --d-marginInlineEnd: var(--h-marginInlineEnd);
  *     --d-marginBlockStart: var(--h-marginBlockStart);
@@ -397,6 +402,7 @@ export const displayVars       = config[0];
  *     --d-fontSize4: 3.50rem;
  *     --d-fontSize5: 3.00rem;
  *     --d-fontSize6: 2.50rem;
+ *     --d-subOpacity: var(--h-subOpacity);
  *     --d-fontWeightCustom: 900;
  *     --d-boxShadow: 0px 0px 0px calc(var(--d-marginBlockEnd) / 4) gray;
  *     --d-padding: 1rem;
@@ -434,7 +440,6 @@ export const displayVarDefs    = config[1];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --d-subOpacity: var(--h-subOpacity);
  *     --d-marginInlineStart: var(--h-marginInlineStart);
  *     --d-marginInlineEnd: var(--h-marginInlineEnd);
  *     --d-marginBlockStart: var(--h-marginBlockStart);
@@ -448,6 +453,7 @@ export const displayVarDefs    = config[1];
  *     --d-fontSize4: 3.50rem;
  *     --d-fontSize5: 3.00rem;
  *     --d-fontSize6: 2.50rem;
+ *     --d-subOpacity: var(--h-subOpacity);
  * }
  * ```
  */

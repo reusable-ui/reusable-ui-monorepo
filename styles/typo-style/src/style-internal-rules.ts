@@ -312,9 +312,10 @@ export const headingRule = (options: HeadingRuleOptions): CssRule => {
     return blockElementRule(options, undefined, {
         // Appearances:
         
-        // Conditional opacity:
+        // Subheadings:
         ...ifFollows(companionElements, {
-            opacity : configVars.subOpacity, // Applies transparency when follows another heading-like element.
+            // Configs:
+            ...usesCssProps(usesPrefixedProps(configVars, 'sub')), // Apply config's cssProps starting with `sub**`.
         }),
     });
 };

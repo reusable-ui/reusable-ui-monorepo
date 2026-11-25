@@ -250,7 +250,6 @@ Here are the default heading settings you can customize:
 
 | Token               | Value                               | Description                                                                                             |
 | ------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `subOpacity`        | `0.65`                              | The opacity level for subheadings (when the heading follows another heading or display heading).        |
 | `marginInlineStart` | `0em`                               | Inline-start (left in LTR) margin for headings.                                                         |
 | `marginInlineEnd`   | `0em`                               | Inline-end (right in LTR) margin for headings.                                                          |
 | `marginBlockStart`  | `1.5em`                             | Conditional block-start (top) margin when the heading follows another block-level typography element.   |
@@ -267,6 +266,7 @@ Here are the default heading settings you can customize:
 | `fontStyle`         | `initial`                           | The font style for headings.                                                                            |
 | `textDecoration`    | `initial`                           | The text decoration for headings.                                                                       |
 | `lineHeight`        | `typoConfigVars.lineHeightSm`       | The line height for headings.                                                                           |
+| `subOpacity`        | `0.65`                              | The opacity level for subheadings (when the heading follows another heading or display heading).        |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
@@ -290,7 +290,6 @@ Here are the default display heading settings you can customize:
 
 | Token               | Value                            | Description                                                                                                     |
 | ------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `subOpacity`        | `headingVars.subOpacity`         | The opacity level for subheadings (when the display heading follows another heading or display heading).        |
 | `marginInlineStart` | `headingVars.marginInlineStart`  | Inline-start (left in LTR) margin for display headings.                                                         |
 | `marginInlineEnd`   | `headingVars.marginInlineEnd`    | Inline-end (right in LTR) margin for display headings.                                                          |
 | `marginBlockStart`  | `headingVars.marginBlockStart`   | Conditional block-start (top) margin when the display heading follows another block-level typography element.   |
@@ -307,6 +306,7 @@ Here are the default display heading settings you can customize:
 | `fontStyle`         | `headingVars.fontStyle`          | The font style for display headings.                                                                            |
 | `textDecoration`    | `headingVars.textDecoration`     | The text decoration for display headings.                                                                       |
 | `lineHeight`        | `headingVars.lineHeight`         | The line height for display headings.                                                                           |
+| `subOpacity`        | `headingVars.subOpacity`         | The opacity level for subheadings (when the display heading follows another heading or display heading).        |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
