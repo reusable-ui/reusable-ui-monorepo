@@ -590,6 +590,28 @@ Here are the default vertical separator settings you can customize:
 > allowing inheritable properties (like `borderColor`) to inherit from an ancestor element,  
 > while non-inheritable properties (like margins) fall back to their default initial values (such as `0`).
 
+#### Prefixed Styling Tokens
+
+Typography `*Vars` configs expose built-in prefixed tokens (`<prefix><KnownCssProp>`) so you can inject CSS properties into specific rule contexts.
+Any matching CSS properties you provide are automatically picked up and applied by the style system.
+
+| Prefix       | Example                                                      | Description                                                               | Applicable To               |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------- |
+| `prev*`      | `prevMarginBlockStart`, `prevMarginInlineStart`, `prevColor` | Applied when following a previous sibling typography element.             | All typography elements     |
+| `next*`      | `nextMarginBlockEnd`, `nextMarginInlineEnd`, `nextOpacity`   | Applied when preceding a next sibling typography element.                 | All typography elements     |
+| `sub*`       | `subOpacity`, `subColor`, `subFontStyle`                     | Applied when following another heading-like element (subheading context). | Headings & display headings |
+| `quote*`     | `quoteColor`, `quoteBackgroundColor`, `quoteFontStyle`       | Applied to the quote decoration inside blockquotes.                       | Blockquotes                 |
+| `unordered*` | `unorderedListStyleType`, `unorderedColor`                   | Applied to unordered list types (`ul` / `.ul`).                           | Plain lists                 |
+| `ordered*`   | `orderedListStyleType`, `orderedColor`                       | Applied to ordered list types (`ol` / `.ol`).                             | Plain lists                 |
+| `item*`      | `itemMarginBlockStart`, `itemColor`                          | Applied to nested list items (`li` / `.li`) within a list.                | Plain lists                 |
+| `itemPrev*`  | `itemPrevMarginBlockStart`, `itemPrevColor`                  | Applied to a list item when following another list item.                  | Plain lists                 |
+| `itemNext*`  | `itemNextMarginBlockEnd`, `itemNextOpacity`                  | Applied to a list item when preceding another list item.                  | Plain lists                 |
+
+**Usage Notes:**
+
+- **Any `<KnownCssProp>` works:** Beyond predefined tokens like `subOpacity` or `unorderedListStyleType`, you can attach any valid CSS property (such as `subColor` or `unorderedFontWeight`) to a supported prefix.
+- **Nested targets vs. conditional rules:** `quote*` and `item*` target nested child/sub-elements unconditionally, while `prev*`, `next*`, `sub*`, `unordered*`, `ordered*`, `itemPrev*`, and `itemNext*` apply styles conditionally based on sibling adjacency, subheading state, or list type.
+
 #### Adding Custom Tokens
 
 All style variable objects (`paragraphVars`, `leadVars`, `headingVars`, `displayVars`, `horzSeparatorVars`, etc.) support adding custom tokens dynamically.
