@@ -24,14 +24,19 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    return {
+    // Static horz separator definitions:
+    
+    /**
+     * Defines static horz separator properties such as font sizes, families, weights, and styles.
+     */
+    const staticHorzSeparatorDefinitions = {
         // Appearances:
         
         /**
          * Defines the **transparency level** for horizontal separators.
          * Ensures subtle visual distinction without overpowering surrounding content.
          */
-        opacity                : 0.25                       as CssKnownProps['opacity'           ],
+        opacity              : 0.25                     as CssKnownProps['opacity'           ],
         
         
         
@@ -41,19 +46,19 @@ const config = cssConfig(() => {
          * Defines the **border style** for horizontal separators.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : borderConfigVars.style     as CssKnownProps['borderStyle'       ],
+        borderStyle          : borderConfigVars.style   as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for horizontal separators.
          * Typically uses the default border width for visual clarity.
          */
-        borderWidth            : borderConfigVars.width     as CssKnownProps['borderWidth'       ],
+        borderWidth          : borderConfigVars.width   as CssKnownProps['borderWidth'       ],
         
         /**
          * Defines the **border color** for horizontal separators.
          * Typically uses the **current text color** (`currentcolor`) for subtle emphasis.
          */
-        borderColor            : 'currentcolor'             as CssKnownProps['borderColor'       ],
+        borderColor          : 'currentcolor'           as CssKnownProps['borderColor'       ],
         
         
         
@@ -63,27 +68,44 @@ const config = cssConfig(() => {
          * Defines the **left margin** for horizontal separators.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineStart      : '0em'                      as CssKnownProps['marginInlineStart' ],
+        marginInlineStart    : '0em'                    as CssKnownProps['marginInlineStart' ],
         
         /**
          * Defines the **right margin** for horizontal separators.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineEnd        : '0em'                      as CssKnownProps['marginInlineEnd'   ],
+        marginInlineEnd      : '0em'                    as CssKnownProps['marginInlineEnd'   ],
+    };
+    
+    
+    
+    /**
+     * Defines static conditional sibling adjacency properties.
+     */
+    const staticConditionalAdjacencyDefinitions = {
+        // Spacings:
         
         /**
          * Defines the **top margin** when a horizontal separator follows another text-block element.
          * Implemented using adjacent sibling selector.
          * Ensures structured vertical spacing.
          */
-        marginBlockStart       : '1em'                      as CssKnownProps['marginBlockStart'  ],
+        prevMarginBlockStart : '1em'                    as CssKnownProps['marginBlockStart'  ],
         
         /**
          * Defines the **bottom margin** when a horizontal separator precedes another text-block element.
          * Implemented using `:has()` selector, which may have limited browser support.
          * Check compatibility before relying on this approach.
          */
-        marginBlockEnd         : '1em'                      as CssKnownProps['marginBlockEnd'    ],
+        nextMarginBlockEnd   : '1em'                    as CssKnownProps['marginBlockEnd'    ],
+    };
+    
+    
+    
+    // Merge all horz separator definitions:
+    return {
+        ...staticHorzSeparatorDefinitions,
+        ...staticConditionalAdjacencyDefinitions,
     };
 }, { prefix: defaultHorzSeparatorPrefix });
 
@@ -98,7 +120,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = horzSeparatorVars.marginBlockStart; // Resolves to "var(--hr-marginBlockStart)"
+ * const value = horzSeparatorVars.prevMarginBlockStart; // Resolves to "var(--hr-prevMarginBlockStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -110,8 +132,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * horzSeparatorVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", horzSeparatorVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--hr-boxShadow: 0px 0px 0px calc(var(--hr-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", horzSeparatorVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--hr-boxShadow: 0px 0px 0px calc(var(--hr-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -178,10 +200,10 @@ const config = cssConfig(() => {
  *     --hr-borderColor: currentcolor;
  *     --hr-marginInlineStart: 0em;
  *     --hr-marginInlineEnd: 0em;
- *     --hr-marginBlockStart: 1em;
- *     --hr-marginBlockEnd: 1em;
+ *     --hr-prevMarginBlockStart: 1em;
+ *     --hr-nextMarginBlockEnd: 1em;
  *     --hr-fontWeightCustom: 900;
- *     --hr-boxShadow: 0px 0px 0px calc(var(--hr-marginBlockStart) / 4) gray;
+ *     --hr-boxShadow: 0px 0px 0px calc(var(--hr-prevMarginBlockStart) / 4) gray;
  *     --hr-visibility: visible;
  *     --hr-booh: 1234;
  * }
@@ -201,7 +223,7 @@ export const horzSeparatorVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = horzSeparatorVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--hr-marginBlockStart)", " / 4)", "gray" ]]
+ * const definition = horzSeparatorVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--hr-prevMarginBlockStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -213,8 +235,8 @@ export const horzSeparatorVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * horzSeparatorVarDefs.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", horzSeparatorVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--hr-boxShadow: 0px 0px 0px calc(var(--hr-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", horzSeparatorVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--hr-boxShadow: 0px 0px 0px calc(var(--hr-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -281,10 +303,10 @@ export const horzSeparatorVars       = config[0];
  *     --hr-borderColor: currentcolor;
  *     --hr-marginInlineStart: 0em;
  *     --hr-marginInlineEnd: 0em;
- *     --hr-marginBlockStart: 1em;
- *     --hr-marginBlockEnd: 1em;
+ *     --hr-prevMarginBlockStart: 1em;
+ *     --hr-nextMarginBlockEnd: 1em;
  *     --hr-fontWeightCustom: 900;
- *     --hr-boxShadow: 0px 0px 0px calc(var(--hr-marginBlockStart) / 4) gray;
+ *     --hr-boxShadow: 0px 0px 0px calc(var(--hr-prevMarginBlockStart) / 4) gray;
  *     --hr-visibility: visible;
  *     --hr-booh: 1234;
  * }
@@ -326,8 +348,8 @@ export const horzSeparatorVarDefs    = config[1];
  *     --hr-borderColor: currentcolor;
  *     --hr-marginInlineStart: 0em;
  *     --hr-marginInlineEnd: 0em;
- *     --hr-marginBlockStart: 1em;
- *     --hr-marginBlockEnd: 1em;
+ *     --hr-prevMarginBlockStart: 1em;
+ *     --hr-nextMarginBlockEnd: 1em;
  * }
  * ```
  */

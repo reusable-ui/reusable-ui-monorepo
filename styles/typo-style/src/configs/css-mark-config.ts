@@ -30,14 +30,19 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    return {
+    // Static mark definitions:
+    
+    /**
+     * Defines static mark properties such as font sizes, families, weights, and styles.
+     */
+    const staticMarkDefinitions = {
         // Backgrounds:
         
         /**
          * Defines the **background color** for `<mark>` elements.
          * Typically uses a **highlight mild color** (`warningMild`) for emphasis.
          */
-        backgroundColor        : colorConfigVars.warningMild    as CssKnownProps['backgroundColor'   ],
+        backgroundColor       : colorConfigVars.warningMild     as CssKnownProps['backgroundColor'   ],
         
         
         
@@ -47,7 +52,7 @@ const config = cssConfig(() => {
          * Defines the **text color** for `<mark>` elements.
          * Typically uses a **highlight text color** (`warningText`) for readability.
          */
-        color                  : colorConfigVars.warningText    as CssKnownProps['color'             ],
+        color                 : colorConfigVars.warningText     as CssKnownProps['color'             ],
         
         
         
@@ -57,80 +62,66 @@ const config = cssConfig(() => {
          * Defines the **border style** for `<mark>` elements.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : borderConfigVars.style         as CssKnownProps['borderStyle'       ],
+        borderStyle           : borderConfigVars.style          as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for `<mark>` elements.
          * Typically uses the default border width for visual clarity.
          */
-        borderWidth            : borderConfigVars.width         as CssKnownProps['borderWidth'       ],
+        borderWidth           : borderConfigVars.width          as CssKnownProps['borderWidth'       ],
         
         /**
          * Defines the **border color** for `<mark>` elements.
          * Typically uses a **highlight thin color** (`warningThin`) for subtle emphasis.
          */
-        borderColor            : colorConfigVars.warningThin    as CssKnownProps['borderColor'       ],
+        borderColor           : colorConfigVars.warningThin     as CssKnownProps['borderColor'       ],
         
         /**
          * Defines the **border radius** for `<mark>` elements.
          * Typically uses a **small radius** (`radiusSm`) to create softened edges.
          */
-        borderRadius           : radiusConfigVars.radiusSm      as CssKnownProps['borderRadius'      ],
+        borderRadius          : radiusConfigVars.radiusSm       as CssKnownProps['borderRadius'      ],
         
         
         
         // Spacings:
         
         /**
-         * Defines the **left margin** when a `<mark>` element follows another highlight-based element.
-         * Implemented using adjacent sibling selector.
-         * Ensures structured horizontal spacing.
-         */
-        marginInlineStart      : '0.25em'                       as CssKnownProps['marginInlineStart' ],
-        
-        /**
-         * Defines the **right margin** when a `<mark>` element precedes another highlight-based element.
-         * Implemented using `:has()` selector, which may have limited browser support.
-         * Check compatibility before relying on this approach.
-         */
-        marginInlineEnd        : '0.25em'                       as CssKnownProps['marginInlineEnd'   ],
-        
-        /**
          * Defines the **top margin** for `<mark>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockStart       : '0em'                          as CssKnownProps['marginBlockStart'  ],
+        marginBlockStart      : '0em'                           as CssKnownProps['marginBlockStart'  ],
         
         /**
          * Defines the **bottom margin** for `<mark>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockEnd         : '0em'                          as CssKnownProps['marginBlockEnd'    ],
+        marginBlockEnd        : '0em'                           as CssKnownProps['marginBlockEnd'    ],
         
         
         /**
          * Defines **left padding** inside `<mark>` elements.
          * Adds breathing room between the **text and left boundary**.
          */
-        paddingInlineStart     : '0.125em'                      as CssKnownProps['paddingInlineStart'],
+        paddingInlineStart    : '0.125em'                       as CssKnownProps['paddingInlineStart'],
         
         /**
          * Defines **right padding** inside `<mark>` elements.
          * Adds breathing room between the **text and right boundary**.
          */
-        paddingInlineEnd       : '0.125em'                      as CssKnownProps['paddingInlineEnd'  ],
+        paddingInlineEnd      : '0.125em'                       as CssKnownProps['paddingInlineEnd'  ],
         
         /**
          * Defines **top padding** inside `<mark>` elements.
          * Adds breathing room between the **text and top boundary**.
          */
-        paddingBlockStart      : '0.125em'                      as CssKnownProps['paddingBlockStart' ],
+        paddingBlockStart     : '0.125em'                       as CssKnownProps['paddingBlockStart' ],
         
         /**
          * Defines **bottom padding** inside `<mark>` elements.
          * Adds breathing room between the **text and bottom boundary**.
          */
-        paddingBlockEnd        : '0.125em'                      as CssKnownProps['paddingBlockEnd'   ],
+        paddingBlockEnd       : '0.125em'                       as CssKnownProps['paddingBlockEnd'   ],
         
         
         
@@ -141,40 +132,71 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize               : undefined                      as CssKnownProps['fontSize'          ],
+        fontSize              : undefined                       as CssKnownProps['fontSize'          ],
         
         /**
          * Defines the **font family** for `<mark>` elements.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily             : undefined                      as CssKnownProps['fontFamily'        ],
+        fontFamily            : undefined                       as CssKnownProps['fontFamily'        ],
         
         /**
          * Defines the **font weight** for `<mark>` elements.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        fontWeight             : undefined                      as CssKnownProps['fontWeight'        ],
+        fontWeight            : undefined                       as CssKnownProps['fontWeight'        ],
         
         /**
          * Defines the **font style** for `<mark>` elements (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle              : undefined                      as CssKnownProps['fontStyle'         ],
+        fontStyle             : undefined                       as CssKnownProps['fontStyle'         ],
         
         /**
          * Defines the **text decoration** for `<mark>` elements.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration         : undefined                      as CssKnownProps['textDecoration'    ],
+        textDecoration        : undefined                       as CssKnownProps['textDecoration'    ],
         
         /**
          * Defines the **line height** for `<mark>` elements.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight             : undefined                      as CssKnownProps['lineHeight'        ],
+        lineHeight            : undefined                       as CssKnownProps['lineHeight'        ],
+    };
+    
+    
+    
+    /**
+     * Defines static conditional sibling adjacency properties.
+     */
+    const staticConditionalAdjacencyDefinitions = {
+        // Spacings:
+        
+        /**
+         * Defines the **left margin** when a `<mark>` element follows another highlight-based element.
+         * Implemented using adjacent sibling selector.
+         * Ensures structured horizontal spacing.
+         */
+        prevMarginInlineStart : '0.25em'                        as CssKnownProps['marginInlineStart' ],
+        
+        /**
+         * Defines the **right margin** when a `<mark>` element precedes another highlight-based element.
+         * Implemented using `:has()` selector, which may have limited browser support.
+         * Check compatibility before relying on this approach.
+         */
+        nextMarginInlineEnd   : '0.25em'                        as CssKnownProps['marginInlineEnd'   ],
+    };
+    
+    
+    
+    // Merge all mark definitions:
+    return {
+        ...staticMarkDefinitions,
+        ...staticConditionalAdjacencyDefinitions,
     };
 }, { prefix: defaultMarkPrefix });
 
@@ -189,7 +211,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = markVars.marginInlineStart; // Resolves to "var(--mrk-marginInlineStart)"
+ * const value = markVars.prevMarginInlineStart; // Resolves to "var(--mrk-prevMarginInlineStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -201,8 +223,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * markVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", markVars.marginInlineStart, " / 4)", "gray"
- * ]]; // Generates "--mrk-boxShadow: 0px 0px 0px calc(var(--mrk-marginInlineStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", markVars.prevMarginInlineStart, " / 4)", "gray"
+ * ]]; // Generates "--mrk-boxShadow: 0px 0px 0px calc(var(--mrk-prevMarginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -269,8 +291,8 @@ const config = cssConfig(() => {
  *     --mrk-borderWidth: var(--bor-defaultWidth);
  *     --mrk-borderColor: var(--col-warningThin);
  *     --mrk-borderRadius: var(--bor-r-sm);
- *     --mrk-marginInlineStart: 0.25em;
- *     --mrk-marginInlineEnd: 0.25em;
+ *     --mrk-prevMarginInlineStart: 0.25em;
+ *     --mrk-nextMarginInlineEnd: 0.25em;
  *     --mrk-marginBlockStart: 0em;
  *     --mrk-marginBlockEnd: 0em;
  *     --mrk-paddingInlineStart: calc(((1lh - 1em) / 2) - var(--bor-defaultWidth));
@@ -278,7 +300,7 @@ const config = cssConfig(() => {
  *     --mrk-paddingBlockStart: calc(((1lh - 1em) / 2) - var(--bor-defaultWidth));
  *     --mrk-paddingBlockEnd: calc(((1lh - 1em) / 2) - var(--bor-defaultWidth));
  *     --mrk-fontWeightCustom: 900;
- *     --mrk-boxShadow: 0px 0px 0px calc(var(--mrk-marginInlineStart) / 4) gray;
+ *     --mrk-boxShadow: 0px 0px 0px calc(var(--mrk-prevMarginInlineStart) / 4) gray;
  *     --mrk-opacity: 0.5;
  *     --mrk-booh: 1234;
  * }
@@ -298,7 +320,7 @@ export const markVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = markVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--mrk-marginInlineStart)", " / 4)", "gray" ]]
+ * const definition = markVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--mrk-prevMarginInlineStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -310,8 +332,8 @@ export const markVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * markVarDefs.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", markVars.marginInlineStart, " / 4)", "gray"
- * ]]; // Generates "--mrk-boxShadow: 0px 0px 0px calc(var(--mrk-marginInlineStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", markVars.prevMarginInlineStart, " / 4)", "gray"
+ * ]]; // Generates "--mrk-boxShadow: 0px 0px 0px calc(var(--mrk-prevMarginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -378,8 +400,8 @@ export const markVars       = config[0];
  *     --mrk-borderWidth: var(--bor-defaultWidth);
  *     --mrk-borderColor: var(--col-warningThin);
  *     --mrk-borderRadius: var(--bor-r-sm);
- *     --mrk-marginInlineStart: 0.25em;
- *     --mrk-marginInlineEnd: 0.25em;
+ *     --mrk-prevMarginInlineStart: 0.25em;
+ *     --mrk-nextMarginInlineEnd: 0.25em;
  *     --mrk-marginBlockStart: 0em;
  *     --mrk-marginBlockEnd: 0em;
  *     --mrk-paddingInlineStart: calc(((1lh - 1em) / 2) - var(--bor-defaultWidth));
@@ -387,7 +409,7 @@ export const markVars       = config[0];
  *     --mrk-paddingBlockStart: calc(((1lh - 1em) / 2) - var(--bor-defaultWidth));
  *     --mrk-paddingBlockEnd: calc(((1lh - 1em) / 2) - var(--bor-defaultWidth));
  *     --mrk-fontWeightCustom: 900;
- *     --mrk-boxShadow: 0px 0px 0px calc(var(--mrk-marginInlineStart) / 4) gray;
+ *     --mrk-boxShadow: 0px 0px 0px calc(var(--mrk-prevMarginInlineStart) / 4) gray;
  *     --mrk-opacity: 0.5;
  *     --mrk-booh: 1234;
  * }
@@ -429,8 +451,8 @@ export const markVarDefs    = config[1];
  *     --mrk-borderWidth: var(--bor-defaultWidth);
  *     --mrk-borderColor: var(--col-warningThin);
  *     --mrk-borderRadius: var(--bor-r-sm);
- *     --mrk-marginInlineStart: 0.25em;
- *     --mrk-marginInlineEnd: 0.25em;
+ *     --mrk-prevMarginInlineStart: 0.25em;
+ *     --mrk-nextMarginInlineEnd: 0.25em;
  *     --mrk-marginBlockStart: 0em;
  *     --mrk-marginBlockEnd: 0em;
  *     --mrk-paddingInlineStart: calc(((1lh - 1em) / 2) - var(--bor-defaultWidth));

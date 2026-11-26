@@ -182,18 +182,18 @@ paragraphVars.fontSize         = '1.5rem'; // Assign `--p-fontSize: 1.5rem;`
 
 Here are the default paragraph settings you can customize:
 
-| Token               | Value     | Description                                                                                               |
-| ------------------- | --------- | --------------------------------------------------------------------------------------------------------- |
-| `marginInlineStart` | `0em`     | Inline-start (left in LTR) margin for paragraphs.                                                         |
-| `marginInlineEnd`   | `0em`     | Inline-end (right in LTR) margin for paragraphs.                                                          |
-| `marginBlockStart`  | `1em`     | Conditional block-start (top) margin when the paragraph follows another block-level typography element.   |
-| `marginBlockEnd`    | `1em`     | Conditional block-end (bottom) margin when the paragraph precedes another block-level typography element. |
-| `fontSize`          | `initial` | The font size for paragraphs.                                                                             |
-| `fontFamily`        | `initial` | The font family for paragraphs.                                                                           |
-| `fontWeight`        | `initial` | The font weight for paragraphs.                                                                           |
-| `fontStyle`         | `initial` | The font style for paragraphs.                                                                            |
-| `textDecoration`    | `initial` | The text decoration for paragraphs.                                                                       |
-| `lineHeight`        | `initial` | The line height for paragraphs.                                                                           |
+| Token                  | Value     | Description                                                                                               |
+| ---------------------- | --------- | --------------------------------------------------------------------------------------------------------- |
+| `marginInlineStart`    | `0em`     | Inline-start (left in LTR) margin for paragraphs.                                                         |
+| `marginInlineEnd`      | `0em`     | Inline-end (right in LTR) margin for paragraphs.                                                          |
+| `fontSize`             | `initial` | The font size for paragraphs.                                                                             |
+| `fontFamily`           | `initial` | The font family for paragraphs.                                                                           |
+| `fontWeight`           | `initial` | The font weight for paragraphs.                                                                           |
+| `fontStyle`            | `initial` | The font style for paragraphs.                                                                            |
+| `textDecoration`       | `initial` | The text decoration for paragraphs.                                                                       |
+| `lineHeight`           | `initial` | The line height for paragraphs.                                                                           |
+| `prevMarginBlockStart` | `1em`     | Conditional block-start (top) margin when the paragraph follows another block-level typography element.   |
+| `nextMarginBlockEnd`   | `1em`     | Conditional block-end (bottom) margin when the paragraph precedes another block-level typography element. |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
@@ -215,18 +215,18 @@ leadVars.fontSize         = '1.5rem'; // Assign `--lead-fontSize: 1.5rem;`
 
 Here are the default lead paragraph settings you can customize:
 
-| Token               | Value                             | Description                                                                                                    |
-| ------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `marginInlineStart` | `paragraphVars.marginInlineStart` | Inline-start (left in LTR) margin for lead paragraphs.                                                         |
-| `marginInlineEnd`   | `paragraphVars.marginInlineEnd`   | Inline-end (right in LTR) margin for lead paragraphs.                                                          |
-| `marginBlockStart`  | `paragraphVars.marginBlockStart`  | Conditional block-start (top) margin when the lead paragraph follows another block-level typography element.   |
-| `marginBlockEnd`    | `paragraphVars.marginBlockEnd`    | Conditional block-end (bottom) margin when the lead paragraph precedes another block-level typography element. |
-| `fontSize`          | `typoConfigVars.fontSizeLg`       | The font size for lead paragraphs.                                                                             |
-| `fontFamily`        | `paragraphVars.fontFamily`        | The font family for lead paragraphs.                                                                           |
-| `fontWeight`        | `typoConfigVars.fontWeightLight`  | The font weight for lead paragraphs.                                                                           |
-| `fontStyle`         | `paragraphVars.fontStyle`         | The font style for lead paragraphs.                                                                            |
-| `textDecoration`    | `paragraphVars.textDecoration`    | The text decoration for lead paragraphs.                                                                       |
-| `lineHeight`        | `paragraphVars.lineHeight`        | The line height for lead paragraphs.                                                                           |
+| Token                  | Value                             | Description                                                                                                    |
+| ---------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `marginInlineStart`    | `paragraphVars.marginInlineStart` | Inline-start (left in LTR) margin for lead paragraphs.                                                         |
+| `marginInlineEnd`      | `paragraphVars.marginInlineEnd`   | Inline-end (right in LTR) margin for lead paragraphs.                                                          |
+| `fontSize`             | `typoConfigVars.fontSizeLg`       | The font size for lead paragraphs.                                                                             |
+| `fontFamily`           | `paragraphVars.fontFamily`        | The font family for lead paragraphs.                                                                           |
+| `fontWeight`           | `typoConfigVars.fontWeightLight`  | The font weight for lead paragraphs.                                                                           |
+| `fontStyle`            | `paragraphVars.fontStyle`         | The font style for lead paragraphs.                                                                            |
+| `textDecoration`       | `paragraphVars.textDecoration`    | The text decoration for lead paragraphs.                                                                       |
+| `lineHeight`           | `paragraphVars.lineHeight`        | The line height for lead paragraphs.                                                                           |
+| `prevMarginBlockStart` | `paragraphVars.marginBlockStart`  | Conditional block-start (top) margin when the lead paragraph follows another block-level typography element.   |
+| `nextMarginBlockEnd`   | `paragraphVars.marginBlockEnd`    | Conditional block-end (bottom) margin when the lead paragraph precedes another block-level typography element. |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
@@ -248,25 +248,25 @@ headingVars.fontSize         = '1.5rem'; // Assign `--h-fontSize: 1.5rem;`
 
 Here are the default heading settings you can customize:
 
-| Token               | Value                               | Description                                                                                             |
-| ------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `marginInlineStart` | `0em`                               | Inline-start (left in LTR) margin for headings.                                                         |
-| `marginInlineEnd`   | `0em`                               | Inline-end (right in LTR) margin for headings.                                                          |
-| `marginBlockStart`  | `1.5em`                             | Conditional block-start (top) margin when the heading follows another block-level typography element.   |
-| `marginBlockEnd`    | `0.75em`                            | Conditional block-end (bottom) margin when the heading precedes another block-level typography element. |
-| `fontSize`          | `initial`                           | The font size for headings (unknown level).                                                             |
-| `fontSize1`         | `2.25rem`                           | The font size for `<h1>` headings.                                                                      |
-| `fontSize2`         | `2.00rem`                           | The font size for `<h2>` headings.                                                                      |
-| `fontSize3`         | `1.75rem`                           | The font size for `<h3>` headings.                                                                      |
-| `fontSize4`         | `1.50rem`                           | The font size for `<h4>` headings.                                                                      |
-| `fontSize5`         | `1.25rem`                           | The font size for `<h5>` headings.                                                                      |
-| `fontSize6`         | `1.00rem`                           | The font size for `<h6>` headings.                                                                      |
-| `fontFamily`        | `initial`                           | The font family for headings.                                                                           |
-| `fontWeight`        | `typoConfigVars.fontWeightSemibold` | The font weight for headings.                                                                           |
-| `fontStyle`         | `initial`                           | The font style for headings.                                                                            |
-| `textDecoration`    | `initial`                           | The text decoration for headings.                                                                       |
-| `lineHeight`        | `typoConfigVars.lineHeightSm`       | The line height for headings.                                                                           |
-| `subOpacity`        | `0.65`                              | The opacity level for subheadings (when the heading follows another heading or display heading).        |
+| Token                  | Value                               | Description                                                                                             |
+| ---------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `marginInlineStart`    | `0em`                               | Inline-start (left in LTR) margin for headings.                                                         |
+| `marginInlineEnd`      | `0em`                               | Inline-end (right in LTR) margin for headings.                                                          |
+| `fontSize`             | `initial`                           | The font size for headings (unknown level).                                                             |
+| `fontSize1`            | `2.25rem`                           | The font size for `<h1>` headings.                                                                      |
+| `fontSize2`            | `2.00rem`                           | The font size for `<h2>` headings.                                                                      |
+| `fontSize3`            | `1.75rem`                           | The font size for `<h3>` headings.                                                                      |
+| `fontSize4`            | `1.50rem`                           | The font size for `<h4>` headings.                                                                      |
+| `fontSize5`            | `1.25rem`                           | The font size for `<h5>` headings.                                                                      |
+| `fontSize6`            | `1.00rem`                           | The font size for `<h6>` headings.                                                                      |
+| `fontFamily`           | `initial`                           | The font family for headings.                                                                           |
+| `fontWeight`           | `typoConfigVars.fontWeightSemibold` | The font weight for headings.                                                                           |
+| `fontStyle`            | `initial`                           | The font style for headings.                                                                            |
+| `textDecoration`       | `initial`                           | The text decoration for headings.                                                                       |
+| `lineHeight`           | `typoConfigVars.lineHeightSm`       | The line height for headings.                                                                           |
+| `prevMarginBlockStart` | `1.5em`                             | Conditional block-start (top) margin when the heading follows another block-level typography element.   |
+| `nextMarginBlockEnd`   | `0.75em`                            | Conditional block-end (bottom) margin when the heading precedes another block-level typography element. |
+| `subOpacity`           | `0.65`                              | The opacity level for subheadings (when the heading follows another heading or display heading).        |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
@@ -288,25 +288,25 @@ displayVars.fontSize         = '1.5rem'; // Assign `--disp-fontSize: 1.5rem;`
 
 Here are the default display heading settings you can customize:
 
-| Token               | Value                            | Description                                                                                                     |
-| ------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `marginInlineStart` | `headingVars.marginInlineStart`  | Inline-start (left in LTR) margin for display headings.                                                         |
-| `marginInlineEnd`   | `headingVars.marginInlineEnd`    | Inline-end (right in LTR) margin for display headings.                                                          |
-| `marginBlockStart`  | `headingVars.marginBlockStart`   | Conditional block-start (top) margin when the display heading follows another block-level typography element.   |
-| `marginBlockEnd`    | `headingVars.marginBlockEnd`     | Conditional block-end (bottom) margin when the display heading precedes another block-level typography element. |
-| `fontSize`          | `initial`                        | The font size for display headings (unknown level).                                                             |
-| `fontSize1`         | `5.00rem`                        | The font size for level 1 display headings.                                                                     |
-| `fontSize2`         | `4.50rem`                        | The font size for level 2 display headings.                                                                     |
-| `fontSize3`         | `4.00rem`                        | The font size for level 3 display headings.                                                                     |
-| `fontSize4`         | `3.50rem`                        | The font size for level 4 display headings.                                                                     |
-| `fontSize5`         | `3.00rem`                        | The font size for level 5 display headings.                                                                     |
-| `fontSize6`         | `2.50rem`                        | The font size for level 6 display headings.                                                                     |
-| `fontFamily`        | `headingVars.fontFamily`         | The font family for display headings.                                                                           |
-| `fontWeight`        | `typoConfigVars.fontWeightLight` | The font weight for display headings.                                                                           |
-| `fontStyle`         | `headingVars.fontStyle`          | The font style for display headings.                                                                            |
-| `textDecoration`    | `headingVars.textDecoration`     | The text decoration for display headings.                                                                       |
-| `lineHeight`        | `headingVars.lineHeight`         | The line height for display headings.                                                                           |
-| `subOpacity`        | `headingVars.subOpacity`         | The opacity level for subheadings (when the display heading follows another heading or display heading).        |
+| Token                  | Value                            | Description                                                                                                     |
+| ---------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `marginInlineStart`    | `headingVars.marginInlineStart`  | Inline-start (left in LTR) margin for display headings.                                                         |
+| `marginInlineEnd`      | `headingVars.marginInlineEnd`    | Inline-end (right in LTR) margin for display headings.                                                          |
+| `fontSize`             | `initial`                        | The font size for display headings (unknown level).                                                             |
+| `fontSize1`            | `5.00rem`                        | The font size for level 1 display headings.                                                                     |
+| `fontSize2`            | `4.50rem`                        | The font size for level 2 display headings.                                                                     |
+| `fontSize3`            | `4.00rem`                        | The font size for level 3 display headings.                                                                     |
+| `fontSize4`            | `3.50rem`                        | The font size for level 4 display headings.                                                                     |
+| `fontSize5`            | `3.00rem`                        | The font size for level 5 display headings.                                                                     |
+| `fontSize6`            | `2.50rem`                        | The font size for level 6 display headings.                                                                     |
+| `fontFamily`           | `headingVars.fontFamily`         | The font family for display headings.                                                                           |
+| `fontWeight`           | `typoConfigVars.fontWeightLight` | The font weight for display headings.                                                                           |
+| `fontStyle`            | `headingVars.fontStyle`          | The font style for display headings.                                                                            |
+| `textDecoration`       | `headingVars.textDecoration`     | The text decoration for display headings.                                                                       |
+| `lineHeight`           | `headingVars.lineHeight`         | The line height for display headings.                                                                           |
+| `prevMarginBlockStart` | `headingVars.marginBlockStart`   | Conditional block-start (top) margin when the display heading follows another block-level typography element.   |
+| `nextMarginBlockEnd`   | `headingVars.marginBlockEnd`     | Conditional block-end (bottom) margin when the display heading precedes another block-level typography element. |
+| `subOpacity`           | `headingVars.subOpacity`         | The opacity level for subheadings (when the display heading follows another heading or display heading).        |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
@@ -334,8 +334,6 @@ Here are the default blockquote settings you can customize:
 | `borderInlineStartWidth` | `0.25em`                    | Inline-start (left in LTR) decorative border width for blockquotes.                                        |
 | `marginInlineStart`      | `0em`                       | Inline-start (left in LTR) margin for blockquotes.                                                         |
 | `marginInlineEnd`        | `0em`                       | Inline-end (right in LTR) margin for blockquotes.                                                          |
-| `marginBlockStart`       | `1em`                       | Conditional block-start (top) margin when the blockquote follows another block-level typography element.   |
-| `marginBlockEnd`         | `1em`                       | Conditional block-end (bottom) margin when the blockquote precedes another block-level typography element. |
 | `paddingInlineStart`     | `3em`                       | Inline-start (left in LTR) padding for blockquotes.                                                        |
 | `paddingInlineEnd`       | `1em`                       | Inline-end (right in LTR) padding for blockquotes.                                                         |
 | `paddingBlockStart`      | `1em`                       | Block-start (top) padding for blockquotes.                                                                 |
@@ -346,6 +344,8 @@ Here are the default blockquote settings you can customize:
 | `fontStyle`              | `initial`                   | The font style for blockquotes.                                                                            |
 | `textDecoration`         | `initial`                   | The text decoration for blockquotes.                                                                       |
 | `lineHeight`             | `initial`                   | The line height for blockquotes.                                                                           |
+| `prevMarginBlockStart`   | `1em`                       | Conditional block-start (top) margin when the blockquote follows another block-level typography element.   |
+| `nextMarginBlockEnd`     | `1em`                       | Conditional block-end (bottom) margin when the blockquote precedes another block-level typography element. |
 | `quoteInsetInlineStart`  | `0.2em`                     | Inline-start (left in LTR) position for the quote decoration.                                              |
 | `quoteInsetBlockStart`   | `-0.1em`                    | Block-start (top) position for the quote decoration.                                                       |
 | `quoteContent`           | `"\\201C"`                  | The quote character (`“`) for the quote decoration.                                                        |
@@ -376,24 +376,24 @@ plainListVars.fontSize         = '1.5rem'; // Assign `--pl-fontSize: 1.5rem;`
 
 Here are the default plain list settings you can customize:
 
-| Token                    | Value                             | Description                                                                        |
-| ------------------------ | --------- | ---------------------------------------------------------------------------------------------------------- |
-| `listStylePosition`      | `outside` | Marker placement (`outside` or `inside`) for plain lists.                                                  |
-| `marginInlineStart`      | `0em`     | Inline-start (left in LTR) margin for plain lists.                                                         |
-| `marginInlineEnd`        | `0em`     | Inline-end (right in LTR) margin for plain lists.                                                          |
-| `marginBlockStart`       | `1em`     | Conditional block-start (top) margin when the plain list follows another block-level typography element.   |
-| `marginBlockEnd`         | `1em`     | Conditional block-end (bottom) margin when the plain list precedes another block-level typography element. |
-| `paddingInlineStart`     | `1.5em`   | Inline-start (left in LTR) indentation padding for plain lists.                                            |
-| `fontSize`               | `initial` | The font size for plain lists.                                                                             |
-| `fontFamily`             | `initial` | The font family for plain lists.                                                                           |
-| `fontWeight`             | `initial` | The font weight for plain lists.                                                                           |
-| `fontStyle`              | `initial` | The font style for plain lists.                                                                            |
-| `textDecoration`         | `initial` | The text decoration for plain lists.                                                                       |
-| `lineHeight`             | `initial` | The line height for plain lists.                                                                           |
-| `unorderedListStyleType` | `disc`    | Marker style for unordered (`<ul>`) plain lists.                                                           |
-| `orderedListStyleType`   | `decimal` | Marker style for ordered (`<ol>`) plain lists.                                                             |
-| `itemMarginBlockStart`   | `0.25em`  | Conditional block-start (top) margin when a list item follows another item.                                |
-| `itemMarginBlockEnd`     | `0.25em`  | Conditional block-end (bottom) margin when a list item precedes another item.                              |
+| Token                      | Value                             | Description                                                                        |
+| -------------------------- | --------- | ---------------------------------------------------------------------------------------------------------- |
+| `listStylePosition`        | `outside` | Marker placement (`outside` or `inside`) for plain lists.                                                  |
+| `marginInlineStart`        | `0em`     | Inline-start (left in LTR) margin for plain lists.                                                         |
+| `marginInlineEnd`          | `0em`     | Inline-end (right in LTR) margin for plain lists.                                                          |
+| `paddingInlineStart`       | `1.5em`   | Inline-start (left in LTR) indentation padding for plain lists.                                            |
+| `fontSize`                 | `initial` | The font size for plain lists.                                                                             |
+| `fontFamily`               | `initial` | The font family for plain lists.                                                                           |
+| `fontWeight`               | `initial` | The font weight for plain lists.                                                                           |
+| `fontStyle`                | `initial` | The font style for plain lists.                                                                            |
+| `textDecoration`           | `initial` | The text decoration for plain lists.                                                                       |
+| `lineHeight`               | `initial` | The line height for plain lists.                                                                           |
+| `prevMarginBlockStart`     | `1em`     | Conditional block-start (top) margin when the plain list follows another block-level typography element.   |
+| `nextMarginBlockEnd`       | `1em`     | Conditional block-end (bottom) margin when the plain list precedes another block-level typography element. |
+| `unorderedListStyleType`   | `disc`    | Marker style for unordered (`<ul>`) plain lists.                                                           |
+| `orderedListStyleType`     | `decimal` | Marker style for ordered (`<ol>`) plain lists.                                                             |
+| `itemPrevMarginBlockStart` | `0.25em`  | Conditional block-start (top) margin when a list item follows another item.                                |
+| `itemNextMarginBlockEnd`   | `0.25em`  | Conditional block-end (bottom) margin when a list item precedes another item.                              |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
@@ -415,28 +415,28 @@ markVars.fontSize         = '1.5rem'; // Assign `--mark-fontSize: 1.5rem;`
 
 Here are the default `<mark>` settings you can customize:
 
-| Token                    | Value                         | Description                                                                                                      |
-| ------------------------ | ----------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `backgroundColor`        | `colorConfigVars.warningMild` | Background color for `<mark>` elements.                                                                          |
-| `color`                  | `colorConfigVars.warningText` | Text color for `<mark>` elements.                                                                                |
-| `borderStyle`            | `borderConfigVars.style`      | Border style for `<mark>` elements.                                                                              |
-| `borderWidth`            | `borderConfigVars.width`      | Border width for `<mark>` elements.                                                                              |
-| `borderColor`            | `colorConfigVars.warningThin` | Border color for `<mark>` elements.                                                                              |
-| `borderRadius`           | `radiusConfigVars.radiusSm`   | Border radius for `<mark>` elements.                                                                             |
-| `marginInlineStart`      | `0.25em`                      | Conditional inline-start (left in LTR) margin when the `<mark>` follows another inline-level typography element. |
-| `marginInlineEnd`        | `0.25em`                      | Conditional inline-end (right in LTR) margin when the `<mark>` precedes another inline-level typography element. |
-| `marginBlockStart`       | `0em`                         | Block-start (top) margin for `<mark>` elements.                                                                  |
-| `marginBlockEnd`         | `0em`                         | Block-end (bottom) margin for `<mark>` elements.                                                                 |
-| `paddingInlineStart`     | `0.125em`                     | Inline-start (left in LTR) padding for `<mark>` elements.                                                        |
-| `paddingInlineEnd`       | `0.125em`                     | Inline-end (right in LTR) padding for `<mark>` elements.                                                         |
-| `paddingBlockStart`      | `0.125em`                     | Block-start (top) padding for `<mark>` elements.                                                                 |
-| `paddingBlockEnd`        | `0.125em`                     | Block-end (bottom) padding for `<mark>` elements.                                                                |
-| `fontSize`               | `initial`                     | The font size for `<mark>` elements.                                                                             |
-| `fontFamily`             | `initial`                     | The font family for `<mark>` elements.                                                                           |
-| `fontWeight`             | `initial`                     | The font weight for `<mark>` elements.                                                                           |
-| `fontStyle`              | `initial`                     | The font style for `<mark>` elements.                                                                            |
-| `textDecoration`         | `initial`                     | The text decoration for `<mark>` elements.                                                                       |
-| `lineHeight`             | `initial`                     | The line height for `<mark>` elements.                                                                           |
+| Token                   | Value                         | Description                                                                                                      |
+| ----------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `backgroundColor`       | `colorConfigVars.warningMild` | Background color for `<mark>` elements.                                                                          |
+| `color`                 | `colorConfigVars.warningText` | Text color for `<mark>` elements.                                                                                |
+| `borderStyle`           | `borderConfigVars.style`      | Border style for `<mark>` elements.                                                                              |
+| `borderWidth`           | `borderConfigVars.width`      | Border width for `<mark>` elements.                                                                              |
+| `borderColor`           | `colorConfigVars.warningThin` | Border color for `<mark>` elements.                                                                              |
+| `borderRadius`          | `radiusConfigVars.radiusSm`   | Border radius for `<mark>` elements.                                                                             |
+| `marginBlockStart`      | `0em`                         | Block-start (top) margin for `<mark>` elements.                                                                  |
+| `marginBlockEnd`        | `0em`                         | Block-end (bottom) margin for `<mark>` elements.                                                                 |
+| `paddingInlineStart`    | `0.125em`                     | Inline-start (left in LTR) padding for `<mark>` elements.                                                        |
+| `paddingInlineEnd`      | `0.125em`                     | Inline-end (right in LTR) padding for `<mark>` elements.                                                         |
+| `paddingBlockStart`     | `0.125em`                     | Block-start (top) padding for `<mark>` elements.                                                                 |
+| `paddingBlockEnd`       | `0.125em`                     | Block-end (bottom) padding for `<mark>` elements.                                                                |
+| `fontSize`              | `initial`                     | The font size for `<mark>` elements.                                                                             |
+| `fontFamily`            | `initial`                     | The font family for `<mark>` elements.                                                                           |
+| `fontWeight`            | `initial`                     | The font weight for `<mark>` elements.                                                                           |
+| `fontStyle`             | `initial`                     | The font style for `<mark>` elements.                                                                            |
+| `textDecoration`        | `initial`                     | The text decoration for `<mark>` elements.                                                                       |
+| `lineHeight`            | `initial`                     | The line height for `<mark>` elements.                                                                           |
+| `prevMarginInlineStart` | `0.25em`                      | Conditional inline-start (left in LTR) margin when the `<mark>` follows another inline-level typography element. |
+| `nextMarginInlineEnd`   | `0.25em`                      | Conditional inline-end (right in LTR) margin when the `<mark>` precedes another inline-level typography element. |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
@@ -458,28 +458,28 @@ kbdVars.fontSize         = '1.5rem'; // Assign `--kbd-fontSize: 1.5rem;`
 
 Here are the default `<kbd>` settings you can customize:
 
-| Token                    | Value                         | Description                                                                                                     |
-| ------------------------ | ----------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `backgroundColor`        | `colorConfigVars.primaryBase` | Background color for `<kbd>` elements.                                                                          |
-| `color`                  | `colorConfigVars.primaryFlip` | Text color for `<kbd>` elements.                                                                                |
-| `borderStyle`            | `markVars.borderStyle`        | Border style for `<kbd>` elements.                                                                              |
-| `borderWidth`            | `markVars.borderWidth`        | Border width for `<kbd>` elements.                                                                              |
-| `borderColor`            | `colorConfigVars.primaryBold` | Border color for `<kbd>` elements.                                                                              |
-| `borderRadius`           | `markVars.borderRadius`       | Border radius for `<kbd>` elements.                                                                             |
-| `marginInlineStart`      | `markVars.marginInlineStart`  | Conditional inline-start (left in LTR) margin when the `<kbd>` follows another inline-level typography element. |
-| `marginInlineEnd`        | `markVars.marginInlineEnd`    | Conditional inline-end (right in LTR) margin when the `<kbd>` precedes another inline-level typography element. |
-| `marginBlockStart`       | `markVars.marginBlockStart`   | Block-start (top) margin for `<kbd>` elements.                                                                  |
-| `marginBlockEnd`         | `markVars.marginBlockEnd`     | Block-end (bottom) margin for `<kbd>` elements.                                                                 |
-| `paddingInlineStart`     | `markVars.paddingInlineStart` | Inline-start (left in LTR) padding for `<kbd>` elements.                                                        |
-| `paddingInlineEnd`       | `markVars.paddingInlineEnd`   | Inline-end (right in LTR) padding for `<kbd>` elements.                                                         |
-| `paddingBlockStart`      | `markVars.paddingBlockStart`  | Block-start (top) padding for `<kbd>` elements.                                                                 |
-| `paddingBlockEnd`        | `markVars.paddingBlockEnd`    | Block-end (bottom) padding for `<kbd>` elements.                                                                |
-| `fontSize`               | `markVars.fontSize`           | The font size for `<kbd>` elements.                                                                             |
-| `fontFamily`             | `markVars.fontFamily`         | The font family for `<kbd>` elements.                                                                           |
-| `fontWeight`             | `markVars.fontWeight`         | The font weight for `<kbd>` elements.                                                                           |
-| `fontStyle`              | `markVars.fontStyle`          | The font style for `<kbd>` elements.                                                                            |
-| `textDecoration`         | `markVars.textDecoration`     | The text decoration for `<kbd>` elements.                                                                       |
-| `lineHeight`             | `markVars.lineHeight`         | The line height for `<kbd>` elements.                                                                           |
+| Token                   | Value                         | Description                                                                                                     |
+| ----------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `backgroundColor`       | `colorConfigVars.primaryBase` | Background color for `<kbd>` elements.                                                                          |
+| `color`                 | `colorConfigVars.primaryFlip` | Text color for `<kbd>` elements.                                                                                |
+| `borderStyle`           | `markVars.borderStyle`        | Border style for `<kbd>` elements.                                                                              |
+| `borderWidth`           | `markVars.borderWidth`        | Border width for `<kbd>` elements.                                                                              |
+| `borderColor`           | `colorConfigVars.primaryBold` | Border color for `<kbd>` elements.                                                                              |
+| `borderRadius`          | `markVars.borderRadius`       | Border radius for `<kbd>` elements.                                                                             |
+| `marginBlockStart`      | `markVars.marginBlockStart`   | Block-start (top) margin for `<kbd>` elements.                                                                  |
+| `marginBlockEnd`        | `markVars.marginBlockEnd`     | Block-end (bottom) margin for `<kbd>` elements.                                                                 |
+| `paddingInlineStart`    | `markVars.paddingInlineStart` | Inline-start (left in LTR) padding for `<kbd>` elements.                                                        |
+| `paddingInlineEnd`      | `markVars.paddingInlineEnd`   | Inline-end (right in LTR) padding for `<kbd>` elements.                                                         |
+| `paddingBlockStart`     | `markVars.paddingBlockStart`  | Block-start (top) padding for `<kbd>` elements.                                                                 |
+| `paddingBlockEnd`       | `markVars.paddingBlockEnd`    | Block-end (bottom) padding for `<kbd>` elements.                                                                |
+| `fontSize`              | `markVars.fontSize`           | The font size for `<kbd>` elements.                                                                             |
+| `fontFamily`            | `markVars.fontFamily`         | The font family for `<kbd>` elements.                                                                           |
+| `fontWeight`            | `markVars.fontWeight`         | The font weight for `<kbd>` elements.                                                                           |
+| `fontStyle`             | `markVars.fontStyle`          | The font style for `<kbd>` elements.                                                                            |
+| `textDecoration`        | `markVars.textDecoration`     | The text decoration for `<kbd>` elements.                                                                       |
+| `lineHeight`            | `markVars.lineHeight`         | The line height for `<kbd>` elements.                                                                           |
+| `prevMarginInlineStart` | `markVars.marginInlineStart`  | Conditional inline-start (left in LTR) margin when the `<kbd>` follows another inline-level typography element. |
+| `nextMarginInlineEnd`   | `markVars.marginInlineEnd`    | Conditional inline-end (right in LTR) margin when the `<kbd>` precedes another inline-level typography element. |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
@@ -501,28 +501,28 @@ codeVars.fontSize         = '1.5rem'; // Assign `--code-fontSize: 1.5rem;`
 
 Here are the default `<code>` settings you can customize:
 
-| Token                    | Value                                | Description                                                                                                      |
-| ------------------------ | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| `backgroundColor`        | `colorConfigVars.secondaryMild`      | Background color for `<code>` elements.                                                                          |
-| `color`                  | `colorConfigVars.secondaryText`      | Text color for `<code>` elements.                                                                                |
-| `borderStyle`            | `markVars.borderStyle`               | Border style for `<code>` elements.                                                                              |
-| `borderWidth`            | `markVars.borderWidth`               | Border width for `<code>` elements.                                                                              |
-| `borderColor`            | `colorConfigVars.secondaryThin`      | Border color for `<code>` elements.                                                                              |
-| `borderRadius`           | `markVars.borderRadius`              | Border radius for `<code>` elements.                                                                             |
-| `marginInlineStart`      | `markVars.marginInlineStart`         | Conditional inline-start (left in LTR) margin when the `<code>` follows another inline-level typography element. |
-| `marginInlineEnd`        | `markVars.marginInlineEnd`           | Conditional inline-end (right in LTR) margin when the `<code>` precedes another inline-level typography element. |
-| `marginBlockStart`       | `markVars.marginBlockStart`          | Block-start (top) margin for `<code>` elements.                                                                  |
-| `marginBlockEnd`         | `markVars.marginBlockEnd`            | Block-end (bottom) margin for `<code>` elements.                                                                 |
-| `paddingInlineStart`     | `markVars.paddingInlineStart`        | Inline-start (left in LTR) padding for `<code>` elements.                                                        |
-| `paddingInlineEnd`       | `markVars.paddingInlineEnd`          | Inline-end (right in LTR) padding for `<code>` elements.                                                         |
-| `paddingBlockStart`      | `markVars.paddingBlockStart`         | Block-start (top) padding for `<code>` elements.                                                                 |
-| `paddingBlockEnd`        | `markVars.paddingBlockEnd`           | Block-end (bottom) padding for `<code>` elements.                                                                |
-| `fontSize`               | `markVars.fontSize`                  | The font size for `<code>` elements.                                                                             |
-| `fontFamily`             | `typoConfigVars.fontFamilyMonospace` | The font family for `<code>` elements.                                                                           |
-| `fontWeight`             | `markVars.fontWeight`                | The font weight for `<code>` elements.                                                                           |
-| `fontStyle`              | `markVars.fontStyle`                 | The font style for `<code>` elements.                                                                            |
-| `textDecoration`         | `markVars.textDecoration`            | The text decoration for `<code>` elements.                                                                       |
-| `lineHeight`             | `markVars.lineHeight`                | The line height for `<code>` elements.                                                                           |
+| Token                   | Value                                | Description                                                                                                      |
+| ----------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `backgroundColor`       | `colorConfigVars.secondaryMild`      | Background color for `<code>` elements.                                                                          |
+| `color`                 | `colorConfigVars.secondaryText`      | Text color for `<code>` elements.                                                                                |
+| `borderStyle`           | `markVars.borderStyle`               | Border style for `<code>` elements.                                                                              |
+| `borderWidth`           | `markVars.borderWidth`               | Border width for `<code>` elements.                                                                              |
+| `borderColor`           | `colorConfigVars.secondaryThin`      | Border color for `<code>` elements.                                                                              |
+| `borderRadius`          | `markVars.borderRadius`              | Border radius for `<code>` elements.                                                                             |
+| `marginBlockStart`      | `markVars.marginBlockStart`          | Block-start (top) margin for `<code>` elements.                                                                  |
+| `marginBlockEnd`        | `markVars.marginBlockEnd`            | Block-end (bottom) margin for `<code>` elements.                                                                 |
+| `paddingInlineStart`    | `markVars.paddingInlineStart`        | Inline-start (left in LTR) padding for `<code>` elements.                                                        |
+| `paddingInlineEnd`      | `markVars.paddingInlineEnd`          | Inline-end (right in LTR) padding for `<code>` elements.                                                         |
+| `paddingBlockStart`     | `markVars.paddingBlockStart`         | Block-start (top) padding for `<code>` elements.                                                                 |
+| `paddingBlockEnd`       | `markVars.paddingBlockEnd`           | Block-end (bottom) padding for `<code>` elements.                                                                |
+| `fontSize`              | `markVars.fontSize`                  | The font size for `<code>` elements.                                                                             |
+| `fontFamily`            | `typoConfigVars.fontFamilyMonospace` | The font family for `<code>` elements.                                                                           |
+| `fontWeight`            | `markVars.fontWeight`                | The font weight for `<code>` elements.                                                                           |
+| `fontStyle`             | `markVars.fontStyle`                 | The font style for `<code>` elements.                                                                            |
+| `textDecoration`        | `markVars.textDecoration`            | The text decoration for `<code>` elements.                                                                       |
+| `lineHeight`            | `markVars.lineHeight`                | The line height for `<code>` elements.                                                                           |
+| `prevMarginInlineStart` | `markVars.marginInlineStart`         | Conditional inline-start (left in LTR) margin when the `<code>` follows another inline-level typography element. |
+| `nextMarginInlineEnd`   | `markVars.marginInlineEnd`           | Conditional inline-end (right in LTR) margin when the `<code>` precedes another inline-level typography element. |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `fontSize`, `fontFamily`, and `fontWeight`) to inherit from an ancestor element,  
@@ -544,16 +544,16 @@ horzSeparatorVars.borderWidth      = '2px'; // Assign `--hr-borderWidth: 2px;`
 
 Here are the default horizontal separator settings you can customize:
 
-| Token               | Value                    | Description                                                                                                          |
-| ------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| `opacity`           | `0.25`                   | The opacity level for horizontal separators.                                                                         |
-| `borderStyle`       | `borderConfigVars.style` | Border style for horizontal separators.                                                                              |
-| `borderWidth`       | `borderConfigVars.width` | Border width for horizontal separators.                                                                              |
-| `borderColor`       | `currentcolor`           | Border color for horizontal separators.                                                                              |
-| `marginInlineStart` | `0em`                    | Inline-start (left in LTR) margin for horizontal separators.                                                         |
-| `marginInlineEnd`   | `0em`                    | Inline-end (right in LTR) margin for horizontal separators.                                                          |
-| `marginBlockStart`  | `1em`                    | Conditional block-start (top) margin when the horizontal separator follows another block-level typography element.   |
-| `marginBlockEnd`    | `1em`                    | Conditional block-end (bottom) margin when the horizontal separator precedes another block-level typography element. |
+| Token                  | Value                    | Description                                                                                                          |
+| ---------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `opacity`              | `0.25`                   | The opacity level for horizontal separators.                                                                         |
+| `borderStyle`          | `borderConfigVars.style` | Border style for horizontal separators.                                                                              |
+| `borderWidth`          | `borderConfigVars.width` | Border width for horizontal separators.                                                                              |
+| `borderColor`          | `currentcolor`           | Border color for horizontal separators.                                                                              |
+| `marginInlineStart`    | `0em`                    | Inline-start (left in LTR) margin for horizontal separators.                                                         |
+| `marginInlineEnd`      | `0em`                    | Inline-end (right in LTR) margin for horizontal separators.                                                          |
+| `prevMarginBlockStart` | `1em`                    | Conditional block-start (top) margin when the horizontal separator follows another block-level typography element.   |
+| `nextMarginBlockEnd`   | `1em`                    | Conditional block-end (bottom) margin when the horizontal separator precedes another block-level typography element. |
 
 > **Note:** Setting a style to `initial` invalidates configuration variables,  
 > allowing inheritable properties (like `borderColor`) to inherit from an ancestor element,  

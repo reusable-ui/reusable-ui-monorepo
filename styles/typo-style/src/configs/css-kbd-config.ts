@@ -27,14 +27,19 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    return {
+    // Static kbd definitions:
+    
+    /**
+     * Defines static kbd properties such as font sizes, families, weights, and styles.
+     */
+    const staticKbdDefinitions = {
         // Backgrounds:
         
         /**
          * Defines the **background color** for `<kbd>` elements.
          * Typically uses a **primary base color** (`primaryBase`) for emphasis.
          */
-        backgroundColor        : colorConfigVars.primaryBase    as CssKnownProps['backgroundColor'   ],
+        backgroundColor       : colorConfigVars.primaryBase         as CssKnownProps['backgroundColor'   ],
         
         
         
@@ -44,7 +49,7 @@ const config = cssConfig(() => {
          * Defines the **text color** for `<kbd>` elements.
          * Typically uses a **primary contrasting color** (`primaryFlip`) for readability.
          */
-        color                  : colorConfigVars.primaryFlip    as CssKnownProps['color'             ],
+        color                 : colorConfigVars.primaryFlip         as CssKnownProps['color'             ],
         
         
         
@@ -54,80 +59,66 @@ const config = cssConfig(() => {
          * Defines the **border style** for `<kbd>` elements.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : markVars.borderStyle           as CssKnownProps['borderStyle'       ],
+        borderStyle           : markVars.borderStyle                as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for `<kbd>` elements.
          * Typically uses the default border width for visual clarity.
          */
-        borderWidth            : markVars.borderWidth           as CssKnownProps['borderWidth'       ],
+        borderWidth           : markVars.borderWidth                as CssKnownProps['borderWidth'       ],
         
         /**
          * Defines the **border color** for `<kbd>` elements.
          * Typically uses a **primary bold color** (`primaryBold`) for subtle emphasis.
          */
-        borderColor            : colorConfigVars.primaryBold    as CssKnownProps['borderColor'       ],
+        borderColor           : colorConfigVars.primaryBold         as CssKnownProps['borderColor'       ],
         
         /**
          * Defines the **border radius** for `<kbd>` elements.
          * Typically uses a **small radius** (`sm`) to create softened edges.
          */
-        borderRadius           : markVars.borderRadius          as CssKnownProps['borderRadius'      ],
+        borderRadius          : markVars.borderRadius               as CssKnownProps['borderRadius'      ],
         
         
         
         // Spacings:
         
         /**
-         * Defines the **left margin** when a `<kbd>` element follows another highlight-based element.
-         * Implemented using adjacent sibling selector.
-         * Ensures structured horizontal spacing.
-         */
-        marginInlineStart      : markVars.marginInlineStart     as CssKnownProps['marginInlineStart' ],
-        
-        /**
-         * Defines the **right margin** when a `<kbd>` element precedes another highlight-based element.
-         * Implemented using `:has()` selector, which may have limited browser support.
-         * Check compatibility before relying on this approach.
-         */
-        marginInlineEnd        : markVars.marginInlineEnd       as CssKnownProps['marginInlineEnd'   ],
-        
-        /**
          * Defines the **top margin** for `<kbd>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockStart       : markVars.marginBlockStart      as CssKnownProps['marginBlockStart'  ],
+        marginBlockStart      : markVars.marginBlockStart           as CssKnownProps['marginBlockStart'  ],
         
         /**
          * Defines the **bottom margin** for `<kbd>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockEnd         : markVars.marginBlockEnd        as CssKnownProps['marginBlockEnd'    ],
+        marginBlockEnd        : markVars.marginBlockEnd             as CssKnownProps['marginBlockEnd'    ],
         
         
         /**
          * Defines **left padding** inside `<kbd>` elements.
          * Adds breathing room between the **text and left boundary**.
          */
-        paddingInlineStart     : markVars.paddingInlineStart    as CssKnownProps['paddingInlineStart'],
+        paddingInlineStart    : markVars.paddingInlineStart         as CssKnownProps['paddingInlineStart'],
         
         /**
          * Defines **right padding** inside `<kbd>` elements.
          * Adds breathing room between the **text and right boundary**.
          */
-        paddingInlineEnd       : markVars.paddingInlineEnd      as CssKnownProps['paddingInlineEnd'  ],
+        paddingInlineEnd      : markVars.paddingInlineEnd           as CssKnownProps['paddingInlineEnd'  ],
         
         /**
          * Defines **top padding** inside `<kbd>` elements.
          * Adds breathing room between the **text and top boundary**.
          */
-        paddingBlockStart      : markVars.paddingBlockStart     as CssKnownProps['paddingBlockStart' ],
+        paddingBlockStart     : markVars.paddingBlockStart          as CssKnownProps['paddingBlockStart' ],
         
         /**
          * Defines **bottom padding** inside `<kbd>` elements.
          * Adds breathing room between the **text and bottom boundary**.
          */
-        paddingBlockEnd        : markVars.paddingBlockEnd       as CssKnownProps['paddingBlockEnd'   ],
+        paddingBlockEnd       : markVars.paddingBlockEnd            as CssKnownProps['paddingBlockEnd'   ],
         
         
         
@@ -138,40 +129,71 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize               : markVars.fontSize              as CssKnownProps['fontSize'          ],
+        fontSize              : markVars.fontSize                   as CssKnownProps['fontSize'          ],
         
         /**
          * Defines the **font family** for `<kbd>` elements.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily             : markVars.fontFamily            as CssKnownProps['fontFamily'        ],
+        fontFamily            : markVars.fontFamily                 as CssKnownProps['fontFamily'        ],
         
         /**
          * Defines the **font weight** for `<kbd>` elements.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        fontWeight             : markVars.fontWeight            as CssKnownProps['fontWeight'        ],
+        fontWeight            : markVars.fontWeight                 as CssKnownProps['fontWeight'        ],
         
         /**
          * Defines the **font style** for `<kbd>` elements (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle              : markVars.fontStyle             as CssKnownProps['fontStyle'         ],
+        fontStyle             : markVars.fontStyle                  as CssKnownProps['fontStyle'         ],
         
         /**
          * Defines the **text decoration** for `<kbd>` elements.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration         : markVars.textDecoration        as CssKnownProps['textDecoration'    ],
+        textDecoration        : markVars.textDecoration             as CssKnownProps['textDecoration'    ],
         
         /**
          * Defines the **line height** for `<kbd>` elements.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight             : markVars.lineHeight            as CssKnownProps['lineHeight'        ],
+        lineHeight            : markVars.lineHeight                 as CssKnownProps['lineHeight'        ],
+    };
+    
+    
+    
+    /**
+     * Defines static conditional sibling adjacency properties.
+     */
+    const staticConditionalAdjacencyDefinitions = {
+        // Spacings:
+        
+        /**
+         * Defines the **left margin** when a `<kbd>` element follows another highlight-based element.
+         * Implemented using adjacent sibling selector.
+         * Ensures structured horizontal spacing.
+         */
+        prevMarginInlineStart : markVars.prevMarginInlineStart      as CssKnownProps['marginInlineStart' ],
+        
+        /**
+         * Defines the **right margin** when a `<kbd>` element precedes another highlight-based element.
+         * Implemented using `:has()` selector, which may have limited browser support.
+         * Check compatibility before relying on this approach.
+         */
+        nextMarginInlineEnd   : markVars.nextMarginInlineEnd        as CssKnownProps['marginInlineEnd'   ],
+    };
+    
+    
+    
+    // Merge all kbd definitions:
+    return {
+        ...staticKbdDefinitions,
+        ...staticConditionalAdjacencyDefinitions,
     };
 }, { prefix: defaultKbdPrefix });
 
@@ -186,7 +208,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = kbdVars.marginInlineStart; // Resolves to "var(--kbd-marginInlineStart)"
+ * const value = kbdVars.prevMarginInlineStart; // Resolves to "var(--kbd-prevMarginInlineStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -198,8 +220,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * kbdVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", kbdVars.marginInlineStart, " / 4)", "gray"
- * ]]; // Generates "--kbd-boxShadow: 0px 0px 0px calc(var(--kbd-marginInlineStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", kbdVars.prevMarginInlineStart, " / 4)", "gray"
+ * ]]; // Generates "--kbd-boxShadow: 0px 0px 0px calc(var(--kbd-prevMarginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -266,8 +288,8 @@ const config = cssConfig(() => {
  *     --kbd-borderWidth: var(--mrk-borderWidth);
  *     --kbd-borderColor: var(--col-primaryBold);
  *     --kbd-borderRadius: var(--mrk-borderRadius);
- *     --kbd-marginInlineStart: var(--mrk-marginInlineStart);
- *     --kbd-marginInlineEnd: var(--mrk-marginInlineEnd);
+ *     --kbd-prevMarginInlineStart: var(--mrk-prevMarginInlineStart);
+ *     --kbd-nextMarginInlineEnd: var(--mrk-nextMarginInlineEnd);
  *     --kbd-marginBlockStart: var(--mrk-marginBlockStart);
  *     --kbd-marginBlockEnd: var(--mrk-marginBlockEnd);
  *     --kbd-paddingInlineStart: var(--mrk-paddingInlineStart);
@@ -275,7 +297,7 @@ const config = cssConfig(() => {
  *     --kbd-paddingBlockStart: var(--mrk-paddingBlockStart);
  *     --kbd-paddingBlockEnd: var(--mrk-paddingBlockEnd);
  *     --kbd-fontWeightCustom: 900;
- *     --kbd-boxShadow: 0px 0px 0px calc(var(--kbd-marginInlineStart) / 4) gray;
+ *     --kbd-boxShadow: 0px 0px 0px calc(var(--kbd-prevMarginInlineStart) / 4) gray;
  *     --kbd-opacity: 0.5;
  *     --kbd-booh: 1234;
  * }
@@ -295,7 +317,7 @@ export const kbdVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = kbdVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--kbd-marginInlineStart)", " / 4)", "gray" ]]
+ * const definition = kbdVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--kbd-prevMarginInlineStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -307,8 +329,8 @@ export const kbdVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * kbdVarDefs.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", kbdVars.marginInlineStart, " / 4)", "gray"
- * ]]; // Generates "--kbd-boxShadow: 0px 0px 0px calc(var(--kbd-marginInlineStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", kbdVars.prevMarginInlineStart, " / 4)", "gray"
+ * ]]; // Generates "--kbd-boxShadow: 0px 0px 0px calc(var(--kbd-prevMarginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -375,8 +397,8 @@ export const kbdVars       = config[0];
  *     --kbd-borderWidth: var(--mrk-borderWidth);
  *     --kbd-borderColor: var(--col-primaryBold);
  *     --kbd-borderRadius: var(--mrk-borderRadius);
- *     --kbd-marginInlineStart: var(--mrk-marginInlineStart);
- *     --kbd-marginInlineEnd: var(--mrk-marginInlineEnd);
+ *     --kbd-prevMarginInlineStart: var(--mrk-prevMarginInlineStart);
+ *     --kbd-nextMarginInlineEnd: var(--mrk-nextMarginInlineEnd);
  *     --kbd-marginBlockStart: var(--mrk-marginBlockStart);
  *     --kbd-marginBlockEnd: var(--mrk-marginBlockEnd);
  *     --kbd-paddingInlineStart: var(--mrk-paddingInlineStart);
@@ -384,7 +406,7 @@ export const kbdVars       = config[0];
  *     --kbd-paddingBlockStart: var(--mrk-paddingBlockStart);
  *     --kbd-paddingBlockEnd: var(--mrk-paddingBlockEnd);
  *     --kbd-fontWeightCustom: 900;
- *     --kbd-boxShadow: 0px 0px 0px calc(var(--kbd-marginInlineStart) / 4) gray;
+ *     --kbd-boxShadow: 0px 0px 0px calc(var(--kbd-prevMarginInlineStart) / 4) gray;
  *     --kbd-opacity: 0.5;
  *     --kbd-booh: 1234;
  * }
@@ -426,8 +448,8 @@ export const kbdVarDefs    = config[1];
  *     --kbd-borderWidth: var(--mrk-borderWidth);
  *     --kbd-borderColor: var(--col-primaryBold);
  *     --kbd-borderRadius: var(--mrk-borderRadius);
- *     --kbd-marginInlineStart: var(--mrk-marginInlineStart);
- *     --kbd-marginInlineEnd: var(--mrk-marginInlineEnd);
+ *     --kbd-prevMarginInlineStart: var(--mrk-prevMarginInlineStart);
+ *     --kbd-nextMarginInlineEnd: var(--mrk-nextMarginInlineEnd);
  *     --kbd-marginBlockStart: var(--mrk-marginBlockStart);
  *     --kbd-marginBlockEnd: var(--mrk-marginBlockEnd);
  *     --kbd-paddingInlineStart: var(--mrk-paddingInlineStart);

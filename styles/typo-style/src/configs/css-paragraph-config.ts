@@ -19,34 +19,25 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    return {
+    // Static paragraph definitions:
+    
+    /**
+     * Defines static paragraph properties such as font sizes, families, weights, and styles.
+     */
+    const staticParagraphDefinitions = {
         // Spacings:
         
         /**
          * Defines the **left margin** for paragraphs.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineStart : '0em'       as CssKnownProps['marginInlineStart'],
+        marginInlineStart    : '0em'        as CssKnownProps['marginInlineStart'],
         
         /**
          * Defines the **right margin** for paragraphs.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineEnd   : '0em'       as CssKnownProps['marginInlineEnd'  ],
-        
-        /**
-         * Defines the **top margin** when a paragraph follows another text-block element.
-         * Implemented using adjacent sibling selector.
-         * Ensures structured vertical spacing.
-         */
-        marginBlockStart  : '1em'       as CssKnownProps['marginBlockStart' ],
-        
-        /**
-         * Defines the **bottom margin** when a paragraph precedes another text-block element.
-         * Implemented using `:has()` selector, which may have limited browser support.
-         * Check compatibility before relying on this approach.
-         */
-        marginBlockEnd    : '1em'       as CssKnownProps['marginBlockEnd'   ],
+        marginInlineEnd      : '0em'        as CssKnownProps['marginInlineEnd'  ],
         
         
         
@@ -57,40 +48,71 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize          : undefined   as CssKnownProps['fontSize'         ],
+        fontSize             : undefined    as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font family** for paragraphs.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily        : undefined   as CssKnownProps['fontFamily'       ],
+        fontFamily           : undefined    as CssKnownProps['fontFamily'       ],
         
         /**
          * Defines the **font weight** for paragraphs.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        fontWeight        : undefined   as CssKnownProps['fontWeight'       ],
+        fontWeight           : undefined    as CssKnownProps['fontWeight'       ],
         
         /**
          * Defines the **font style** for paragraphs (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle         : undefined   as CssKnownProps['fontStyle'        ],
+        fontStyle            : undefined    as CssKnownProps['fontStyle'        ],
         
         /**
          * Defines the **text decoration** for paragraphs.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration    : undefined   as CssKnownProps['textDecoration'   ],
+        textDecoration       : undefined    as CssKnownProps['textDecoration'   ],
         
         /**
          * Defines the **line height** for paragraphs.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight        : undefined   as CssKnownProps['lineHeight'       ],
+        lineHeight           : undefined    as CssKnownProps['lineHeight'       ],
+    };
+    
+    
+    
+    /**
+     * Defines static conditional sibling adjacency properties.
+     */
+    const staticConditionalAdjacencyDefinitions = {
+        // Spacings:
+        
+        /**
+         * Defines the **top margin** when a paragraph follows another text-block element.
+         * Implemented using adjacent sibling selector.
+         * Ensures structured vertical spacing.
+         */
+        prevMarginBlockStart : '1em'        as CssKnownProps['marginBlockStart' ],
+        
+        /**
+         * Defines the **bottom margin** when a paragraph precedes another text-block element.
+         * Implemented using `:has()` selector, which may have limited browser support.
+         * Check compatibility before relying on this approach.
+         */
+        nextMarginBlockEnd   : '1em'        as CssKnownProps['marginBlockEnd'   ],
+    };
+    
+    
+    
+    // Merge all paragraph definitions:
+    return {
+        ...staticParagraphDefinitions,
+        ...staticConditionalAdjacencyDefinitions,
     };
 }, { prefix: defaultParagraphPrefix });
 
@@ -105,7 +127,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = paragraphVars.marginBlockStart; // Resolves to "var(--p-marginBlockStart)"
+ * const value = paragraphVars.prevMarginBlockStart; // Resolves to "var(--p-prevMarginBlockStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -117,8 +139,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * paragraphVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", paragraphVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--p-boxShadow: 0px 0px 0px calc(var(--p-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", paragraphVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--p-boxShadow: 0px 0px 0px calc(var(--p-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -181,10 +203,10 @@ const config = cssConfig(() => {
  * :root {
  *     --p-marginInlineStart: 0em;
  *     --p-marginInlineEnd: 0em;
- *     --p-marginBlockStart: 1em;
- *     --p-marginBlockEnd: 1em;
+ *     --p-prevMarginBlockStart: 1em;
+ *     --p-nextMarginBlockEnd: 1em;
  *     --p-fontWeightCustom: 900;
- *     --p-boxShadow: 0px 0px 0px calc(var(--p-marginBlockStart) / 4) gray;
+ *     --p-boxShadow: 0px 0px 0px calc(var(--p-prevMarginBlockStart) / 4) gray;
  *     --p-padding: 1rem;
  *     --p-booh: 1234;
  * }
@@ -204,7 +226,7 @@ export const paragraphVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = paragraphVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--p-marginBlockStart)", " / 4)", "gray" ]]
+ * const definition = paragraphVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--p-prevMarginBlockStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -216,8 +238,8 @@ export const paragraphVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * paragraphVarDefs.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", paragraphVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--p-boxShadow: 0px 0px 0px calc(var(--p-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", paragraphVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--p-boxShadow: 0px 0px 0px calc(var(--p-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -280,10 +302,10 @@ export const paragraphVars       = config[0];
  * :root {
  *     --p-marginInlineStart: 0em;
  *     --p-marginInlineEnd: 0em;
- *     --p-marginBlockStart: 1em;
- *     --p-marginBlockEnd: 1em;
+ *     --p-prevMarginBlockStart: 1em;
+ *     --p-nextMarginBlockEnd: 1em;
  *     --p-fontWeightCustom: 900;
- *     --p-boxShadow: 0px 0px 0px calc(var(--p-marginBlockStart) / 4) gray;
+ *     --p-boxShadow: 0px 0px 0px calc(var(--p-prevMarginBlockStart) / 4) gray;
  *     --p-padding: 1rem;
  *     --p-booh: 1234;
  * }
@@ -321,8 +343,8 @@ export const paragraphVarDefs    = config[1];
  * :root {
  *     --p-marginInlineStart: 0em;
  *     --p-marginInlineEnd: 0em;
- *     --p-marginBlockStart: 1em;
- *     --p-marginBlockEnd: 1em;
+ *     --p-prevMarginBlockStart: 1em;
+ *     --p-nextMarginBlockEnd: 1em;
  * }
  * ```
  */

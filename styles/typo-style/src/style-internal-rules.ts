@@ -116,12 +116,6 @@ const elementRule = (isBlock: boolean, options: ElementRuleOptions, extendedLayo
     
     
     
-    // Determine margin properties based on element type:
-    const marginStartProp = isBlock ? 'marginBlockStart' : 'marginInlineStart';
-    const marginEndProp   = isBlock ? 'marginBlockEnd'   : 'marginInlineEnd';
-    
-    
-    
     // Generate a block-like or inline-like styling rule:
     return rule(selectors, {
         /**
@@ -131,6 +125,11 @@ const elementRule = (isBlock: boolean, options: ElementRuleOptions, extendedLayo
          * Uses `:where()` for **zero specificity** to allow easy overrides.
          */
         ...rule(exclusionElements ? `:not(:where(${exclusionElements}))` : '&', {
+            // Resets:
+            margin: 0, // Resets default margins (top, bottom, left, and right).
+            
+            
+            
             // Layouts:
             display : isBlock ? 'block' : 'inline',
             
@@ -149,15 +148,15 @@ const elementRule = (isBlock: boolean, options: ElementRuleOptions, extendedLayo
             // Spacings:
             
             // Conditional start margin:
-            [marginStartProp] : 0, // Resets default start margin.
             ...ifFollows(spacingElements, {
-                [marginStartProp] : configVars[marginStartProp], // Applies spacing when follows another related element.
+                // Configs:
+                ...usesCssProps(usesPrefixedProps(configVars, 'prev')), // Apply config's cssProps starting with `prev**`.
             }),
             
             // Conditional end margin:
-            [marginEndProp] : 0, // Resets default end margin.
             ...ifPrecedes(spacingElements, {
-                [marginEndProp] : configVars[marginEndProp], // Applies spacing when precedes another related element.
+                // Configs:
+                ...usesCssProps(usesPrefixedProps(configVars, 'next')), // Apply config's cssProps starting with `next**`.
             }),
             
             

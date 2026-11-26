@@ -32,14 +32,19 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    return {
+    // Static code definitions:
+    
+    /**
+     * Defines static code properties such as font sizes, families, weights, and styles.
+     */
+    const staticCodeDefinitions = {
         // Backgrounds:
         
         /**
          * Defines the **background color** for `<code>` elements.
          * Typically uses a **secondary mild color** (`secondaryMild`) for emphasis.
          */
-        backgroundColor        : colorConfigVars.secondaryMild          as CssKnownProps['backgroundColor'   ],
+        backgroundColor       : colorConfigVars.secondaryMild           as CssKnownProps['backgroundColor'   ],
         
         
         
@@ -49,7 +54,7 @@ const config = cssConfig(() => {
          * Defines the **text color** for `<code>` elements.
          * Typically uses a **secondary text color** (`secondaryText`) for readability.
          */
-        color                  : colorConfigVars.secondaryText          as CssKnownProps['color'             ],
+        color                 : colorConfigVars.secondaryText           as CssKnownProps['color'             ],
         
         
         
@@ -59,80 +64,66 @@ const config = cssConfig(() => {
          * Defines the **border style** for `<code>` elements.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : markVars.borderStyle                   as CssKnownProps['borderStyle'       ],
+        borderStyle           : markVars.borderStyle                    as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for `<code>` elements.
          * Typically uses the default border width for visual clarity.
          */
-        borderWidth            : markVars.borderWidth                   as CssKnownProps['borderWidth'       ],
+        borderWidth           : markVars.borderWidth                    as CssKnownProps['borderWidth'       ],
         
         /**
          * Defines the **border color** for `<code>` elements.
          * Typically uses a **secondary thin color** (`secondaryThin`) for subtle emphasis.
          */
-        borderColor            : colorConfigVars.secondaryThin          as CssKnownProps['borderColor'       ],
+        borderColor           : colorConfigVars.secondaryThin           as CssKnownProps['borderColor'       ],
         
         /**
          * Defines the **border radius** for `<code>` elements.
          * Typically uses a **small radius** (`sm`) to create softened edges.
          */
-        borderRadius           : markVars.borderRadius                  as CssKnownProps['borderRadius'      ],
+        borderRadius          : markVars.borderRadius                   as CssKnownProps['borderRadius'      ],
         
         
         
         // Spacings:
         
         /**
-         * Defines the **left margin** when a `<code>` element follows another highlight-based element.
-         * Implemented using adjacent sibling selector.
-         * Ensures structured horizontal spacing.
-         */
-        marginInlineStart      : markVars.marginInlineStart             as CssKnownProps['marginInlineStart' ],
-        
-        /**
-         * Defines the **right margin** when a `<code>` element precedes another highlight-based element.
-         * Implemented using `:has()` selector, which may have limited browser support.
-         * Check compatibility before relying on this approach.
-         */
-        marginInlineEnd        : markVars.marginInlineEnd               as CssKnownProps['marginInlineEnd'   ],
-        
-        /**
          * Defines the **top margin** for `<code>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockStart       : markVars.marginBlockStart              as CssKnownProps['marginBlockStart'  ],
+        marginBlockStart      : markVars.marginBlockStart               as CssKnownProps['marginBlockStart'  ],
         
         /**
          * Defines the **bottom margin** for `<code>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockEnd         : markVars.marginBlockEnd                as CssKnownProps['marginBlockEnd'    ],
+        marginBlockEnd        : markVars.marginBlockEnd                 as CssKnownProps['marginBlockEnd'    ],
         
         
         /**
          * Defines **left padding** inside `<code>` elements.
          * Adds breathing room between the **text and left boundary**.
          */
-        paddingInlineStart     : markVars.paddingInlineStart            as CssKnownProps['paddingInlineStart'],
+        paddingInlineStart    : markVars.paddingInlineStart             as CssKnownProps['paddingInlineStart'],
         
         /**
          * Defines **right padding** inside `<code>` elements.
          * Adds breathing room between the **text and right boundary**.
          */
-        paddingInlineEnd       : markVars.paddingInlineEnd              as CssKnownProps['paddingInlineEnd'  ],
+        paddingInlineEnd      : markVars.paddingInlineEnd               as CssKnownProps['paddingInlineEnd'  ],
         
         /**
          * Defines **top padding** inside `<code>` elements.
          * Adds breathing room between the **text and top boundary**.
          */
-        paddingBlockStart      : markVars.paddingBlockStart             as CssKnownProps['paddingBlockStart' ],
+        paddingBlockStart     : markVars.paddingBlockStart              as CssKnownProps['paddingBlockStart' ],
         
         /**
          * Defines **bottom padding** inside `<code>` elements.
          * Adds breathing room between the **text and bottom boundary**.
          */
-        paddingBlockEnd        : markVars.paddingBlockEnd               as CssKnownProps['paddingBlockEnd'   ],
+        paddingBlockEnd       : markVars.paddingBlockEnd                as CssKnownProps['paddingBlockEnd'   ],
         
         
         
@@ -143,40 +134,71 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize               : markVars.fontSize                      as CssKnownProps['fontSize'          ],
+        fontSize              : markVars.fontSize                       as CssKnownProps['fontSize'          ],
         
         /**
          * Defines the **font family** for `<code>` elements.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily             : typoConfigVars.fontFamilyMonospace     as CssKnownProps['fontFamily'        ],
+        fontFamily            : typoConfigVars.fontFamilyMonospace      as CssKnownProps['fontFamily'        ],
         
         /**
          * Defines the **font weight** for `<code>` elements.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        fontWeight             : markVars.fontWeight                    as CssKnownProps['fontWeight'        ],
+        fontWeight            : markVars.fontWeight                     as CssKnownProps['fontWeight'        ],
         
         /**
          * Defines the **font style** for `<code>` elements (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle              : markVars.fontStyle                     as CssKnownProps['fontStyle'         ],
+        fontStyle             : markVars.fontStyle                      as CssKnownProps['fontStyle'         ],
         
         /**
          * Defines the **text decoration** for `<code>` elements.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration         : markVars.textDecoration                as CssKnownProps['textDecoration'    ],
+        textDecoration        : markVars.textDecoration                 as CssKnownProps['textDecoration'    ],
         
         /**
          * Defines the **line height** for `<code>` elements.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight             : markVars.lineHeight                    as CssKnownProps['lineHeight'        ],
+        lineHeight            : markVars.lineHeight                     as CssKnownProps['lineHeight'        ],
+    };
+    
+    
+    
+    /**
+     * Defines static conditional sibling adjacency properties.
+     */
+    const staticConditionalAdjacencyDefinitions = {
+        // Spacings:
+        
+        /**
+         * Defines the **left margin** when a `<code>` element follows another highlight-based element.
+         * Implemented using adjacent sibling selector.
+         * Ensures structured horizontal spacing.
+         */
+        prevMarginInlineStart : markVars.prevMarginInlineStart          as CssKnownProps['marginInlineStart' ],
+        
+        /**
+         * Defines the **right margin** when a `<code>` element precedes another highlight-based element.
+         * Implemented using `:has()` selector, which may have limited browser support.
+         * Check compatibility before relying on this approach.
+         */
+        nextMarginInlineEnd   : markVars.nextMarginInlineEnd            as CssKnownProps['marginInlineEnd'   ],
+    };
+    
+    
+    
+    // Merge all code definitions:
+    return {
+        ...staticCodeDefinitions,
+        ...staticConditionalAdjacencyDefinitions,
     };
 }, { prefix: defaultCodePrefix });
 
@@ -191,7 +213,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = codeVars.marginInlineStart; // Resolves to "var(--code-marginInlineStart)"
+ * const value = codeVars.prevMarginInlineStart; // Resolves to "var(--code-prevMarginInlineStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -203,8 +225,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * codeVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", codeVars.marginInlineStart, " / 4)", "gray"
- * ]]; // Generates "--code-boxShadow: 0px 0px 0px calc(var(--code-marginInlineStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", codeVars.prevMarginInlineStart, " / 4)", "gray"
+ * ]]; // Generates "--code-boxShadow: 0px 0px 0px calc(var(--code-prevMarginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -271,8 +293,8 @@ const config = cssConfig(() => {
  *     --code-borderWidth: var(--mrk-borderWidth);
  *     --code-borderColor: var(--col-secondaryThin);
  *     --code-borderRadius: var(--mrk-borderRadius);
- *     --code-marginInlineStart: var(--mrk-marginInlineStart);
- *     --code-marginInlineEnd: var(--mrk-marginInlineEnd);
+ *     --code-prevMarginInlineStart: var(--mrk-prevMarginInlineStart);
+ *     --code-nextMarginInlineEnd: var(--mrk-nextMarginInlineEnd);
  *     --code-marginBlockStart: var(--mrk-marginBlockStart);
  *     --code-marginBlockEnd: var(--mrk-marginBlockEnd);
  *     --code-paddingInlineStart: var(--mrk-paddingInlineStart);
@@ -281,7 +303,7 @@ const config = cssConfig(() => {
  *     --code-paddingBlockEnd: var(--mrk-paddingBlockEnd);
  *     --code-fontFamily: var(--typ-fontFamilyMonospace);
  *     --code-fontWeightCustom: 900;
- *     --code-boxShadow: 0px 0px 0px calc(var(--code-marginInlineStart) / 4) gray;
+ *     --code-boxShadow: 0px 0px 0px calc(var(--code-prevMarginInlineStart) / 4) gray;
  *     --code-opacity: 0.5;
  *     --code-booh: 1234;
  * }
@@ -301,7 +323,7 @@ export const codeVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = codeVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--code-marginInlineStart)", " / 4)", "gray" ]]
+ * const definition = codeVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--code-prevMarginInlineStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -313,8 +335,8 @@ export const codeVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * codeVarDefs.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", codeVars.marginInlineStart, " / 4)", "gray"
- * ]]; // Generates "--code-boxShadow: 0px 0px 0px calc(var(--code-marginInlineStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", codeVars.prevMarginInlineStart, " / 4)", "gray"
+ * ]]; // Generates "--code-boxShadow: 0px 0px 0px calc(var(--code-prevMarginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -381,8 +403,8 @@ export const codeVars       = config[0];
  *     --code-borderWidth: var(--mrk-borderWidth);
  *     --code-borderColor: var(--col-secondaryThin);
  *     --code-borderRadius: var(--mrk-borderRadius);
- *     --code-marginInlineStart: var(--mrk-marginInlineStart);
- *     --code-marginInlineEnd: var(--mrk-marginInlineEnd);
+ *     --code-prevMarginInlineStart: var(--mrk-prevMarginInlineStart);
+ *     --code-nextMarginInlineEnd: var(--mrk-nextMarginInlineEnd);
  *     --code-marginBlockStart: var(--mrk-marginBlockStart);
  *     --code-marginBlockEnd: var(--mrk-marginBlockEnd);
  *     --code-paddingInlineStart: var(--mrk-paddingInlineStart);
@@ -391,7 +413,7 @@ export const codeVars       = config[0];
  *     --code-paddingBlockEnd: var(--mrk-paddingBlockEnd);
  *     --code-fontFamily: var(--typ-fontFamilyMonospace);
  *     --code-fontWeightCustom: 900;
- *     --code-boxShadow: 0px 0px 0px calc(var(--code-marginInlineStart) / 4) gray;
+ *     --code-boxShadow: 0px 0px 0px calc(var(--code-prevMarginInlineStart) / 4) gray;
  *     --code-opacity: 0.5;
  *     --code-booh: 1234;
  * }
@@ -433,8 +455,8 @@ export const codeVarDefs    = config[1];
  *     --code-borderWidth: var(--mrk-borderWidth);
  *     --code-borderColor: var(--col-secondaryThin);
  *     --code-borderRadius: var(--mrk-borderRadius);
- *     --code-marginInlineStart: var(--mrk-marginInlineStart);
- *     --code-marginInlineEnd: var(--mrk-marginInlineEnd);
+ *     --code-prevMarginInlineStart: var(--mrk-prevMarginInlineStart);
+ *     --code-nextMarginInlineEnd: var(--mrk-nextMarginInlineEnd);
  *     --code-marginBlockStart: var(--mrk-marginBlockStart);
  *     --code-marginBlockEnd: var(--mrk-marginBlockEnd);
  *     --code-paddingInlineStart: var(--mrk-paddingInlineStart);

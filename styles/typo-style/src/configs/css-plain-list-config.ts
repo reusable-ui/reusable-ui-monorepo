@@ -31,7 +31,7 @@ const config = cssConfig(() => {
          * Defines the **list style position**.
          * Typically `outside` to maintain alignment with text blocks.
          */
-        listStylePosition      : 'outside'  as CssKnownProps['listStylePosition'],
+        listStylePosition        : 'outside'    as CssKnownProps['listStylePosition'],
         
         
         
@@ -41,34 +41,20 @@ const config = cssConfig(() => {
          * Defines the **left margin** for lists.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineStart      : '0em'      as CssKnownProps['marginInlineStart'],
+        marginInlineStart        : '0em'        as CssKnownProps['marginInlineStart'],
         
         /**
          * Defines the **right margin** for lists.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineEnd        : '0em'      as CssKnownProps['marginInlineEnd'  ],
-        
-        /**
-         * Defines the **top margin** when a list follows another text-block element.
-         * Implemented using adjacent sibling selector.
-         * Ensures structured vertical spacing.
-         */
-        marginBlockStart       : '1em'      as CssKnownProps['marginBlockStart' ],
-        
-        /**
-         * Defines the **bottom margin** when a list precedes another text-block element.
-         * Implemented using `:has()` selector, which may have limited browser support.
-         * Check compatibility before relying on this approach.
-         */
-        marginBlockEnd         : '1em'      as CssKnownProps['marginBlockEnd'   ],
+        marginInlineEnd          : '0em'        as CssKnownProps['marginInlineEnd'  ],
         
         
         /**
          * Defines **left padding** for list indentation.
          * Provides space for list markers and indentation of list items.
          */
-        paddingInlineStart     : '1.5em'    as CssKnownProps['paddingInlineStart'],
+        paddingInlineStart       : '1.5em'      as CssKnownProps['paddingInlineStart'],
         
         
         
@@ -79,41 +65,66 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize               : undefined  as CssKnownProps['fontSize'         ],
+        fontSize                 : undefined    as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font family** for lists.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily             : undefined  as CssKnownProps['fontFamily'       ],
+        fontFamily               : undefined    as CssKnownProps['fontFamily'       ],
         
         /**
          * Defines the **font weight** for lists.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        fontWeight             : undefined  as CssKnownProps['fontWeight'       ],
+        fontWeight               : undefined    as CssKnownProps['fontWeight'       ],
         
         /**
          * Defines the **font style** for lists (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle              : undefined  as CssKnownProps['fontStyle'        ],
+        fontStyle                : undefined    as CssKnownProps['fontStyle'        ],
         
         /**
          * Defines the **text decoration** for lists.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration         : undefined  as CssKnownProps['textDecoration'   ],
+        textDecoration           : undefined    as CssKnownProps['textDecoration'   ],
         
         /**
          * Defines the **line height** for lists.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight             : undefined  as CssKnownProps['lineHeight'       ],
+        lineHeight               : undefined    as CssKnownProps['lineHeight'       ],
     };
+    
+    
+    
+    /**
+     * Defines static conditional sibling adjacency properties.
+     */
+    const staticConditionalAdjacencyDefinitions = {
+        // Spacings:
+        
+        /**
+         * Defines the **top margin** when a list follows another text-block element.
+         * Implemented using adjacent sibling selector.
+         * Ensures structured vertical spacing.
+         */
+        prevMarginBlockStart     : '1em'        as CssKnownProps['marginBlockStart' ],
+        
+        /**
+         * Defines the **bottom margin** when a list precedes another text-block element.
+         * Implemented using `:has()` selector, which may have limited browser support.
+         * Check compatibility before relying on this approach.
+         */
+        nextMarginBlockEnd       : '1em'        as CssKnownProps['marginBlockEnd'   ],
+    };
+    
+    
     
     /**
      * Specific List Definitions.
@@ -125,13 +136,13 @@ const config = cssConfig(() => {
          * Defines the **marker style** for unordered lists (`<ul>`).
          * Uses `disc` by default.
          */
-        unorderedListStyleType : 'disc'     as CssKnownProps['listStyleType'    ],
+        unorderedListStyleType   : 'disc'       as CssKnownProps['listStyleType'    ],
         
         /**
          * Defines the **marker style** for ordered lists (`<ol>`).
          * Uses `decimal` numbering by default.
          */
-        orderedListStyleType   : 'decimal'  as CssKnownProps['listStyleType'    ],
+        orderedListStyleType     : 'decimal'    as CssKnownProps['listStyleType'    ],
     };
     
     /**
@@ -145,14 +156,14 @@ const config = cssConfig(() => {
          * Implemented using adjacent sibling selector.
          * Ensures structured vertical spacing.
          */
-        itemMarginBlockStart   : '0.25em'   as CssKnownProps['marginBlockStart' ],
+        itemPrevMarginBlockStart : '0.25em'     as CssKnownProps['marginBlockStart' ],
         
         /**
          * Defines the **bottom margin** when an item precedes another item.
          * Implemented using `:has()` selector, which may have limited browser support.
          * Check compatibility before relying on this approach.
          */
-        itemMarginBlockEnd     : '0.25em'   as CssKnownProps['marginBlockEnd'   ],
+        itemNextMarginBlockEnd   : '0.25em'     as CssKnownProps['marginBlockEnd'   ],
     };
     
     
@@ -160,6 +171,7 @@ const config = cssConfig(() => {
     // Merge all list definitions:
     return {
         ...staticListDefinitions,
+        ...staticConditionalAdjacencyDefinitions,
         ...staticSpecificListDefinitions,
         ...staticListItemDefinitions,
     };
@@ -176,7 +188,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = plainListVars.marginBlockStart; // Resolves to "var(--plist-marginBlockStart)"
+ * const value = plainListVars.prevMarginBlockStart; // Resolves to "var(--plist-prevMarginBlockStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -188,8 +200,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * plainListVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", plainListVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", plainListVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--plist-boxShadow: 0px 0px 0px calc(var(--plist-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -255,13 +267,13 @@ const config = cssConfig(() => {
  *     --plist-orderedListStyleType: decimal;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
- *     --plist-marginBlockStart: 1em;
- *     --plist-marginBlockEnd: 1em;
+ *     --plist-prevMarginBlockStart: 1em;
+ *     --plist-nextMarginBlockEnd: 1em;
  *     --plist-paddingInlineStart: 1.5em;
- *     --plist-itemMarginBlockStart: 0.25em;
- *     --plist-itemMarginBlockEnd: 0.25em;
+ *     --plist-itemPrevMarginBlockStart: 0.25em;
+ *     --plist-itemNextMarginBlockEnd: 0.25em;
  *     --plist-fontWeightCustom: 900;
- *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;
+ *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-prevMarginBlockStart) / 4) gray;
  *     --plist-opacity: 0.5;
  *     --plist-booh: 1234;
  * }
@@ -281,7 +293,7 @@ export const plainListVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = plainListVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--plist-marginBlockStart)", " / 4)", "gray" ]]
+ * const definition = plainListVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--plist-prevMarginBlockStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -293,8 +305,8 @@ export const plainListVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * plainListVarDefs.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", plainListVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", plainListVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--plist-boxShadow: 0px 0px 0px calc(var(--plist-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -360,13 +372,13 @@ export const plainListVars       = config[0];
  *     --plist-orderedListStyleType: decimal;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
- *     --plist-marginBlockStart: 1em;
- *     --plist-marginBlockEnd: 1em;
+ *     --plist-prevMarginBlockStart: 1em;
+ *     --plist-nextMarginBlockEnd: 1em;
  *     --plist-paddingInlineStart: 1.5em;
- *     --plist-itemMarginBlockStart: 0.25em;
- *     --plist-itemMarginBlockEnd: 0.25em;
+ *     --plist-itemPrevMarginBlockStart: 0.25em;
+ *     --plist-itemNextMarginBlockEnd: 0.25em;
  *     --plist-fontWeightCustom: 900;
- *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;
+ *     --plist-boxShadow: 0px 0px 0px calc(var(--plist-prevMarginBlockStart) / 4) gray;
  *     --plist-opacity: 0.5;
  *     --plist-booh: 1234;
  * }
@@ -407,11 +419,11 @@ export const plainListVarDefs    = config[1];
  *     --plist-orderedListStyleType: decimal;
  *     --plist-marginInlineStart: 0em;
  *     --plist-marginInlineEnd: 0em;
- *     --plist-marginBlockStart: 1em;
- *     --plist-marginBlockEnd: 1em;
+ *     --plist-prevMarginBlockStart: 1em;
+ *     --plist-nextMarginBlockEnd: 1em;
  *     --plist-paddingInlineStart: 1.5em;
- *     --plist-itemMarginBlockStart: 0.25em;
- *     --plist-itemMarginBlockEnd: 0.25em;
+ *     --plist-itemPrevMarginBlockStart: 0.25em;
+ *     --plist-itemNextMarginBlockEnd: 0.25em;
  * }
  * ```
  */

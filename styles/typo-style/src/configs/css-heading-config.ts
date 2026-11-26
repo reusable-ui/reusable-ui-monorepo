@@ -36,27 +36,13 @@ const config = cssConfig(() => {
          * Defines the **left margin** for headings.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineStart : '0em'                               as CssKnownProps['marginInlineStart'],
+        marginInlineStart    : '0em'                                as CssKnownProps['marginInlineStart'],
         
         /**
          * Defines the **right margin** for headings.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineEnd   : '0em'                               as CssKnownProps['marginInlineEnd'  ],
-        
-        /**
-         * Defines the **top margin** when a heading follows another non-heading-text-block element.
-         * Implemented using adjacent sibling selector.
-         * Ensures structured vertical spacing.
-         */
-        marginBlockStart  : '1.5em'                             as CssKnownProps['marginBlockStart' ],
-        
-        /**
-         * Defines the **bottom margin** when a heading precedes another non-heading-text-block element.
-         * Implemented using `:has()` selector, which may have limited browser support.
-         * Check compatibility before relying on this approach.
-         */
-        marginBlockEnd    : '0.75em'                            as CssKnownProps['marginBlockEnd'   ],
+        marginInlineEnd      : '0em'                                as CssKnownProps['marginInlineEnd'  ],
         
         
         
@@ -67,41 +53,41 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize          : undefined                           as CssKnownProps['fontSize'         ],
+        fontSize             : undefined                            as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font family** for headings.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily        : undefined                           as CssKnownProps['fontFamily'       ],
+        fontFamily           : undefined                            as CssKnownProps['fontFamily'       ],
         
         /**
          * Defines the **font weight** for headings.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          * Typically heavier than paragraph text.
          */
-        fontWeight        : typoConfigVars.fontWeightSemibold   as CssKnownProps['fontWeight'       ],
+        fontWeight           : typoConfigVars.fontWeightSemibold    as CssKnownProps['fontWeight'       ],
         
         /**
          * Defines the **font style** for headings (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle         : undefined                           as CssKnownProps['fontStyle'        ],
+        fontStyle            : undefined                            as CssKnownProps['fontStyle'        ],
         
         /**
          * Defines the **text decoration** for headings.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration    : undefined                           as CssKnownProps['textDecoration'   ],
+        textDecoration       : undefined                            as CssKnownProps['textDecoration'   ],
         
         /**
          * Defines the **line height** for headings.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight        : typoConfigVars.lineHeightSm         as CssKnownProps['lineHeight'       ],
+        lineHeight           : typoConfigVars.lineHeightSm          as CssKnownProps['lineHeight'       ],
     };
     
     
@@ -121,7 +107,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize1         : '2.25rem'                           as CssKnownProps['fontSize'         ],
+        fontSize1            : '2.25rem'                            as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h2>` headings.
@@ -129,7 +115,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize2         : '2.00rem'                           as CssKnownProps['fontSize'         ],
+        fontSize2            : '2.00rem'                            as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h3>` headings.
@@ -137,7 +123,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize3         : '1.75rem'                           as CssKnownProps['fontSize'         ],
+        fontSize3            : '1.75rem'                            as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h4>` headings.
@@ -145,7 +131,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize4         : '1.50rem'                           as CssKnownProps['fontSize'         ],
+        fontSize4            : '1.50rem'                            as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h5>` headings.
@@ -153,7 +139,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize5         : '1.25rem'                           as CssKnownProps['fontSize'         ],
+        fontSize5            : '1.25rem'                            as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h6>` headings.
@@ -161,7 +147,30 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize6         : '1.00rem'                           as CssKnownProps['fontSize'         ],
+        fontSize6            : '1.00rem'                            as CssKnownProps['fontSize'         ],
+    };
+    
+    
+    
+    /**
+     * Defines static conditional sibling adjacency properties.
+     */
+    const staticConditionalAdjacencyDefinitions = {
+        // Spacings:
+        
+        /**
+         * Defines the **top margin** when a heading follows another non-heading-text-block element.
+         * Implemented using adjacent sibling selector.
+         * Ensures structured vertical spacing.
+         */
+        prevMarginBlockStart : '1.5em'                              as CssKnownProps['marginBlockStart' ],
+        
+        /**
+         * Defines the **bottom margin** when a heading precedes another non-heading-text-block element.
+         * Implemented using `:has()` selector, which may have limited browser support.
+         * Check compatibility before relying on this approach.
+         */
+        nextMarginBlockEnd   : '0.75em'                             as CssKnownProps['marginBlockEnd'   ],
     };
     
     
@@ -177,7 +186,7 @@ const config = cssConfig(() => {
          * Applied when a heading follows another heading-like element.
          * Helps visually differentiate hierarchy within text blocks.
          */
-        subOpacity        : 0.65                                as CssKnownProps['opacity'          ],
+        subOpacity           : 0.65                                 as CssKnownProps['opacity'          ],
     };
     
     
@@ -186,6 +195,7 @@ const config = cssConfig(() => {
     return {
         ...staticHeadingDefinitions,
         ...computedHeadingDefinitions,
+        ...staticConditionalAdjacencyDefinitions,
         ...staticSubHeadingDefinitions,
     };
 }, { prefix: defaultHeadingPrefix });
@@ -201,7 +211,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = headingVars.marginBlockEnd; // Resolves to "var(--h-marginBlockEnd)"
+ * const value = headingVars.nextMarginBlockEnd; // Resolves to "var(--h-nextMarginBlockEnd)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -213,8 +223,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * headingVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", headingVars.marginBlockEnd, " / 4)", "gray"
- * ]]; // Generates "--h-boxShadow: 0px 0px 0px calc(var(--h-marginBlockEnd) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", headingVars.nextMarginBlockEnd, " / 4)", "gray"
+ * ]]; // Generates "--h-boxShadow: 0px 0px 0px calc(var(--h-nextMarginBlockEnd) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -277,8 +287,8 @@ const config = cssConfig(() => {
  * :root {
  *     --h-marginInlineStart: 0em;
  *     --h-marginInlineEnd: 0em;
- *     --h-marginBlockStart: 1.5em;
- *     --h-marginBlockEnd: 0.75em;
+ *     --h-prevMarginBlockStart: 1.5em;
+ *     --h-nextMarginBlockEnd: 0.75em;
  *     --h-fontWeight: var(--typ-fontWeightSemibold);
  *     --h-lineHeight: 1.25;
  *     --h-fontSize: unset;
@@ -290,7 +300,7 @@ const config = cssConfig(() => {
  *     --h-fontSize6: 1.00rem;
  *     --h-subOpacity: 0.65;
  *     --h-fontWeightCustom: 900;
- *     --h-boxShadow: 0px 0px 0px calc(var(--h-marginBlockEnd) / 4) gray;
+ *     --h-boxShadow: 0px 0px 0px calc(var(--h-nextMarginBlockEnd) / 4) gray;
  *     --h-padding: 1rem;
  *     --h-booh: 1234;
  * }
@@ -310,7 +320,7 @@ export const headingVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = headingVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--h-marginBlockEnd)", " / 4)", "gray" ]]
+ * const definition = headingVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--h-nextMarginBlockEnd)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -322,8 +332,8 @@ export const headingVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * headingVarDefs.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", headingVars.marginBlockEnd, " / 4)", "gray"
- * ]]; // Generates "--h-boxShadow: 0px 0px 0px calc(var(--h-marginBlockEnd) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", headingVars.nextMarginBlockEnd, " / 4)", "gray"
+ * ]]; // Generates "--h-boxShadow: 0px 0px 0px calc(var(--h-nextMarginBlockEnd) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -386,8 +396,8 @@ export const headingVars       = config[0];
  * :root {
  *     --h-marginInlineStart: 0em;
  *     --h-marginInlineEnd: 0em;
- *     --h-marginBlockStart: 1.5em;
- *     --h-marginBlockEnd: 0.75em;
+ *     --h-prevMarginBlockStart: 1.5em;
+ *     --h-nextMarginBlockEnd: 0.75em;
  *     --h-fontWeight: var(--typ-fontWeightSemibold);
  *     --h-lineHeight: 1.25;
  *     --h-fontSize: unset;
@@ -399,7 +409,7 @@ export const headingVars       = config[0];
  *     --h-fontSize6: 1.00rem;
  *     --h-subOpacity: 0.65;
  *     --h-fontWeightCustom: 900;
- *     --h-boxShadow: 0px 0px 0px calc(var(--h-marginBlockEnd) / 4) gray;
+ *     --h-boxShadow: 0px 0px 0px calc(var(--h-nextMarginBlockEnd) / 4) gray;
  *     --h-padding: 1rem;
  *     --h-booh: 1234;
  * }
@@ -437,8 +447,8 @@ export const headingVarDefs    = config[1];
  * :root {
  *     --h-marginInlineStart: 0em;
  *     --h-marginInlineEnd: 0em;
- *     --h-marginBlockStart: 1.5em;
- *     --h-marginBlockEnd: 0.75em;
+ *     --h-prevMarginBlockStart: 1.5em;
+ *     --h-nextMarginBlockEnd: 0.75em;
  *     --h-fontWeight: var(--typ-fontWeightSemibold);
  *     --h-lineHeight: 1.25;
  *     --h-fontSize: unset;

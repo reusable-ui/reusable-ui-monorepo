@@ -29,34 +29,25 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    return {
+    // Static lead paragraph definitions:
+    
+    /**
+     * Defines static lead paragraph properties such as font sizes, families, weights, and styles.
+     */
+    const staticLeadDefinitions = {
         // Spacings:
         
         /**
          * Defines the **left margin** for lead paragraphs.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineStart : paragraphVars.marginInlineStart     as CssKnownProps['marginInlineStart'],
+        marginInlineStart    : paragraphVars.marginInlineStart      as CssKnownProps['marginInlineStart'],
         
         /**
          * Defines the **right margin** for lead paragraphs.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineEnd   : paragraphVars.marginInlineEnd       as CssKnownProps['marginInlineEnd'  ],
-        
-        /**
-         * Defines the **top margin** when a paragraph follows another text-block element.
-         * Implemented using adjacent sibling selector.
-         * Ensures structured vertical spacing.
-         */
-        marginBlockStart  : paragraphVars.marginBlockStart      as CssKnownProps['marginBlockStart' ],
-        
-        /**
-         * Defines the **bottom margin** when a paragraph precedes another text-block element.
-         * Implemented using `:has()` selector, which may have limited browser support.
-         * Check compatibility before relying on this approach.
-         */
-        marginBlockEnd    : paragraphVars.marginBlockEnd        as CssKnownProps['marginBlockEnd'   ],
+        marginInlineEnd      : paragraphVars.marginInlineEnd        as CssKnownProps['marginInlineEnd'  ],
         
         
         
@@ -67,40 +58,71 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize          : typoConfigVars.fontSizeLg           as CssKnownProps['fontSize'         ],
+        fontSize             : typoConfigVars.fontSizeLg            as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font family** for lead paragraphs.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily        : paragraphVars.fontFamily            as CssKnownProps['fontFamily'       ],
+        fontFamily           : paragraphVars.fontFamily             as CssKnownProps['fontFamily'       ],
         
         /**
          * Defines the **font weight** for lead paragraphs.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        fontWeight        : typoConfigVars.fontWeightLight      as CssKnownProps['fontWeight'       ],
+        fontWeight           : typoConfigVars.fontWeightLight       as CssKnownProps['fontWeight'       ],
         
         /**
          * Defines the **font style** for lead paragraphs (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle         : paragraphVars.fontStyle             as CssKnownProps['fontStyle'        ],
+        fontStyle            : paragraphVars.fontStyle              as CssKnownProps['fontStyle'        ],
         
         /**
          * Defines the **text decoration** for lead paragraphs.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration    : paragraphVars.textDecoration        as CssKnownProps['textDecoration'   ],
+        textDecoration       : paragraphVars.textDecoration         as CssKnownProps['textDecoration'   ],
         
         /**
          * Defines the **line height** for lead paragraphs.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight        : paragraphVars.lineHeight            as CssKnownProps['lineHeight'       ],
+        lineHeight           : paragraphVars.lineHeight             as CssKnownProps['lineHeight'       ],
+    };
+    
+    
+    
+    /**
+     * Defines static conditional sibling adjacency properties.
+     */
+    const staticConditionalAdjacencyDefinitions = {
+        // Spacings:
+        
+        /**
+         * Defines the **top margin** when a paragraph follows another text-block element.
+         * Implemented using adjacent sibling selector.
+         * Ensures structured vertical spacing.
+         */
+        prevMarginBlockStart : paragraphVars.prevMarginBlockStart   as CssKnownProps['marginBlockStart' ],
+        
+        /**
+         * Defines the **bottom margin** when a paragraph precedes another text-block element.
+         * Implemented using `:has()` selector, which may have limited browser support.
+         * Check compatibility before relying on this approach.
+         */
+        nextMarginBlockEnd   : paragraphVars.nextMarginBlockEnd     as CssKnownProps['marginBlockEnd'   ],
+    };
+    
+    
+    
+    // Merge all lead definitions:
+    return {
+        ...staticLeadDefinitions,
+        ...staticConditionalAdjacencyDefinitions,
     };
 }, { prefix: defaultLeadPrefix });
 
@@ -115,7 +137,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = leadVars.marginBlockStart; // Resolves to "var(--lead-marginBlockStart)"
+ * const value = leadVars.prevMarginBlockStart; // Resolves to "var(--lead-prevMarginBlockStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -127,8 +149,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * leadVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", leadVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--lead-boxShadow: 0px 0px 0px calc(var(--lead-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", leadVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--lead-boxShadow: 0px 0px 0px calc(var(--lead-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -191,12 +213,12 @@ const config = cssConfig(() => {
  * :root {
  *     --lead-marginInlineStart: var(--p-marginInlineStart);
  *     --lead-marginInlineEnd: var(--p-marginInlineEnd);
- *     --lead-marginBlockStart: var(--p-marginBlockStart);
- *     --lead-marginBlockEnd: var(--p-marginBlockEnd);
+ *     --lead-prevMarginBlockStart: var(--p-prevMarginBlockStart);
+ *     --lead-nextMarginBlockEnd: var(--p-nextMarginBlockEnd);
  *     --lead-fontSize: var(--typ-fontSizeMd);
  *     --lead-fontWeight: var(--typ-fontWeightLight);
  *     --lead-fontWeightCustom: 900;
- *     --lead-boxShadow: 0px 0px 0px calc(var(--lead-marginBlockStart) / 4) gray;
+ *     --lead-boxShadow: 0px 0px 0px calc(var(--lead-prevMarginBlockStart) / 4) gray;
  *     --lead-padding: 1rem;
  *     --lead-booh: 1234;
  * }
@@ -216,7 +238,7 @@ export const leadVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = leadVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--lead-marginBlockStart)", " / 4)", "gray" ]]
+ * const definition = leadVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--lead-prevMarginBlockStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -228,8 +250,8 @@ export const leadVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * leadVarDefs.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", leadVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--lead-boxShadow: 0px 0px 0px calc(var(--lead-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", leadVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--lead-boxShadow: 0px 0px 0px calc(var(--lead-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -292,12 +314,12 @@ export const leadVars       = config[0];
  * :root {
  *     --lead-marginInlineStart: var(--p-marginInlineStart);
  *     --lead-marginInlineEnd: var(--p-marginInlineEnd);
- *     --lead-marginBlockStart: var(--p-marginBlockStart);
- *     --lead-marginBlockEnd: var(--p-marginBlockEnd);
+ *     --lead-prevMarginBlockStart: var(--p-prevMarginBlockStart);
+ *     --lead-nextMarginBlockEnd: var(--p-nextMarginBlockEnd);
  *     --lead-fontSize: var(--typ-fontSizeMd);
  *     --lead-fontWeight: var(--typ-fontWeightLight);
  *     --lead-fontWeightCustom: 900;
- *     --lead-boxShadow: 0px 0px 0px calc(var(--lead-marginBlockStart) / 4) gray;
+ *     --lead-boxShadow: 0px 0px 0px calc(var(--lead-prevMarginBlockStart) / 4) gray;
  *     --lead-padding: 1rem;
  *     --lead-booh: 1234;
  * }
@@ -335,8 +357,8 @@ export const leadVarDefs    = config[1];
  * :root {
  *     --lead-marginInlineStart: var(--p-marginInlineStart);
  *     --lead-marginInlineEnd: var(--p-marginInlineEnd);
- *     --lead-marginBlockStart: var(--p-marginBlockStart);
- *     --lead-marginBlockEnd: var(--p-marginBlockEnd);
+ *     --lead-prevMarginBlockStart: var(--p-prevMarginBlockStart);
+ *     --lead-nextMarginBlockEnd: var(--p-nextMarginBlockEnd);
  *     --lead-fontSize: var(--typ-fontSizeMd);
  *     --lead-fontWeight: var(--typ-fontWeightLight);
  * }

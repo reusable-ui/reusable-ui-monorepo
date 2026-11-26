@@ -60,20 +60,6 @@ const config = cssConfig(() => {
          */
         marginInlineEnd        : '0em'                      as CssKnownProps['marginInlineEnd'       ],
         
-        /**
-         * Defines the **top margin** when a blockquote follows another text-block element.
-         * Implemented using adjacent sibling selector.
-         * Ensures structured vertical spacing.
-         */
-        marginBlockStart       : '1em'                      as CssKnownProps['marginBlockStart'      ],
-        
-        /**
-         * Defines the **bottom margin** when a blockquote precedes another text-block element.
-         * Implemented using `:has()` selector, which may have limited browser support.
-         * Check compatibility before relying on this approach.
-         */
-        marginBlockEnd         : '1em'                      as CssKnownProps['marginBlockEnd'        ],
-        
         
         /**
          * Defines **left padding** inside blockquotes.
@@ -143,6 +129,31 @@ const config = cssConfig(() => {
          */
         lineHeight             : undefined                  as CssKnownProps['lineHeight'            ],
     };
+    
+    
+    
+    /**
+     * Defines static conditional sibling adjacency properties.
+     */
+    const staticConditionalAdjacencyDefinitions = {
+        // Spacings:
+        
+        /**
+         * Defines the **top margin** when a blockquote follows another text-block element.
+         * Implemented using adjacent sibling selector.
+         * Ensures structured vertical spacing.
+         */
+        prevMarginBlockStart   : '1em'                      as CssKnownProps['marginBlockStart'      ],
+        
+        /**
+         * Defines the **bottom margin** when a blockquote precedes another text-block element.
+         * Implemented using `:has()` selector, which may have limited browser support.
+         * Check compatibility before relying on this approach.
+         */
+        nextMarginBlockEnd     : '1em'                      as CssKnownProps['marginBlockEnd'        ],
+    };
+    
+    
     
     /**
      * Defines the **styling properties** for decorative **quote symbol**.
@@ -220,6 +231,7 @@ const config = cssConfig(() => {
     // Merge all blockquote definitions:
     return {
         ...staticBlockquoteDefinitions,
+        ...staticConditionalAdjacencyDefinitions,
         ...staticQuoteDefinitions,
     };
 }, { prefix: defaultBlockquotePrefix });
@@ -235,7 +247,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = blockquoteVars.marginBlockStart; // Resolves to "var(--bq-marginBlockStart)"
+ * const value = blockquoteVars.prevMarginBlockStart; // Resolves to "var(--bq-prevMarginBlockStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -247,8 +259,8 @@ const config = cssConfig(() => {
  * **Definition Assignment:**
  * ```ts
  * blockquoteVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", blockquoteVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--bq-boxShadow: 0px 0px 0px calc(var(--bq-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", blockquoteVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--bq-boxShadow: 0px 0px 0px calc(var(--bq-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -313,8 +325,8 @@ const config = cssConfig(() => {
  *     --bq-borderInlineStartWidth: 0.25em;
  *     --bq-marginInlineStart: 0em;
  *     --bq-marginInlineEnd: 0em;
- *     --bq-marginBlockStart: 1em;
- *     --bq-marginBlockEnd: 1em;
+ *     --bq-prevMarginBlockStart: 1em;
+ *     --bq-nextMarginBlockEnd: 1em;
  *     --bq-paddingInlineStart: 3em;
  *     --bq-paddingInlineEnd: 1em;
  *     --bq-paddingBlockStart: 1em;
@@ -326,7 +338,7 @@ const config = cssConfig(() => {
  *     --bq-quoteFontSize: 3em;
  *     --bq-quoteFontFamily: Arial;
  *     --bq-fontWeightCustom: 900;
- *     --bq-boxShadow: 0px 0px 0px calc(var(--bq-marginBlockStart) / 4) gray;
+ *     --bq-boxShadow: 0px 0px 0px calc(var(--bq-prevMarginBlockStart) / 4) gray;
  *     --bq-opacity: 0.5;
  *     --bq-booh: 1234;
  * }
@@ -346,7 +358,7 @@ export const blockquoteVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = blockquoteVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--bq-marginBlockStart)", " / 4)", "gray" ]]
+ * const definition = blockquoteVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--bq-prevMarginBlockStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
@@ -358,8 +370,8 @@ export const blockquoteVars       = config[0];
  * **Definition Assignment:**
  * ```ts
  * blockquoteVarDefs.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", blockquoteVars.marginBlockStart, " / 4)", "gray"
- * ]]; // Generates "--bq-boxShadow: 0px 0px 0px calc(var(--bq-marginBlockStart) / 4) gray;"
+ *    "0px", "0px", "0px", "calc(", blockquoteVars.prevMarginBlockStart, " / 4)", "gray"
+ * ]]; // Generates "--bq-boxShadow: 0px 0px 0px calc(var(--bq-prevMarginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -424,8 +436,8 @@ export const blockquoteVars       = config[0];
  *     --bq-borderInlineStartWidth: 0.25em;
  *     --bq-marginInlineStart: 0em;
  *     --bq-marginInlineEnd: 0em;
- *     --bq-marginBlockStart: 1em;
- *     --bq-marginBlockEnd: 1em;
+ *     --bq-prevMarginBlockStart: 1em;
+ *     --bq-nextMarginBlockEnd: 1em;
  *     --bq-paddingInlineStart: 3em;
  *     --bq-paddingInlineEnd: 1em;
  *     --bq-paddingBlockStart: 1em;
@@ -437,7 +449,7 @@ export const blockquoteVars       = config[0];
  *     --bq-quoteFontSize: 3em;
  *     --bq-quoteFontFamily: Arial;
  *     --bq-fontWeightCustom: 900;
- *     --bq-boxShadow: 0px 0px 0px calc(var(--bq-marginBlockStart) / 4) gray;
+ *     --bq-boxShadow: 0px 0px 0px calc(var(--bq-prevMarginBlockStart) / 4) gray;
  *     --bq-opacity: 0.5;
  *     --bq-booh: 1234;
  * }
@@ -477,8 +489,8 @@ export const blockquoteVarDefs    = config[1];
  *     --bq-borderInlineStartWidth: 0.25em;
  *     --bq-marginInlineStart: 0em;
  *     --bq-marginInlineEnd: 0em;
- *     --bq-marginBlockStart: 1em;
- *     --bq-marginBlockEnd: 1em;
+ *     --bq-prevMarginBlockStart: 1em;
+ *     --bq-nextMarginBlockEnd: 1em;
  *     --bq-paddingInlineStart: 3em;
  *     --bq-paddingInlineEnd: 1em;
  *     --bq-paddingBlockStart: 1em;
