@@ -160,7 +160,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticConditionalAdjacencyDefinitions = {
+    const staticSiblingAdjacencyDefinitions = {
         // Spacings:
         
         /**
@@ -200,7 +200,7 @@ const config = cssConfig(() => {
     return {
         ...staticDisplayDefinitions,
         ...computedDisplayDefinitions,
-        ...staticConditionalAdjacencyDefinitions,
+        ...staticSiblingAdjacencyDefinitions,
         ...staticSubDisplayDefinitions,
     };
 }, { prefix: defaultDisplayPrefix });

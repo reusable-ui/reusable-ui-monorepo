@@ -82,7 +82,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticConditionalAdjacencyDefinitions = {
+    const staticSiblingAdjacencyDefinitions = {
         // Spacings:
         
         /**
@@ -105,7 +105,7 @@ const config = cssConfig(() => {
     // Merge all horz separator definitions:
     return {
         ...staticHorzSeparatorDefinitions,
-        ...staticConditionalAdjacencyDefinitions,
+        ...staticSiblingAdjacencyDefinitions,
     };
 }, { prefix: defaultHorzSeparatorPrefix });
 

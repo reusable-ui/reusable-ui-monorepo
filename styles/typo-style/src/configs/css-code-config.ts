@@ -175,7 +175,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticConditionalAdjacencyDefinitions = {
+    const staticSiblingAdjacencyDefinitions = {
         // Spacings:
         
         /**
@@ -198,7 +198,7 @@ const config = cssConfig(() => {
     // Merge all code definitions:
     return {
         ...staticCodeDefinitions,
-        ...staticConditionalAdjacencyDefinitions,
+        ...staticSiblingAdjacencyDefinitions,
     };
 }, { prefix: defaultCodePrefix });
 

@@ -155,7 +155,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticConditionalAdjacencyDefinitions = {
+    const staticSiblingAdjacencyDefinitions = {
         // Spacings:
         
         /**
@@ -195,7 +195,7 @@ const config = cssConfig(() => {
     return {
         ...staticHeadingDefinitions,
         ...computedHeadingDefinitions,
-        ...staticConditionalAdjacencyDefinitions,
+        ...staticSiblingAdjacencyDefinitions,
         ...staticSubHeadingDefinitions,
     };
 }, { prefix: defaultHeadingPrefix });

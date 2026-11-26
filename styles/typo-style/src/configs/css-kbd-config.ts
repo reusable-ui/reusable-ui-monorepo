@@ -170,7 +170,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticConditionalAdjacencyDefinitions = {
+    const staticSiblingAdjacencyDefinitions = {
         // Spacings:
         
         /**
@@ -193,7 +193,7 @@ const config = cssConfig(() => {
     // Merge all kbd definitions:
     return {
         ...staticKbdDefinitions,
-        ...staticConditionalAdjacencyDefinitions,
+        ...staticSiblingAdjacencyDefinitions,
     };
 }, { prefix: defaultKbdPrefix });
 
