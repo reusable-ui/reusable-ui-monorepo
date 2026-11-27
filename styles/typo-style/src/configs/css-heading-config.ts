@@ -154,6 +154,22 @@ const config = cssConfig(() => {
     
     
     /**
+     * Defines static appearance properties.
+     */
+    const staticAppearanceProperties = {
+        // Appearances:
+        
+        /**
+         * Defines the **sub-opacity** for headings.
+         * Applied when a heading follows another heading-like element.
+         * Helps visually differentiate hierarchy within text blocks.
+         */
+        subOpacity           : 0.65                                 as CssKnownProps['opacity'          ],
+    };
+    
+    
+    
+    /**
      * Defines static conditional sibling adjacency properties.
      */
     const staticSiblingAdjacencyProperties = {
@@ -176,29 +192,13 @@ const config = cssConfig(() => {
     
     
     
-    /**
-     * Defines static appearance properties.
-     */
-    const staticAppearanceProperties = {
-        // Appearances:
-        
-        /**
-         * Defines the **sub-opacity** for headings.
-         * Applied when a heading follows another heading-like element.
-         * Helps visually differentiate hierarchy within text blocks.
-         */
-        subOpacity           : 0.65                                 as CssKnownProps['opacity'          ],
-    };
-    
-    
-    
     // Merge all properties:
     return {
         ...staticSpacingProperties,
         ...staticTypographyProperties,
         ...computedTypographyProperties,
-        ...staticSiblingAdjacencyProperties,
         ...staticAppearanceProperties,
+        ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultHeadingPrefix });
 
