@@ -27,8 +27,6 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static kbd definitions:
-    
     /**
      * Defines static kbd properties such as font sizes, families, weights, and styles.
      */

@@ -24,8 +24,6 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static blockquote definitions:
-    
     /**
      * Defines the **styling properties** for blockquotes, including borders, spacing, and typography.
      */

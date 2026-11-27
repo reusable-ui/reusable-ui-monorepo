@@ -29,8 +29,6 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static lead paragraph definitions:
-    
     /**
      * Defines static lead paragraph properties such as font sizes, families, weights, and styles.
      */

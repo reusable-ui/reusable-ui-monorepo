@@ -24,8 +24,6 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static horz separator definitions:
-    
     /**
      * Defines static horz separator properties such as font sizes, families, weights, and styles.
      */

@@ -24,8 +24,6 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static heading definitions:
-    
     /**
      * Defines static heading properties such as font sizes, families, weights, and styles.
      */
@@ -91,8 +89,6 @@ const config = cssConfig(() => {
     };
     
     
-    
-    // Computed typo definitions:
     
     /**
      * Defines computed heading font sizes for structured hierarchy.

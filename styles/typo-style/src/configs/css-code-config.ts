@@ -32,8 +32,6 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static code definitions:
-    
     /**
      * Defines static code properties such as font sizes, families, weights, and styles.
      */

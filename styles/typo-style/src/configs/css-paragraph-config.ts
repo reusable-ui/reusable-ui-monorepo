@@ -19,8 +19,6 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static paragraph definitions:
-    
     /**
      * Defines static paragraph properties such as font sizes, families, weights, and styles.
      */

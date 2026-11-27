@@ -19,8 +19,6 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static list definitions:
-    
     /**
      * Base List Definitions.
      */

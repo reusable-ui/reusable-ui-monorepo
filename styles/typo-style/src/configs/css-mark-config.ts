@@ -30,8 +30,6 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static mark definitions:
-    
     /**
      * Defines static mark properties such as font sizes, families, weights, and styles.
      */
