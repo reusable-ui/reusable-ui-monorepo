@@ -191,7 +191,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all mark definitions:
+    // Merge all properties:
     return {
         ...staticMarkProperties,
         ...staticSiblingAdjacencyProperties,

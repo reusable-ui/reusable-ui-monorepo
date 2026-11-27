@@ -107,7 +107,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all paragraph definitions:
+    // Merge all properties:
     return {
         ...staticParagraphProperties,
         ...staticSiblingAdjacencyProperties,

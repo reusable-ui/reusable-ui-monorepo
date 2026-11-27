@@ -168,7 +168,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all list definitions:
+    // Merge all properties:
     return {
         ...staticListProperties,
         ...staticSiblingAdjacencyProperties,

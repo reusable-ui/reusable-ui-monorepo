@@ -100,7 +100,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all horz separator definitions:
+    // Merge all properties:
     return {
         ...staticHorzSeparatorProperties,
         ...staticSiblingAdjacencyProperties,

@@ -226,7 +226,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all blockquote definitions:
+    // Merge all properties:
     return {
         ...staticBlockquoteProperties,
         ...staticSiblingAdjacencyProperties,

@@ -192,7 +192,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all display definitions:
+    // Merge all properties:
     return {
         ...staticDisplayProperties,
         ...computedDisplayProperties,

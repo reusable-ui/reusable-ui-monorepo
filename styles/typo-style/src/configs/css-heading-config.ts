@@ -187,7 +187,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all heading definitions:
+    // Merge all properties:
     return {
         ...staticHeadingProperties,
         ...computedHeadingProperties,

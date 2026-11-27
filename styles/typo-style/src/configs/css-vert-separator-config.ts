@@ -89,7 +89,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all vert separator definitions:
+    // Merge all properties:
     return {
         ...staticVertSeparatorProperties,
     };

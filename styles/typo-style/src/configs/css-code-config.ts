@@ -193,7 +193,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all code definitions:
+    // Merge all properties:
     return {
         ...staticCodeProperties,
         ...staticSiblingAdjacencyProperties,

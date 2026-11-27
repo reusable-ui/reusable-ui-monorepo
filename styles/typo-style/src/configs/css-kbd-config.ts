@@ -188,7 +188,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all kbd definitions:
+    // Merge all properties:
     return {
         ...staticKbdProperties,
         ...staticSiblingAdjacencyProperties,

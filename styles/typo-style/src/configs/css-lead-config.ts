@@ -117,7 +117,7 @@ const config = cssConfig(() => {
     
     
     
-    // Merge all lead definitions:
+    // Merge all properties:
     return {
         ...staticLeadProperties,
         ...staticSiblingAdjacencyProperties,
