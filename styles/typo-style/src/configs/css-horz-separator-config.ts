@@ -56,9 +56,14 @@ const config = cssConfig(() => {
          * Ensures subtle visual distinction without overpowering surrounding content.
          */
         opacity              : 0.25                     as CssKnownProps['opacity'           ],
-        
-        
-        
+    };
+    
+    
+    
+    /**
+     * Defines static layout properties.
+     */
+    const staticLayoutProperties = {
         // Borders:
         
         /**
@@ -109,6 +114,7 @@ const config = cssConfig(() => {
     return {
         ...staticSpacingProperties,
         ...staticHorzSeparatorProperties,
+        ...staticLayoutProperties,
         ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultHorzSeparatorPrefix });

@@ -74,22 +74,6 @@ const config = cssConfig(() => {
      * Defines the **styling properties** for blockquotes, including borders, spacing, and typography.
      */
     const staticBlockquoteProperties = {
-        // Borders:
-        
-        /**
-         * Defines the **left border style** for blockquotes.
-         * Typically uses a **solid border** to visually distinguish quotes.
-         */
-        borderInlineStartStyle : 'solid'                    as CssKnownProps['borderInlineStartStyle'],
-        
-        /**
-         * Defines the **left border width** for blockquotes.
-         * Typically uses a **thick border** to visually distinguish quotes.
-         */
-        borderInlineStartWidth : '0.25em'                   as CssKnownProps['borderInlineStartWidth'],
-        
-        
-        
         // Typos:
         
         /**
@@ -131,6 +115,27 @@ const config = cssConfig(() => {
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
         lineHeight             : undefined                  as CssKnownProps['lineHeight'            ],
+    };
+    
+    
+    
+    /**
+     * Defines static layout properties.
+     */
+    const staticLayoutProperties = {
+        // Borders:
+        
+        /**
+         * Defines the **left border style** for blockquotes.
+         * Typically uses a **solid border** to visually distinguish quotes.
+         */
+        borderInlineStartStyle : 'solid'                    as CssKnownProps['borderInlineStartStyle'],
+        
+        /**
+         * Defines the **left border width** for blockquotes.
+         * Typically uses a **thick border** to visually distinguish quotes.
+         */
+        borderInlineStartWidth : '0.25em'                   as CssKnownProps['borderInlineStartWidth'],
     };
     
     
@@ -235,6 +240,7 @@ const config = cssConfig(() => {
     return {
         ...staticSpacingProperties,
         ...staticBlockquoteProperties,
+        ...staticLayoutProperties,
         ...staticSiblingAdjacencyProperties,
         ...staticQuoteProperties,
     };

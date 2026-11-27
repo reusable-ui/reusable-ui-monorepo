@@ -68,9 +68,14 @@ const config = cssConfig(() => {
          * Ensures subtle visual distinction without overpowering surrounding content.
          */
         opacity                : horzSeparatorVars.opacity              as CssKnownProps['opacity'           ],
-        
-        
-        
+    };
+    
+    
+    
+    /**
+     * Defines static layout properties.
+     */
+    const staticLayoutProperties = {
         // Borders:
         
         /**
@@ -98,6 +103,7 @@ const config = cssConfig(() => {
     return {
         ...staticSpacingProperties,
         ...staticVertSeparatorProperties,
+        ...staticLayoutProperties,
     };
 }, { prefix: defaultVertSeparatorPrefix });
 

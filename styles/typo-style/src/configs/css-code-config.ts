@@ -82,54 +82,6 @@ const config = cssConfig(() => {
      * Defines static code properties such as font sizes, families, weights, and styles.
      */
     const staticCodeProperties = {
-        // Backgrounds:
-        
-        /**
-         * Defines the **background color** for `<code>` elements.
-         * Typically uses a **secondary mild color** (`secondaryMild`) for emphasis.
-         */
-        backgroundColor       : colorConfigVars.secondaryMild           as CssKnownProps['backgroundColor'   ],
-        
-        
-        
-        // Foregrounds:
-        
-        /**
-         * Defines the **text color** for `<code>` elements.
-         * Typically uses a **secondary text color** (`secondaryText`) for readability.
-         */
-        color                 : colorConfigVars.secondaryText           as CssKnownProps['color'             ],
-        
-        
-        
-        // Borders:
-        
-        /**
-         * Defines the **border style** for `<code>` elements.
-         * Typically uses the default border style for consistency.
-         */
-        borderStyle           : markVars.borderStyle                    as CssKnownProps['borderStyle'       ],
-        
-        /**
-         * Defines the **border width** for `<code>` elements.
-         * Typically uses the default border width for visual clarity.
-         */
-        borderWidth           : markVars.borderWidth                    as CssKnownProps['borderWidth'       ],
-        
-        /**
-         * Defines the **border color** for `<code>` elements.
-         * Typically uses a **secondary thin color** (`secondaryThin`) for subtle emphasis.
-         */
-        borderColor           : colorConfigVars.secondaryThin           as CssKnownProps['borderColor'       ],
-        
-        /**
-         * Defines the **border radius** for `<code>` elements.
-         * Typically uses a **small radius** (`sm`) to create softened edges.
-         */
-        borderRadius          : markVars.borderRadius                   as CssKnownProps['borderRadius'      ],
-        
-        
-        
         // Typos:
         
         /**
@@ -176,6 +128,59 @@ const config = cssConfig(() => {
     
     
     /**
+     * Defines static layout properties.
+     */
+    const staticLayoutProperties = {
+        // Backgrounds:
+        
+        /**
+         * Defines the **background color** for `<code>` elements.
+         * Typically uses a **secondary mild color** (`secondaryMild`) for emphasis.
+         */
+        backgroundColor       : colorConfigVars.secondaryMild           as CssKnownProps['backgroundColor'   ],
+        
+        
+        
+        // Foregrounds:
+        
+        /**
+         * Defines the **text color** for `<code>` elements.
+         * Typically uses a **secondary text color** (`secondaryText`) for readability.
+         */
+        color                 : colorConfigVars.secondaryText           as CssKnownProps['color'             ],
+        
+        
+        
+        // Borders:
+        
+        /**
+         * Defines the **border style** for `<code>` elements.
+         * Typically uses the default border style for consistency.
+         */
+        borderStyle           : markVars.borderStyle                    as CssKnownProps['borderStyle'       ],
+        
+        /**
+         * Defines the **border width** for `<code>` elements.
+         * Typically uses the default border width for visual clarity.
+         */
+        borderWidth           : markVars.borderWidth                    as CssKnownProps['borderWidth'       ],
+        
+        /**
+         * Defines the **border color** for `<code>` elements.
+         * Typically uses a **secondary thin color** (`secondaryThin`) for subtle emphasis.
+         */
+        borderColor           : colorConfigVars.secondaryThin           as CssKnownProps['borderColor'       ],
+        
+        /**
+         * Defines the **border radius** for `<code>` elements.
+         * Typically uses a **small radius** (`sm`) to create softened edges.
+         */
+        borderRadius          : markVars.borderRadius                   as CssKnownProps['borderRadius'      ],
+    };
+    
+    
+    
+    /**
      * Defines static conditional sibling adjacency properties.
      */
     const staticSiblingAdjacencyProperties = {
@@ -202,6 +207,7 @@ const config = cssConfig(() => {
     return {
         ...staticSpacingProperties,
         ...staticCodeProperties,
+        ...staticLayoutProperties,
         ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultCodePrefix });
