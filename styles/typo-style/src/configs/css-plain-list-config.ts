@@ -125,9 +125,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Specific List Definitions.
+     * Defines static list type Definitions.
      */
-    const staticSpecificListDefinitions = {
+    const staticListTypeDefinitions = {
         // Appearances:
         
         /**
@@ -142,6 +142,8 @@ const config = cssConfig(() => {
          */
         orderedListStyleType     : 'decimal'    as CssKnownProps['listStyleType'    ],
     };
+    
+    
     
     /**
      * List Item (`<li>`) Specific Definitions.
@@ -170,7 +172,7 @@ const config = cssConfig(() => {
     return {
         ...staticListDefinitions,
         ...staticSiblingAdjacencyDefinitions,
-        ...staticSpecificListDefinitions,
+        ...staticListTypeDefinitions,
         ...staticListItemDefinitions,
     };
 }, { prefix: defaultPlainListPrefix });
