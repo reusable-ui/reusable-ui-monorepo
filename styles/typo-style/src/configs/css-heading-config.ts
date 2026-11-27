@@ -177,9 +177,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static sub heading properties.
+     * Defines static appearance properties.
      */
-    const staticSubHeadingProperties = {
+    const staticAppearanceProperties = {
         // Appearances:
         
         /**
@@ -198,7 +198,7 @@ const config = cssConfig(() => {
         ...staticTypographyProperties,
         ...computedTypographyProperties,
         ...staticSiblingAdjacencyProperties,
-        ...staticSubHeadingProperties,
+        ...staticAppearanceProperties,
     };
 }, { prefix: defaultHeadingPrefix });
 

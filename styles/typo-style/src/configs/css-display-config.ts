@@ -182,9 +182,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static sub display heading properties.
+     * Defines static appearance properties.
      */
-    const staticSubDisplayProperties = {
+    const staticAppearanceProperties = {
         // Appearances:
         
         /**
@@ -203,7 +203,7 @@ const config = cssConfig(() => {
         ...staticTypographyProperties,
         ...computedTypographyProperties,
         ...staticSiblingAdjacencyProperties,
-        ...staticSubDisplayProperties,
+        ...staticAppearanceProperties,
     };
 }, { prefix: defaultDisplayPrefix });
 
