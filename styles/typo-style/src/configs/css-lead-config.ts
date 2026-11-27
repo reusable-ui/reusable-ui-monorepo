@@ -30,9 +30,9 @@ import {
 
 const config = cssConfig(() => {
     /**
-     * Defines static lead paragraph properties such as font sizes, families, weights, and styles.
+     * Defines static spacing properties.
      */
-    const staticLeadProperties = {
+    const staticSpacingProperties = {
         // Spacings:
         
         /**
@@ -46,9 +46,14 @@ const config = cssConfig(() => {
          * Typically `0em` to maintain alignment with text blocks.
          */
         marginInlineEnd      : paragraphVars.marginInlineEnd        as CssKnownProps['marginInlineEnd'  ],
-        
-        
-        
+    };
+    
+    
+    
+    /**
+     * Defines static lead paragraph properties such as font sizes, families, weights, and styles.
+     */
+    const staticLeadProperties = {
         // Typos:
         
         /**
@@ -119,6 +124,7 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticSpacingProperties,
         ...staticLeadProperties,
         ...staticSiblingAdjacencyProperties,
     };

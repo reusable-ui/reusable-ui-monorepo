@@ -20,19 +20,9 @@ import {
 
 const config = cssConfig(() => {
     /**
-     * Base List Definitions.
+     * Defines static spacing properties.
      */
-    const staticListProperties = {
-        // Appearances:
-        
-        /**
-         * Defines the **list style position**.
-         * Typically `outside` to maintain alignment with text blocks.
-         */
-        listStylePosition        : 'outside'    as CssKnownProps['listStylePosition'],
-        
-        
-        
+    const staticSpacingProperties = {
         // Spacings:
         
         /**
@@ -53,6 +43,21 @@ const config = cssConfig(() => {
          * Provides space for list markers and indentation of list items.
          */
         paddingInlineStart       : '1.5em'      as CssKnownProps['paddingInlineStart'],
+    };
+    
+    
+    
+    /**
+     * Base List Definitions.
+     */
+    const staticListProperties = {
+        // Appearances:
+        
+        /**
+         * Defines the **list style position**.
+         * Typically `outside` to maintain alignment with text blocks.
+         */
+        listStylePosition        : 'outside'    as CssKnownProps['listStylePosition'],
         
         
         
@@ -170,6 +175,7 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticSpacingProperties,
         ...staticListProperties,
         ...staticSiblingAdjacencyProperties,
         ...staticListTypeProperties,

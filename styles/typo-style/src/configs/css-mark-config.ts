@@ -31,6 +31,52 @@ import {
 
 const config = cssConfig(() => {
     /**
+     * Defines static spacing properties.
+     */
+    const staticSpacingProperties = {
+        // Spacings:
+        
+        /**
+         * Defines the **top margin** for `<mark>` elements.
+         * Typically `0em` to maintain alignment within inline text flow.
+         */
+        marginBlockStart      : '0em'                           as CssKnownProps['marginBlockStart'  ],
+        
+        /**
+         * Defines the **bottom margin** for `<mark>` elements.
+         * Typically `0em` to maintain alignment within inline text flow.
+         */
+        marginBlockEnd        : '0em'                           as CssKnownProps['marginBlockEnd'    ],
+        
+        
+        /**
+         * Defines **left padding** inside `<mark>` elements.
+         * Adds breathing room between the **text and left boundary**.
+         */
+        paddingInlineStart    : '0.125em'                       as CssKnownProps['paddingInlineStart'],
+        
+        /**
+         * Defines **right padding** inside `<mark>` elements.
+         * Adds breathing room between the **text and right boundary**.
+         */
+        paddingInlineEnd      : '0.125em'                       as CssKnownProps['paddingInlineEnd'  ],
+        
+        /**
+         * Defines **top padding** inside `<mark>` elements.
+         * Adds breathing room between the **text and top boundary**.
+         */
+        paddingBlockStart     : '0.125em'                       as CssKnownProps['paddingBlockStart' ],
+        
+        /**
+         * Defines **bottom padding** inside `<mark>` elements.
+         * Adds breathing room between the **text and bottom boundary**.
+         */
+        paddingBlockEnd       : '0.125em'                       as CssKnownProps['paddingBlockEnd'   ],
+    };
+    
+    
+    
+    /**
      * Defines static mark properties such as font sizes, families, weights, and styles.
      */
     const staticMarkProperties = {
@@ -79,47 +125,6 @@ const config = cssConfig(() => {
          * Typically uses a **small radius** (`radiusSm`) to create softened edges.
          */
         borderRadius          : radiusConfigVars.radiusSm       as CssKnownProps['borderRadius'      ],
-        
-        
-        
-        // Spacings:
-        
-        /**
-         * Defines the **top margin** for `<mark>` elements.
-         * Typically `0em` to maintain alignment within inline text flow.
-         */
-        marginBlockStart      : '0em'                           as CssKnownProps['marginBlockStart'  ],
-        
-        /**
-         * Defines the **bottom margin** for `<mark>` elements.
-         * Typically `0em` to maintain alignment within inline text flow.
-         */
-        marginBlockEnd        : '0em'                           as CssKnownProps['marginBlockEnd'    ],
-        
-        
-        /**
-         * Defines **left padding** inside `<mark>` elements.
-         * Adds breathing room between the **text and left boundary**.
-         */
-        paddingInlineStart    : '0.125em'                       as CssKnownProps['paddingInlineStart'],
-        
-        /**
-         * Defines **right padding** inside `<mark>` elements.
-         * Adds breathing room between the **text and right boundary**.
-         */
-        paddingInlineEnd      : '0.125em'                       as CssKnownProps['paddingInlineEnd'  ],
-        
-        /**
-         * Defines **top padding** inside `<mark>` elements.
-         * Adds breathing room between the **text and top boundary**.
-         */
-        paddingBlockStart     : '0.125em'                       as CssKnownProps['paddingBlockStart' ],
-        
-        /**
-         * Defines **bottom padding** inside `<mark>` elements.
-         * Adds breathing room between the **text and bottom boundary**.
-         */
-        paddingBlockEnd       : '0.125em'                       as CssKnownProps['paddingBlockEnd'   ],
         
         
         
@@ -193,6 +198,7 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticSpacingProperties,
         ...staticMarkProperties,
         ...staticSiblingAdjacencyProperties,
     };

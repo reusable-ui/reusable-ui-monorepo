@@ -25,9 +25,9 @@ import {
 
 const config = cssConfig(() => {
     /**
-     * Defines static heading properties such as font sizes, families, weights, and styles.
+     * Defines static spacing properties.
      */
-    const staticHeadingProperties = {
+    const staticSpacingProperties = {
         // Spacings:
         
         /**
@@ -41,9 +41,14 @@ const config = cssConfig(() => {
          * Typically `0em` to maintain alignment with text blocks.
          */
         marginInlineEnd      : '0em'                                as CssKnownProps['marginInlineEnd'  ],
-        
-        
-        
+    };
+    
+    
+    
+    /**
+     * Defines static heading properties such as font sizes, families, weights, and styles.
+     */
+    const staticHeadingProperties = {
         // Typos:
         
         /**
@@ -189,6 +194,7 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticSpacingProperties,
         ...staticHeadingProperties,
         ...computedHeadingProperties,
         ...staticSiblingAdjacencyProperties,

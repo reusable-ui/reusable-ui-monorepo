@@ -20,9 +20,9 @@ import {
 
 const config = cssConfig(() => {
     /**
-     * Defines static paragraph properties such as font sizes, families, weights, and styles.
+     * Defines static spacing properties.
      */
-    const staticParagraphProperties = {
+    const staticSpacingProperties = {
         // Spacings:
         
         /**
@@ -36,9 +36,14 @@ const config = cssConfig(() => {
          * Typically `0em` to maintain alignment with text blocks.
          */
         marginInlineEnd      : '0em'        as CssKnownProps['marginInlineEnd'  ],
-        
-        
-        
+    };
+    
+    
+    
+    /**
+     * Defines static paragraph properties such as font sizes, families, weights, and styles.
+     */
+    const staticParagraphProperties = {
         // Typos:
         
         /**
@@ -109,6 +114,7 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticSpacingProperties,
         ...staticParagraphProperties,
         ...staticSiblingAdjacencyProperties,
     };

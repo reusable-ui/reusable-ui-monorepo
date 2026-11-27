@@ -25,25 +25,9 @@ import {
 
 const config = cssConfig(() => {
     /**
-     * Defines the **styling properties** for blockquotes, including borders, spacing, and typography.
+     * Defines static spacing properties.
      */
-    const staticBlockquoteProperties = {
-        // Borders:
-        
-        /**
-         * Defines the **left border style** for blockquotes.
-         * Typically uses a **solid border** to visually distinguish quotes.
-         */
-        borderInlineStartStyle : 'solid'                    as CssKnownProps['borderInlineStartStyle'],
-        
-        /**
-         * Defines the **left border width** for blockquotes.
-         * Typically uses a **thick border** to visually distinguish quotes.
-         */
-        borderInlineStartWidth : '0.25em'                   as CssKnownProps['borderInlineStartWidth'],
-        
-        
-        
+    const staticSpacingProperties = {
         // Spacings:
         
         /**
@@ -82,6 +66,27 @@ const config = cssConfig(() => {
          * Adds breathing room between the **text and bottom boundary**.
          */
         paddingBlockEnd        : '1em'                      as CssKnownProps['paddingBlockEnd'       ],
+    };
+    
+    
+    
+    /**
+     * Defines the **styling properties** for blockquotes, including borders, spacing, and typography.
+     */
+    const staticBlockquoteProperties = {
+        // Borders:
+        
+        /**
+         * Defines the **left border style** for blockquotes.
+         * Typically uses a **solid border** to visually distinguish quotes.
+         */
+        borderInlineStartStyle : 'solid'                    as CssKnownProps['borderInlineStartStyle'],
+        
+        /**
+         * Defines the **left border width** for blockquotes.
+         * Typically uses a **thick border** to visually distinguish quotes.
+         */
+        borderInlineStartWidth : '0.25em'                   as CssKnownProps['borderInlineStartWidth'],
         
         
         
@@ -228,6 +233,7 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticSpacingProperties,
         ...staticBlockquoteProperties,
         ...staticSiblingAdjacencyProperties,
         ...staticQuoteProperties,

@@ -25,6 +25,39 @@ import {
 
 const config = cssConfig(() => {
     /**
+     * Defines static spacing properties.
+     */
+    const staticSpacingProperties = {
+        // Spacings:
+        
+        /**
+         * Defines the **left margin** for vertical separators.
+         * Ensures structured horizontal spacing before the separator.
+         */
+        marginInlineStart      : '0em'                                  as CssKnownProps['marginInlineStart' ],
+        
+        /**
+         * Defines the **right margin** for vertical separators.
+         * Ensures structured horizontal spacing after the separator.
+         */
+        marginInlineEnd        : '0em'                                  as CssKnownProps['marginInlineEnd'   ],
+        
+        /**
+         * Defines the **top margin** for vertical separators.
+         * Typically `0em` to maintain alignment across side-by-side sections.
+         */
+        marginBlockStart       : '0em'                                  as CssKnownProps['marginBlockStart'  ],
+        
+        /**
+         * Defines the **bottom margin** for vertical separators.
+         * Typically `0em` to maintain alignment across side-by-side sections.
+         */
+        marginBlockEnd         : '0em'                                  as CssKnownProps['marginBlockEnd'    ],
+    };
+    
+    
+    
+    /**
      * Defines static vert separator properties such as font sizes, families, weights, and styles.
      */
     const staticVertSeparatorProperties = {
@@ -57,40 +90,13 @@ const config = cssConfig(() => {
          * Typically uses the **current text color** (`currentcolor`) for subtle emphasis.
          */
         borderColor            : horzSeparatorVars.borderColor          as CssKnownProps['borderColor'       ],
-        
-        
-        
-        // Spacings:
-        
-        /**
-         * Defines the **left margin** for vertical separators.
-         * Ensures structured horizontal spacing before the separator.
-         */
-        marginInlineStart      : '0em'                                  as CssKnownProps['marginInlineStart' ],
-        
-        /**
-         * Defines the **right margin** for vertical separators.
-         * Ensures structured horizontal spacing after the separator.
-         */
-        marginInlineEnd        : '0em'                                  as CssKnownProps['marginInlineEnd'   ],
-        
-        /**
-         * Defines the **top margin** for vertical separators.
-         * Typically `0em` to maintain alignment across side-by-side sections.
-         */
-        marginBlockStart       : '0em'                                  as CssKnownProps['marginBlockStart'  ],
-        
-        /**
-         * Defines the **bottom margin** for vertical separators.
-         * Typically `0em` to maintain alignment across side-by-side sections.
-         */
-        marginBlockEnd         : '0em'                                  as CssKnownProps['marginBlockEnd'    ],
     };
     
     
     
     // Merge all properties:
     return {
+        ...staticSpacingProperties,
         ...staticVertSeparatorProperties,
     };
 }, { prefix: defaultVertSeparatorPrefix });

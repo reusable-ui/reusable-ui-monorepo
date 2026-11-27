@@ -30,9 +30,9 @@ import {
 
 const config = cssConfig(() => {
     /**
-     * Defines static display heading properties such as font sizes, families, weights, and styles.
+     * Defines static spacing properties.
      */
-    const staticDisplayProperties = {
+    const staticSpacingProperties = {
         // Spacings:
         
         /**
@@ -46,9 +46,14 @@ const config = cssConfig(() => {
          * Typically `0em` to maintain alignment with text blocks.
          */
         marginInlineEnd      : headingVars.marginInlineEnd          as CssKnownProps['marginInlineEnd'  ],
-        
-        
-        
+    };
+    
+    
+    
+    /**
+     * Defines static display heading properties such as font sizes, families, weights, and styles.
+     */
+    const staticDisplayProperties = {
         // Typos:
         
         /**
@@ -194,6 +199,7 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticSpacingProperties,
         ...staticDisplayProperties,
         ...computedDisplayProperties,
         ...staticSiblingAdjacencyProperties,

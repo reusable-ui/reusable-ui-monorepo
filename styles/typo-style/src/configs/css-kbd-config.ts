@@ -28,6 +28,52 @@ import {
 
 const config = cssConfig(() => {
     /**
+     * Defines static spacing properties.
+     */
+    const staticSpacingProperties = {
+        // Spacings:
+        
+        /**
+         * Defines the **top margin** for `<kbd>` elements.
+         * Typically `0em` to maintain alignment within inline text flow.
+         */
+        marginBlockStart      : markVars.marginBlockStart           as CssKnownProps['marginBlockStart'  ],
+        
+        /**
+         * Defines the **bottom margin** for `<kbd>` elements.
+         * Typically `0em` to maintain alignment within inline text flow.
+         */
+        marginBlockEnd        : markVars.marginBlockEnd             as CssKnownProps['marginBlockEnd'    ],
+        
+        
+        /**
+         * Defines **left padding** inside `<kbd>` elements.
+         * Adds breathing room between the **text and left boundary**.
+         */
+        paddingInlineStart    : markVars.paddingInlineStart         as CssKnownProps['paddingInlineStart'],
+        
+        /**
+         * Defines **right padding** inside `<kbd>` elements.
+         * Adds breathing room between the **text and right boundary**.
+         */
+        paddingInlineEnd      : markVars.paddingInlineEnd           as CssKnownProps['paddingInlineEnd'  ],
+        
+        /**
+         * Defines **top padding** inside `<kbd>` elements.
+         * Adds breathing room between the **text and top boundary**.
+         */
+        paddingBlockStart     : markVars.paddingBlockStart          as CssKnownProps['paddingBlockStart' ],
+        
+        /**
+         * Defines **bottom padding** inside `<kbd>` elements.
+         * Adds breathing room between the **text and bottom boundary**.
+         */
+        paddingBlockEnd       : markVars.paddingBlockEnd            as CssKnownProps['paddingBlockEnd'   ],
+    };
+    
+    
+    
+    /**
      * Defines static kbd properties such as font sizes, families, weights, and styles.
      */
     const staticKbdProperties = {
@@ -76,47 +122,6 @@ const config = cssConfig(() => {
          * Typically uses a **small radius** (`sm`) to create softened edges.
          */
         borderRadius          : markVars.borderRadius               as CssKnownProps['borderRadius'      ],
-        
-        
-        
-        // Spacings:
-        
-        /**
-         * Defines the **top margin** for `<kbd>` elements.
-         * Typically `0em` to maintain alignment within inline text flow.
-         */
-        marginBlockStart      : markVars.marginBlockStart           as CssKnownProps['marginBlockStart'  ],
-        
-        /**
-         * Defines the **bottom margin** for `<kbd>` elements.
-         * Typically `0em` to maintain alignment within inline text flow.
-         */
-        marginBlockEnd        : markVars.marginBlockEnd             as CssKnownProps['marginBlockEnd'    ],
-        
-        
-        /**
-         * Defines **left padding** inside `<kbd>` elements.
-         * Adds breathing room between the **text and left boundary**.
-         */
-        paddingInlineStart    : markVars.paddingInlineStart         as CssKnownProps['paddingInlineStart'],
-        
-        /**
-         * Defines **right padding** inside `<kbd>` elements.
-         * Adds breathing room between the **text and right boundary**.
-         */
-        paddingInlineEnd      : markVars.paddingInlineEnd           as CssKnownProps['paddingInlineEnd'  ],
-        
-        /**
-         * Defines **top padding** inside `<kbd>` elements.
-         * Adds breathing room between the **text and top boundary**.
-         */
-        paddingBlockStart     : markVars.paddingBlockStart          as CssKnownProps['paddingBlockStart' ],
-        
-        /**
-         * Defines **bottom padding** inside `<kbd>` elements.
-         * Adds breathing room between the **text and bottom boundary**.
-         */
-        paddingBlockEnd       : markVars.paddingBlockEnd            as CssKnownProps['paddingBlockEnd'   ],
         
         
         
@@ -190,6 +195,7 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticSpacingProperties,
         ...staticKbdProperties,
         ...staticSiblingAdjacencyProperties,
     };
