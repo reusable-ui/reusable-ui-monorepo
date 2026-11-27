@@ -48,9 +48,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Base List Definitions.
+     * Defines static typography properties.
      */
-    const staticListProperties = {
+    const staticTypographyProperties = {
         // Typos:
         
         /**
@@ -181,7 +181,7 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticListProperties,
+        ...staticTypographyProperties,
         ...staticAppearanceProperties,
         ...staticSiblingAdjacencyProperties,
         ...staticListTypeProperties,

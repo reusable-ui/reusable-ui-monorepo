@@ -46,9 +46,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static heading properties such as font sizes, families, weights, and styles.
+     * Defines static typography properties.
      */
-    const staticHeadingProperties = {
+    const staticTypographyProperties = {
         // Typos:
         
         /**
@@ -96,10 +96,10 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines computed heading font sizes for structured hierarchy.
+     * Defines computed typography properties.
      * Ensures scalable typography across different heading levels.
      */
-    const computedHeadingProperties = {
+    const computedTypographyProperties = {
         // Typos:
         
         /**
@@ -195,8 +195,8 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticHeadingProperties,
-        ...computedHeadingProperties,
+        ...staticTypographyProperties,
+        ...computedTypographyProperties,
         ...staticSiblingAdjacencyProperties,
         ...staticSubHeadingProperties,
     };

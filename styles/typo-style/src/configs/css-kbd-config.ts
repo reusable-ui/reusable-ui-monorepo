@@ -74,9 +74,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static kbd properties such as font sizes, families, weights, and styles.
+     * Defines static typography properties.
      */
-    const staticKbdProperties = {
+    const staticTypographyProperties = {
         // Typos:
         
         /**
@@ -201,7 +201,7 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticKbdProperties,
+        ...staticTypographyProperties,
         ...staticLayoutProperties,
         ...staticSiblingAdjacencyProperties,
     };

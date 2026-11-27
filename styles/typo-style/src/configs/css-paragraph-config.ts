@@ -41,9 +41,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static paragraph properties such as font sizes, families, weights, and styles.
+     * Defines static typography properties.
      */
-    const staticParagraphProperties = {
+    const staticTypographyProperties = {
         // Typos:
         
         /**
@@ -115,7 +115,7 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticParagraphProperties,
+        ...staticTypographyProperties,
         ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultParagraphPrefix });

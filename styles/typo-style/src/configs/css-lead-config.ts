@@ -51,9 +51,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static lead paragraph properties such as font sizes, families, weights, and styles.
+     * Defines static typography properties.
      */
-    const staticLeadProperties = {
+    const staticTypographyProperties = {
         // Typos:
         
         /**
@@ -125,7 +125,7 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticLeadProperties,
+        ...staticTypographyProperties,
         ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultLeadPrefix });

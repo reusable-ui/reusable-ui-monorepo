@@ -79,9 +79,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static code properties such as font sizes, families, weights, and styles.
+     * Defines static typography properties.
      */
-    const staticCodeProperties = {
+    const staticTypographyProperties = {
         // Typos:
         
         /**
@@ -206,7 +206,7 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticCodeProperties,
+        ...staticTypographyProperties,
         ...staticLayoutProperties,
         ...staticSiblingAdjacencyProperties,
     };

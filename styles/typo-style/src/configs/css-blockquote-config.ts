@@ -71,9 +71,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines the **styling properties** for blockquotes, including borders, spacing, and typography.
+     * Defines static typography properties.
      */
-    const staticBlockquoteProperties = {
+    const staticTypographyProperties = {
         // Typos:
         
         /**
@@ -239,7 +239,7 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticBlockquoteProperties,
+        ...staticTypographyProperties,
         ...staticLayoutProperties,
         ...staticSiblingAdjacencyProperties,
         ...staticQuoteProperties,

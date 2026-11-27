@@ -77,9 +77,9 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static mark properties such as font sizes, families, weights, and styles.
+     * Defines static typography properties.
      */
-    const staticMarkProperties = {
+    const staticTypographyProperties = {
         // Typos:
         
         /**
@@ -204,7 +204,7 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticMarkProperties,
+        ...staticTypographyProperties,
         ...staticLayoutProperties,
         ...staticSiblingAdjacencyProperties,
     };
