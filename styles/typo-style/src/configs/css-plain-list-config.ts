@@ -146,7 +146,7 @@ const config = cssConfig(() => {
     
     
     /**
-     * List Item (`<li>`) Specific Definitions.
+     * Defines static list Item Definitions.
      */
     const staticListItemDefinitions = {
         // Spacings:
