@@ -24,7 +24,10 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    return {
+    /**
+     * Defines static vert separator properties such as font sizes, families, weights, and styles.
+     */
+    const staticVertSeparatorDefinitions = {
         // Appearances:
         
         /**
@@ -82,6 +85,13 @@ const config = cssConfig(() => {
          * Typically `0em` to maintain alignment across side-by-side sections.
          */
         marginBlockEnd         : '0em'                                  as CssKnownProps['marginBlockEnd'    ],
+    };
+    
+    
+    
+    // Merge all vert separator definitions:
+    return {
+        ...staticVertSeparatorDefinitions,
     };
 }, { prefix: defaultVertSeparatorPrefix });
 
