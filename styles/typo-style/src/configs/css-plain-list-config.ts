@@ -51,16 +51,6 @@ const config = cssConfig(() => {
      * Base List Definitions.
      */
     const staticListProperties = {
-        // Appearances:
-        
-        /**
-         * Defines the **list style position**.
-         * Typically `outside` to maintain alignment with text blocks.
-         */
-        listStylePosition        : 'outside'    as CssKnownProps['listStylePosition'],
-        
-        
-        
         // Typos:
         
         /**
@@ -102,6 +92,21 @@ const config = cssConfig(() => {
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
         lineHeight               : undefined    as CssKnownProps['lineHeight'       ],
+    };
+    
+    
+    
+    /**
+     * Defines static appearance properties.
+     */
+    const staticAppearanceProperties = {
+        // Appearances:
+        
+        /**
+         * Defines the **list style position**.
+         * Typically `outside` to maintain alignment with text blocks.
+         */
+        listStylePosition        : 'outside'    as CssKnownProps['listStylePosition'],
     };
     
     
@@ -177,6 +182,7 @@ const config = cssConfig(() => {
     return {
         ...staticSpacingProperties,
         ...staticListProperties,
+        ...staticAppearanceProperties,
         ...staticSiblingAdjacencyProperties,
         ...staticListTypeProperties,
         ...staticListItemProperties,

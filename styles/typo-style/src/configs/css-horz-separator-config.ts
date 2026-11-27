@@ -46,21 +46,6 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static horz separator properties such as font sizes, families, weights, and styles.
-     */
-    const staticHorzSeparatorProperties = {
-        // Appearances:
-        
-        /**
-         * Defines the **transparency level** for horizontal separators.
-         * Ensures subtle visual distinction without overpowering surrounding content.
-         */
-        opacity              : 0.25                     as CssKnownProps['opacity'           ],
-    };
-    
-    
-    
-    /**
      * Defines static layout properties.
      */
     const staticLayoutProperties = {
@@ -83,6 +68,21 @@ const config = cssConfig(() => {
          * Typically uses the **current text color** (`currentcolor`) for subtle emphasis.
          */
         borderColor          : 'currentcolor'           as CssKnownProps['borderColor'       ],
+    };
+    
+    
+    
+    /**
+     * Defines static appearance properties.
+     */
+    const staticAppearanceProperties = {
+        // Appearances:
+        
+        /**
+         * Defines the **transparency level** for horizontal separators.
+         * Ensures subtle visual distinction without overpowering surrounding content.
+         */
+        opacity              : 0.25                     as CssKnownProps['opacity'           ],
     };
     
     
@@ -113,8 +113,8 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticHorzSeparatorProperties,
         ...staticLayoutProperties,
+        ...staticAppearanceProperties,
         ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultHorzSeparatorPrefix });

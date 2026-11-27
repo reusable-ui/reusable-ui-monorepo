@@ -58,21 +58,6 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static vert separator properties such as font sizes, families, weights, and styles.
-     */
-    const staticVertSeparatorProperties = {
-        // Appearances:
-        
-        /**
-         * Defines the **transparency level** for vertical separators.
-         * Ensures subtle visual distinction without overpowering surrounding content.
-         */
-        opacity                : horzSeparatorVars.opacity              as CssKnownProps['opacity'           ],
-    };
-    
-    
-    
-    /**
      * Defines static layout properties.
      */
     const staticLayoutProperties = {
@@ -99,11 +84,26 @@ const config = cssConfig(() => {
     
     
     
+    /**
+     * Defines static appearance properties.
+     */
+    const staticAppearanceProperties = {
+        // Appearances:
+        
+        /**
+         * Defines the **transparency level** for vertical separators.
+         * Ensures subtle visual distinction without overpowering surrounding content.
+         */
+        opacity                : horzSeparatorVars.opacity              as CssKnownProps['opacity'           ],
+    };
+    
+    
+    
     // Merge all properties:
     return {
         ...staticSpacingProperties,
-        ...staticVertSeparatorProperties,
         ...staticLayoutProperties,
+        ...staticAppearanceProperties,
     };
 }, { prefix: defaultVertSeparatorPrefix });
 
