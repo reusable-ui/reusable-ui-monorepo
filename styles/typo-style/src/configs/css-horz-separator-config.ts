@@ -27,7 +27,7 @@ const config = cssConfig(() => {
     /**
      * Defines static horz separator properties such as font sizes, families, weights, and styles.
      */
-    const staticHorzSeparatorDefinitions = {
+    const staticHorzSeparatorProperties = {
         // Appearances:
         
         /**
@@ -80,7 +80,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticSiblingAdjacencyDefinitions = {
+    const staticSiblingAdjacencyProperties = {
         // Spacings:
         
         /**
@@ -102,8 +102,8 @@ const config = cssConfig(() => {
     
     // Merge all horz separator definitions:
     return {
-        ...staticHorzSeparatorDefinitions,
-        ...staticSiblingAdjacencyDefinitions,
+        ...staticHorzSeparatorProperties,
+        ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultHorzSeparatorPrefix });
 

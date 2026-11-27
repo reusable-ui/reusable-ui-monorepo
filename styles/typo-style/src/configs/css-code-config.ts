@@ -35,7 +35,7 @@ const config = cssConfig(() => {
     /**
      * Defines static code properties such as font sizes, families, weights, and styles.
      */
-    const staticCodeDefinitions = {
+    const staticCodeProperties = {
         // Backgrounds:
         
         /**
@@ -173,7 +173,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticSiblingAdjacencyDefinitions = {
+    const staticSiblingAdjacencyProperties = {
         // Spacings:
         
         /**
@@ -195,8 +195,8 @@ const config = cssConfig(() => {
     
     // Merge all code definitions:
     return {
-        ...staticCodeDefinitions,
-        ...staticSiblingAdjacencyDefinitions,
+        ...staticCodeProperties,
+        ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultCodePrefix });
 

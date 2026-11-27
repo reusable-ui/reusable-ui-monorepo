@@ -32,7 +32,7 @@ const config = cssConfig(() => {
     /**
      * Defines static display heading properties such as font sizes, families, weights, and styles.
      */
-    const staticDisplayDefinitions = {
+    const staticDisplayProperties = {
         // Spacings:
         
         /**
@@ -99,7 +99,7 @@ const config = cssConfig(() => {
      * Defines computed display heading font sizes for structured hierarchy.
      * Ensures scalable typography across different display heading levels.
      */
-    const computedDisplayDefinitions = {
+    const computedDisplayProperties = {
         // Typos:
         
         /**
@@ -156,7 +156,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticSiblingAdjacencyDefinitions = {
+    const staticSiblingAdjacencyProperties = {
         // Spacings:
         
         /**
@@ -179,7 +179,7 @@ const config = cssConfig(() => {
     /**
      * Defines static sub display heading properties.
      */
-    const staticSubDisplayDefinitions = {
+    const staticSubDisplayProperties = {
         // Appearances:
         
         /**
@@ -194,10 +194,10 @@ const config = cssConfig(() => {
     
     // Merge all display definitions:
     return {
-        ...staticDisplayDefinitions,
-        ...computedDisplayDefinitions,
-        ...staticSiblingAdjacencyDefinitions,
-        ...staticSubDisplayDefinitions,
+        ...staticDisplayProperties,
+        ...computedDisplayProperties,
+        ...staticSiblingAdjacencyProperties,
+        ...staticSubDisplayProperties,
     };
 }, { prefix: defaultDisplayPrefix });
 

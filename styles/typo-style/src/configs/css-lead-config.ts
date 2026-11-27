@@ -32,7 +32,7 @@ const config = cssConfig(() => {
     /**
      * Defines static lead paragraph properties such as font sizes, families, weights, and styles.
      */
-    const staticLeadDefinitions = {
+    const staticLeadProperties = {
         // Spacings:
         
         /**
@@ -97,7 +97,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticSiblingAdjacencyDefinitions = {
+    const staticSiblingAdjacencyProperties = {
         // Spacings:
         
         /**
@@ -119,8 +119,8 @@ const config = cssConfig(() => {
     
     // Merge all lead definitions:
     return {
-        ...staticLeadDefinitions,
-        ...staticSiblingAdjacencyDefinitions,
+        ...staticLeadProperties,
+        ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultLeadPrefix });
 

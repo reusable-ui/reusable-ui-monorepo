@@ -22,7 +22,7 @@ const config = cssConfig(() => {
     /**
      * Base List Definitions.
      */
-    const staticListDefinitions = {
+    const staticListProperties = {
         // Appearances:
         
         /**
@@ -104,7 +104,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticSiblingAdjacencyDefinitions = {
+    const staticSiblingAdjacencyProperties = {
         // Spacings:
         
         /**
@@ -127,7 +127,7 @@ const config = cssConfig(() => {
     /**
      * Defines static list type Definitions.
      */
-    const staticListTypeDefinitions = {
+    const staticListTypeProperties = {
         // Appearances:
         
         /**
@@ -148,7 +148,7 @@ const config = cssConfig(() => {
     /**
      * Defines static list Item Definitions.
      */
-    const staticListItemDefinitions = {
+    const staticListItemProperties = {
         // Spacings:
         
         /**
@@ -170,10 +170,10 @@ const config = cssConfig(() => {
     
     // Merge all list definitions:
     return {
-        ...staticListDefinitions,
-        ...staticSiblingAdjacencyDefinitions,
-        ...staticListTypeDefinitions,
-        ...staticListItemDefinitions,
+        ...staticListProperties,
+        ...staticSiblingAdjacencyProperties,
+        ...staticListTypeProperties,
+        ...staticListItemProperties,
     };
 }, { prefix: defaultPlainListPrefix });
 

@@ -27,7 +27,7 @@ const config = cssConfig(() => {
     /**
      * Defines static vert separator properties such as font sizes, families, weights, and styles.
      */
-    const staticVertSeparatorDefinitions = {
+    const staticVertSeparatorProperties = {
         // Appearances:
         
         /**
@@ -91,7 +91,7 @@ const config = cssConfig(() => {
     
     // Merge all vert separator definitions:
     return {
-        ...staticVertSeparatorDefinitions,
+        ...staticVertSeparatorProperties,
     };
 }, { prefix: defaultVertSeparatorPrefix });
 

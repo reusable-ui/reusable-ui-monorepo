@@ -33,7 +33,7 @@ const config = cssConfig(() => {
     /**
      * Defines static mark properties such as font sizes, families, weights, and styles.
      */
-    const staticMarkDefinitions = {
+    const staticMarkProperties = {
         // Backgrounds:
         
         /**
@@ -171,7 +171,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticSiblingAdjacencyDefinitions = {
+    const staticSiblingAdjacencyProperties = {
         // Spacings:
         
         /**
@@ -193,8 +193,8 @@ const config = cssConfig(() => {
     
     // Merge all mark definitions:
     return {
-        ...staticMarkDefinitions,
-        ...staticSiblingAdjacencyDefinitions,
+        ...staticMarkProperties,
+        ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultMarkPrefix });
 

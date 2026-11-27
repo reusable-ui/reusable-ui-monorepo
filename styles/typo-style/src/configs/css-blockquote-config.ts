@@ -27,7 +27,7 @@ const config = cssConfig(() => {
     /**
      * Defines the **styling properties** for blockquotes, including borders, spacing, and typography.
      */
-    const staticBlockquoteDefinitions = {
+    const staticBlockquoteProperties = {
         // Borders:
         
         /**
@@ -133,7 +133,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticSiblingAdjacencyDefinitions = {
+    const staticSiblingAdjacencyProperties = {
         // Spacings:
         
         /**
@@ -156,7 +156,7 @@ const config = cssConfig(() => {
     /**
      * Defines the **styling properties** for decorative **quote symbol**.
      */
-    const staticQuoteDefinitions = {
+    const staticQuoteProperties = {
         // Positions:
         
         /**
@@ -228,9 +228,9 @@ const config = cssConfig(() => {
     
     // Merge all blockquote definitions:
     return {
-        ...staticBlockquoteDefinitions,
-        ...staticSiblingAdjacencyDefinitions,
-        ...staticQuoteDefinitions,
+        ...staticBlockquoteProperties,
+        ...staticSiblingAdjacencyProperties,
+        ...staticQuoteProperties,
     };
 }, { prefix: defaultBlockquotePrefix });
 

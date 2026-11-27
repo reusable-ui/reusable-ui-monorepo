@@ -27,7 +27,7 @@ const config = cssConfig(() => {
     /**
      * Defines static heading properties such as font sizes, families, weights, and styles.
      */
-    const staticHeadingDefinitions = {
+    const staticHeadingProperties = {
         // Spacings:
         
         /**
@@ -94,7 +94,7 @@ const config = cssConfig(() => {
      * Defines computed heading font sizes for structured hierarchy.
      * Ensures scalable typography across different heading levels.
      */
-    const computedHeadingDefinitions = {
+    const computedHeadingProperties = {
         // Typos:
         
         /**
@@ -151,7 +151,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticSiblingAdjacencyDefinitions = {
+    const staticSiblingAdjacencyProperties = {
         // Spacings:
         
         /**
@@ -174,7 +174,7 @@ const config = cssConfig(() => {
     /**
      * Defines static sub heading properties.
      */
-    const staticSubHeadingDefinitions = {
+    const staticSubHeadingProperties = {
         // Appearances:
         
         /**
@@ -189,10 +189,10 @@ const config = cssConfig(() => {
     
     // Merge all heading definitions:
     return {
-        ...staticHeadingDefinitions,
-        ...computedHeadingDefinitions,
-        ...staticSiblingAdjacencyDefinitions,
-        ...staticSubHeadingDefinitions,
+        ...staticHeadingProperties,
+        ...computedHeadingProperties,
+        ...staticSiblingAdjacencyProperties,
+        ...staticSubHeadingProperties,
     };
 }, { prefix: defaultHeadingPrefix });
 

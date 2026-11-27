@@ -22,7 +22,7 @@ const config = cssConfig(() => {
     /**
      * Defines static paragraph properties such as font sizes, families, weights, and styles.
      */
-    const staticParagraphDefinitions = {
+    const staticParagraphProperties = {
         // Spacings:
         
         /**
@@ -87,7 +87,7 @@ const config = cssConfig(() => {
     /**
      * Defines static conditional sibling adjacency properties.
      */
-    const staticSiblingAdjacencyDefinitions = {
+    const staticSiblingAdjacencyProperties = {
         // Spacings:
         
         /**
@@ -109,8 +109,8 @@ const config = cssConfig(() => {
     
     // Merge all paragraph definitions:
     return {
-        ...staticParagraphDefinitions,
-        ...staticSiblingAdjacencyDefinitions,
+        ...staticParagraphProperties,
+        ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultParagraphPrefix });
 
