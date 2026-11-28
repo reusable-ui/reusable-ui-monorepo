@@ -52,6 +52,21 @@ const config = cssConfig(() => {
     
     
     /**
+     * Defines static appearance properties.
+     */
+    const staticAppearanceProperties = {
+        // Appearances:
+        
+        /**
+         * Defines the **transparency level** for horizontal separators.
+         * Ensures subtle visual distinction without overpowering surrounding content.
+         */
+        opacity              : 0.25                     as CssKnownProps['opacity'           ],
+    };
+    
+    
+    
+    /**
      * Defines static spacing properties.
      */
     const staticSpacingProperties = {
@@ -68,21 +83,6 @@ const config = cssConfig(() => {
          * Typically `0em` to maintain alignment with text blocks.
          */
         marginInlineEnd      : '0em'                    as CssKnownProps['marginInlineEnd'   ],
-    };
-    
-    
-    
-    /**
-     * Defines static appearance properties.
-     */
-    const staticAppearanceProperties = {
-        // Appearances:
-        
-        /**
-         * Defines the **transparency level** for horizontal separators.
-         * Ensures subtle visual distinction without overpowering surrounding content.
-         */
-        opacity              : 0.25                     as CssKnownProps['opacity'           ],
     };
     
     
@@ -113,8 +113,8 @@ const config = cssConfig(() => {
     // Merge all properties:
     return {
         ...staticLayoutProperties,
-        ...staticSpacingProperties,
         ...staticAppearanceProperties,
+        ...staticSpacingProperties,
         ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultHorzSeparatorPrefix });

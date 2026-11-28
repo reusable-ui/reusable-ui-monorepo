@@ -20,6 +20,21 @@ import {
 
 const config = cssConfig(() => {
     /**
+     * Defines static appearance properties.
+     */
+    const staticAppearanceProperties = {
+        // Appearances:
+        
+        /**
+         * Defines the **list style position**.
+         * Typically `outside` to maintain alignment with text blocks.
+         */
+        listStylePosition        : 'outside'    as CssKnownProps['listStylePosition'],
+    };
+    
+    
+    
+    /**
      * Defines static spacing properties.
      */
     const staticSpacingProperties = {
@@ -97,21 +112,6 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static appearance properties.
-     */
-    const staticAppearanceProperties = {
-        // Appearances:
-        
-        /**
-         * Defines the **list style position**.
-         * Typically `outside` to maintain alignment with text blocks.
-         */
-        listStylePosition        : 'outside'    as CssKnownProps['listStylePosition'],
-    };
-    
-    
-    
-    /**
      * Defines static conditional sibling adjacency properties.
      */
     const staticSiblingAdjacencyProperties = {
@@ -180,9 +180,9 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticAppearanceProperties,
         ...staticSpacingProperties,
         ...staticTypographyProperties,
-        ...staticAppearanceProperties,
         ...staticSiblingAdjacencyProperties,
         ...staticListTypeProperties,
         ...staticListItemProperties,
