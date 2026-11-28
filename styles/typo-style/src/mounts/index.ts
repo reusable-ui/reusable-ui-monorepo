@@ -2,6 +2,8 @@
 
 export * from './css-typography-mount.js'
 
+export * from './css-inline-formatting-mount.js'
+
 export * from './css-paragraph-mount.js'
 export * from './css-lead-mount.js'
 
@@ -18,5 +20,3 @@ export * from './css-code-mount.js'
 
 export * from './css-horz-separator-mount.js'
 export * from './css-vert-separator-mount.js'
-
-export * from './css-inline-formatting-mount.js'
