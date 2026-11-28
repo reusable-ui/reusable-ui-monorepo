@@ -25,6 +25,33 @@ import {
 
 const config = cssConfig(() => {
     /**
+     * Defines static layout properties.
+     */
+    const staticLayoutProperties = {
+        // Borders:
+        
+        /**
+         * Defines the **border style** for vertical separators.
+         * Typically uses the default border style for consistency.
+         */
+        borderStyle            : horzSeparatorVars.borderStyle          as CssKnownProps['borderStyle'       ],
+        
+        /**
+         * Defines the **border width** for vertical separators.
+         * Typically uses the default border width for visual clarity.
+         */
+        borderWidth            : horzSeparatorVars.borderWidth          as CssKnownProps['borderWidth'       ],
+        
+        /**
+         * Defines the **border color** for vertical separators.
+         * Typically uses the **current text color** (`currentcolor`) for subtle emphasis.
+         */
+        borderColor            : horzSeparatorVars.borderColor          as CssKnownProps['borderColor'       ],
+    };
+    
+    
+    
+    /**
      * Defines static spacing properties.
      */
     const staticSpacingProperties = {
@@ -58,33 +85,6 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static layout properties.
-     */
-    const staticLayoutProperties = {
-        // Borders:
-        
-        /**
-         * Defines the **border style** for vertical separators.
-         * Typically uses the default border style for consistency.
-         */
-        borderStyle            : horzSeparatorVars.borderStyle          as CssKnownProps['borderStyle'       ],
-        
-        /**
-         * Defines the **border width** for vertical separators.
-         * Typically uses the default border width for visual clarity.
-         */
-        borderWidth            : horzSeparatorVars.borderWidth          as CssKnownProps['borderWidth'       ],
-        
-        /**
-         * Defines the **border color** for vertical separators.
-         * Typically uses the **current text color** (`currentcolor`) for subtle emphasis.
-         */
-        borderColor            : horzSeparatorVars.borderColor          as CssKnownProps['borderColor'       ],
-    };
-    
-    
-    
-    /**
      * Defines static appearance properties.
      */
     const staticAppearanceProperties = {
@@ -101,8 +101,8 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
-        ...staticSpacingProperties,
         ...staticLayoutProperties,
+        ...staticSpacingProperties,
         ...staticAppearanceProperties,
     };
 }, { prefix: defaultVertSeparatorPrefix });

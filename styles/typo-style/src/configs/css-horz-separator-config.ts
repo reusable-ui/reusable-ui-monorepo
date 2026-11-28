@@ -25,27 +25,6 @@ import {
 
 const config = cssConfig(() => {
     /**
-     * Defines static spacing properties.
-     */
-    const staticSpacingProperties = {
-        // Spacings:
-        
-        /**
-         * Defines the **left margin** for horizontal separators.
-         * Typically `0em` to maintain alignment with text blocks.
-         */
-        marginInlineStart    : '0em'                    as CssKnownProps['marginInlineStart' ],
-        
-        /**
-         * Defines the **right margin** for horizontal separators.
-         * Typically `0em` to maintain alignment with text blocks.
-         */
-        marginInlineEnd      : '0em'                    as CssKnownProps['marginInlineEnd'   ],
-    };
-    
-    
-    
-    /**
      * Defines static layout properties.
      */
     const staticLayoutProperties = {
@@ -68,6 +47,27 @@ const config = cssConfig(() => {
          * Typically uses the **current text color** (`currentcolor`) for subtle emphasis.
          */
         borderColor          : 'currentcolor'           as CssKnownProps['borderColor'       ],
+    };
+    
+    
+    
+    /**
+     * Defines static spacing properties.
+     */
+    const staticSpacingProperties = {
+        // Spacings:
+        
+        /**
+         * Defines the **left margin** for horizontal separators.
+         * Typically `0em` to maintain alignment with text blocks.
+         */
+        marginInlineStart    : '0em'                    as CssKnownProps['marginInlineStart' ],
+        
+        /**
+         * Defines the **right margin** for horizontal separators.
+         * Typically `0em` to maintain alignment with text blocks.
+         */
+        marginInlineEnd      : '0em'                    as CssKnownProps['marginInlineEnd'   ],
     };
     
     
@@ -112,8 +112,8 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
-        ...staticSpacingProperties,
         ...staticLayoutProperties,
+        ...staticSpacingProperties,
         ...staticAppearanceProperties,
         ...staticSiblingAdjacencyProperties,
     };

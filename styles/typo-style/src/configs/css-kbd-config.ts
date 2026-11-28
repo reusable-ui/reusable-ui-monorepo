@@ -28,6 +28,59 @@ import {
 
 const config = cssConfig(() => {
     /**
+     * Defines static layout properties.
+     */
+    const staticLayoutProperties = {
+        // Backgrounds:
+        
+        /**
+         * Defines the **background color** for `<kbd>` elements.
+         * Typically uses a **primary base color** (`primaryBase`) for emphasis.
+         */
+        backgroundColor       : colorConfigVars.primaryBase         as CssKnownProps['backgroundColor'   ],
+        
+        
+        
+        // Foregrounds:
+        
+        /**
+         * Defines the **text color** for `<kbd>` elements.
+         * Typically uses a **primary contrasting color** (`primaryFlip`) for readability.
+         */
+        color                 : colorConfigVars.primaryFlip         as CssKnownProps['color'             ],
+        
+        
+        
+        // Borders:
+        
+        /**
+         * Defines the **border style** for `<kbd>` elements.
+         * Typically uses the default border style for consistency.
+         */
+        borderStyle           : markVars.borderStyle                as CssKnownProps['borderStyle'       ],
+        
+        /**
+         * Defines the **border width** for `<kbd>` elements.
+         * Typically uses the default border width for visual clarity.
+         */
+        borderWidth           : markVars.borderWidth                as CssKnownProps['borderWidth'       ],
+        
+        /**
+         * Defines the **border color** for `<kbd>` elements.
+         * Typically uses a **primary bold color** (`primaryBold`) for subtle emphasis.
+         */
+        borderColor           : colorConfigVars.primaryBold         as CssKnownProps['borderColor'       ],
+        
+        /**
+         * Defines the **border radius** for `<kbd>` elements.
+         * Typically uses a **small radius** (`sm`) to create softened edges.
+         */
+        borderRadius          : markVars.borderRadius               as CssKnownProps['borderRadius'      ],
+    };
+    
+    
+    
+    /**
      * Defines static spacing properties.
      */
     const staticSpacingProperties = {
@@ -123,59 +176,6 @@ const config = cssConfig(() => {
     
     
     /**
-     * Defines static layout properties.
-     */
-    const staticLayoutProperties = {
-        // Backgrounds:
-        
-        /**
-         * Defines the **background color** for `<kbd>` elements.
-         * Typically uses a **primary base color** (`primaryBase`) for emphasis.
-         */
-        backgroundColor       : colorConfigVars.primaryBase         as CssKnownProps['backgroundColor'   ],
-        
-        
-        
-        // Foregrounds:
-        
-        /**
-         * Defines the **text color** for `<kbd>` elements.
-         * Typically uses a **primary contrasting color** (`primaryFlip`) for readability.
-         */
-        color                 : colorConfigVars.primaryFlip         as CssKnownProps['color'             ],
-        
-        
-        
-        // Borders:
-        
-        /**
-         * Defines the **border style** for `<kbd>` elements.
-         * Typically uses the default border style for consistency.
-         */
-        borderStyle           : markVars.borderStyle                as CssKnownProps['borderStyle'       ],
-        
-        /**
-         * Defines the **border width** for `<kbd>` elements.
-         * Typically uses the default border width for visual clarity.
-         */
-        borderWidth           : markVars.borderWidth                as CssKnownProps['borderWidth'       ],
-        
-        /**
-         * Defines the **border color** for `<kbd>` elements.
-         * Typically uses a **primary bold color** (`primaryBold`) for subtle emphasis.
-         */
-        borderColor           : colorConfigVars.primaryBold         as CssKnownProps['borderColor'       ],
-        
-        /**
-         * Defines the **border radius** for `<kbd>` elements.
-         * Typically uses a **small radius** (`sm`) to create softened edges.
-         */
-        borderRadius          : markVars.borderRadius               as CssKnownProps['borderRadius'      ],
-    };
-    
-    
-    
-    /**
      * Defines static conditional sibling adjacency properties.
      */
     const staticSiblingAdjacencyProperties = {
@@ -200,9 +200,9 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticLayoutProperties,
         ...staticSpacingProperties,
         ...staticTypographyProperties,
-        ...staticLayoutProperties,
         ...staticSiblingAdjacencyProperties,
     };
 }, { prefix: defaultKbdPrefix });

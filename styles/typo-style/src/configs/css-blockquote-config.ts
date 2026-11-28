@@ -25,6 +25,27 @@ import {
 
 const config = cssConfig(() => {
     /**
+     * Defines static layout properties.
+     */
+    const staticLayoutProperties = {
+        // Borders:
+        
+        /**
+         * Defines the **left border style** for blockquotes.
+         * Typically uses a **solid border** to visually distinguish quotes.
+         */
+        borderInlineStartStyle : 'solid'                    as CssKnownProps['borderInlineStartStyle'],
+        
+        /**
+         * Defines the **left border width** for blockquotes.
+         * Typically uses a **thick border** to visually distinguish quotes.
+         */
+        borderInlineStartWidth : '0.25em'                   as CssKnownProps['borderInlineStartWidth'],
+    };
+    
+    
+    
+    /**
      * Defines static spacing properties.
      */
     const staticSpacingProperties = {
@@ -115,27 +136,6 @@ const config = cssConfig(() => {
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
         lineHeight             : undefined                  as CssKnownProps['lineHeight'            ],
-    };
-    
-    
-    
-    /**
-     * Defines static layout properties.
-     */
-    const staticLayoutProperties = {
-        // Borders:
-        
-        /**
-         * Defines the **left border style** for blockquotes.
-         * Typically uses a **solid border** to visually distinguish quotes.
-         */
-        borderInlineStartStyle : 'solid'                    as CssKnownProps['borderInlineStartStyle'],
-        
-        /**
-         * Defines the **left border width** for blockquotes.
-         * Typically uses a **thick border** to visually distinguish quotes.
-         */
-        borderInlineStartWidth : '0.25em'                   as CssKnownProps['borderInlineStartWidth'],
     };
     
     
@@ -238,9 +238,9 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticLayoutProperties,
         ...staticSpacingProperties,
         ...staticTypographyProperties,
-        ...staticLayoutProperties,
         ...staticSiblingAdjacencyProperties,
         ...staticQuoteProperties,
     };
