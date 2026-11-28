@@ -61,7 +61,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize             : undefined                            as CssKnownProps['fontSize'         ],
+        fontSize             : 'initial'                            as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font family** for display headings.
