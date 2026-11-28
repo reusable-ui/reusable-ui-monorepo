@@ -20,6 +20,21 @@ import {
 
 const config = cssConfig(() => {
     /**
+     * Defines static layout properties.
+     */
+    const staticLayoutProperties = {
+        // Spacings:
+        
+        /**
+         * Defines **left padding** for list indentation.
+         * Provides space for list markers and indentation of list items.
+         */
+        paddingInlineStart       : '1.5em'      as CssKnownProps['paddingInlineStart'],
+    };
+    
+    
+    
+    /**
      * Defines static appearance properties.
      */
     const staticAppearanceProperties = {
@@ -51,13 +66,6 @@ const config = cssConfig(() => {
          * Typically `0em` to maintain alignment with text blocks.
          */
         marginInlineEnd          : '0em'        as CssKnownProps['marginInlineEnd'  ],
-        
-        
-        /**
-         * Defines **left padding** for list indentation.
-         * Provides space for list markers and indentation of list items.
-         */
-        paddingInlineStart       : '1.5em'      as CssKnownProps['paddingInlineStart'],
     };
     
     
@@ -180,6 +188,7 @@ const config = cssConfig(() => {
     
     // Merge all properties:
     return {
+        ...staticLayoutProperties,
         ...staticAppearanceProperties,
         ...staticSpacingProperties,
         ...staticTypographyProperties,

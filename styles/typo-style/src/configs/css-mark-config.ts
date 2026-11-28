@@ -79,28 +79,10 @@ const config = cssConfig(() => {
          * Typically uses a **small radius** (`radiusSm`) to create softened edges.
          */
         borderRadius          : radiusConfigVars.radiusSm       as CssKnownProps['borderRadius'      ],
-    };
-    
-    
-    
-    /**
-     * Defines static spacing properties.
-     */
-    const staticSpacingProperties = {
+        
+        
+        
         // Spacings:
-        
-        /**
-         * Defines the **top margin** for `<mark>` elements.
-         * Typically `0em` to maintain alignment within inline text flow.
-         */
-        marginBlockStart      : '0em'                           as CssKnownProps['marginBlockStart'  ],
-        
-        /**
-         * Defines the **bottom margin** for `<mark>` elements.
-         * Typically `0em` to maintain alignment within inline text flow.
-         */
-        marginBlockEnd        : '0em'                           as CssKnownProps['marginBlockEnd'    ],
-        
         
         /**
          * Defines **left padding** inside `<mark>` elements.
@@ -125,6 +107,27 @@ const config = cssConfig(() => {
          * Adds breathing room between the **text and bottom boundary**.
          */
         paddingBlockEnd       : '0.125em'                       as CssKnownProps['paddingBlockEnd'   ],
+    };
+    
+    
+    
+    /**
+     * Defines static spacing properties.
+     */
+    const staticSpacingProperties = {
+        // Spacings:
+        
+        /**
+         * Defines the **top margin** for `<mark>` elements.
+         * Typically `0em` to maintain alignment within inline text flow.
+         */
+        marginBlockStart      : '0em'                           as CssKnownProps['marginBlockStart'  ],
+        
+        /**
+         * Defines the **bottom margin** for `<mark>` elements.
+         * Typically `0em` to maintain alignment within inline text flow.
+         */
+        marginBlockEnd        : '0em'                           as CssKnownProps['marginBlockEnd'    ],
     };
     
     

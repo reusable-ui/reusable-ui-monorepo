@@ -41,28 +41,10 @@ const config = cssConfig(() => {
          * Typically uses a **thick border** to visually distinguish quotes.
          */
         borderInlineStartWidth : '0.25em'                   as CssKnownProps['borderInlineStartWidth'],
-    };
-    
-    
-    
-    /**
-     * Defines static spacing properties.
-     */
-    const staticSpacingProperties = {
+        
+        
+        
         // Spacings:
-        
-        /**
-         * Defines the **left margin** for blockquotes.
-         * Typically `0em` to maintain alignment with text blocks.
-         */
-        marginInlineStart      : '0em'                      as CssKnownProps['marginInlineStart'     ],
-        
-        /**
-         * Defines the **right margin** for blockquotes.
-         * Typically `0em` to maintain alignment with text blocks.
-         */
-        marginInlineEnd        : '0em'                      as CssKnownProps['marginInlineEnd'       ],
-        
         
         /**
          * Defines **left padding** inside blockquotes.
@@ -87,6 +69,27 @@ const config = cssConfig(() => {
          * Adds breathing room between the **text and bottom boundary**.
          */
         paddingBlockEnd        : '1em'                      as CssKnownProps['paddingBlockEnd'       ],
+    };
+    
+    
+    
+    /**
+     * Defines static spacing properties.
+     */
+    const staticSpacingProperties = {
+        // Spacings:
+        
+        /**
+         * Defines the **left margin** for blockquotes.
+         * Typically `0em` to maintain alignment with text blocks.
+         */
+        marginInlineStart      : '0em'                      as CssKnownProps['marginInlineStart'     ],
+        
+        /**
+         * Defines the **right margin** for blockquotes.
+         * Typically `0em` to maintain alignment with text blocks.
+         */
+        marginInlineEnd        : '0em'                      as CssKnownProps['marginInlineEnd'       ],
     };
     
     

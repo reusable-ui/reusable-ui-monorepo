@@ -76,28 +76,10 @@ const config = cssConfig(() => {
          * Typically uses a **small radius** (`sm`) to create softened edges.
          */
         borderRadius          : markVars.borderRadius               as CssKnownProps['borderRadius'      ],
-    };
-    
-    
-    
-    /**
-     * Defines static spacing properties.
-     */
-    const staticSpacingProperties = {
+        
+        
+        
         // Spacings:
-        
-        /**
-         * Defines the **top margin** for `<kbd>` elements.
-         * Typically `0em` to maintain alignment within inline text flow.
-         */
-        marginBlockStart      : markVars.marginBlockStart           as CssKnownProps['marginBlockStart'  ],
-        
-        /**
-         * Defines the **bottom margin** for `<kbd>` elements.
-         * Typically `0em` to maintain alignment within inline text flow.
-         */
-        marginBlockEnd        : markVars.marginBlockEnd             as CssKnownProps['marginBlockEnd'    ],
-        
         
         /**
          * Defines **left padding** inside `<kbd>` elements.
@@ -122,6 +104,27 @@ const config = cssConfig(() => {
          * Adds breathing room between the **text and bottom boundary**.
          */
         paddingBlockEnd       : markVars.paddingBlockEnd            as CssKnownProps['paddingBlockEnd'   ],
+    };
+    
+    
+    
+    /**
+     * Defines static spacing properties.
+     */
+    const staticSpacingProperties = {
+        // Spacings:
+        
+        /**
+         * Defines the **top margin** for `<kbd>` elements.
+         * Typically `0em` to maintain alignment within inline text flow.
+         */
+        marginBlockStart      : markVars.marginBlockStart           as CssKnownProps['marginBlockStart'  ],
+        
+        /**
+         * Defines the **bottom margin** for `<kbd>` elements.
+         * Typically `0em` to maintain alignment within inline text flow.
+         */
+        marginBlockEnd        : markVars.marginBlockEnd             as CssKnownProps['marginBlockEnd'    ],
     };
     
     
