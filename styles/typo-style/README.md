@@ -332,12 +332,12 @@ Here are the default blockquote settings you can customize:
 | ------------------------ | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `borderInlineStartStyle` | `solid`                     | Inline-start (left in LTR) decorative border style for blockquotes.                                        |
 | `borderInlineStartWidth` | `0.25em`                    | Inline-start (left in LTR) decorative border width for blockquotes.                                        |
-| `marginInlineStart`      | `0em`                       | Inline-start (left in LTR) margin for blockquotes.                                                         |
-| `marginInlineEnd`        | `0em`                       | Inline-end (right in LTR) margin for blockquotes.                                                          |
 | `paddingInlineStart`     | `3em`                       | Inline-start (left in LTR) padding for blockquotes.                                                        |
 | `paddingInlineEnd`       | `1em`                       | Inline-end (right in LTR) padding for blockquotes.                                                         |
 | `paddingBlockStart`      | `1em`                       | Block-start (top) padding for blockquotes.                                                                 |
 | `paddingBlockEnd`        | `1em`                       | Block-end (bottom) padding for blockquotes.                                                                |
+| `marginInlineStart`      | `0em`                       | Inline-start (left in LTR) margin for blockquotes.                                                         |
+| `marginInlineEnd`        | `0em`                       | Inline-end (right in LTR) margin for blockquotes.                                                          |
 | `fontSize`               | `typoConfigVars.fontSizeLg` | The font size for blockquotes.                                                                             |
 | `fontFamily`             | `initial`                   | The font family for blockquotes.                                                                           |
 | `fontWeight`             | `initial`                   | The font weight for blockquotes.                                                                           |
@@ -378,10 +378,10 @@ Here are the default plain list settings you can customize:
 
 | Token                      | Value                             | Description                                                                        |
 | -------------------------- | --------- | ---------------------------------------------------------------------------------------------------------- |
+| `paddingInlineStart`       | `1.5em`   | Inline-start (left in LTR) indentation padding for plain lists.                                            |
 | `listStylePosition`        | `outside` | Marker placement (`outside` or `inside`) for plain lists.                                                  |
 | `marginInlineStart`        | `0em`     | Inline-start (left in LTR) margin for plain lists.                                                         |
 | `marginInlineEnd`          | `0em`     | Inline-end (right in LTR) margin for plain lists.                                                          |
-| `paddingInlineStart`       | `1.5em`   | Inline-start (left in LTR) indentation padding for plain lists.                                            |
 | `fontSize`                 | `initial` | The font size for plain lists.                                                                             |
 | `fontFamily`               | `initial` | The font family for plain lists.                                                                           |
 | `fontWeight`               | `initial` | The font weight for plain lists.                                                                           |
@@ -423,12 +423,12 @@ Here are the default `<mark>` settings you can customize:
 | `borderWidth`           | `borderConfigVars.width`      | Border width for `<mark>` elements.                                                                              |
 | `borderColor`           | `colorConfigVars.warningThin` | Border color for `<mark>` elements.                                                                              |
 | `borderRadius`          | `radiusConfigVars.radiusSm`   | Border radius for `<mark>` elements.                                                                             |
-| `marginBlockStart`      | `0em`                         | Block-start (top) margin for `<mark>` elements.                                                                  |
-| `marginBlockEnd`        | `0em`                         | Block-end (bottom) margin for `<mark>` elements.                                                                 |
 | `paddingInlineStart`    | `0.125em`                     | Inline-start (left in LTR) padding for `<mark>` elements.                                                        |
 | `paddingInlineEnd`      | `0.125em`                     | Inline-end (right in LTR) padding for `<mark>` elements.                                                         |
 | `paddingBlockStart`     | `0.125em`                     | Block-start (top) padding for `<mark>` elements.                                                                 |
 | `paddingBlockEnd`       | `0.125em`                     | Block-end (bottom) padding for `<mark>` elements.                                                                |
+| `marginBlockStart`      | `0em`                         | Block-start (top) margin for `<mark>` elements.                                                                  |
+| `marginBlockEnd`        | `0em`                         | Block-end (bottom) margin for `<mark>` elements.                                                                 |
 | `fontSize`              | `initial`                     | The font size for `<mark>` elements.                                                                             |
 | `fontFamily`            | `initial`                     | The font family for `<mark>` elements.                                                                           |
 | `fontWeight`            | `initial`                     | The font weight for `<mark>` elements.                                                                           |
@@ -466,12 +466,12 @@ Here are the default `<kbd>` settings you can customize:
 | `borderWidth`           | `markVars.borderWidth`        | Border width for `<kbd>` elements.                                                                              |
 | `borderColor`           | `colorConfigVars.primaryBold` | Border color for `<kbd>` elements.                                                                              |
 | `borderRadius`          | `markVars.borderRadius`       | Border radius for `<kbd>` elements.                                                                             |
-| `marginBlockStart`      | `markVars.marginBlockStart`   | Block-start (top) margin for `<kbd>` elements.                                                                  |
-| `marginBlockEnd`        | `markVars.marginBlockEnd`     | Block-end (bottom) margin for `<kbd>` elements.                                                                 |
 | `paddingInlineStart`    | `markVars.paddingInlineStart` | Inline-start (left in LTR) padding for `<kbd>` elements.                                                        |
 | `paddingInlineEnd`      | `markVars.paddingInlineEnd`   | Inline-end (right in LTR) padding for `<kbd>` elements.                                                         |
 | `paddingBlockStart`     | `markVars.paddingBlockStart`  | Block-start (top) padding for `<kbd>` elements.                                                                 |
 | `paddingBlockEnd`       | `markVars.paddingBlockEnd`    | Block-end (bottom) padding for `<kbd>` elements.                                                                |
+| `marginBlockStart`      | `markVars.marginBlockStart`   | Block-start (top) margin for `<kbd>` elements.                                                                  |
+| `marginBlockEnd`        | `markVars.marginBlockEnd`     | Block-end (bottom) margin for `<kbd>` elements.                                                                 |
 | `fontSize`              | `markVars.fontSize`           | The font size for `<kbd>` elements.                                                                             |
 | `fontFamily`            | `markVars.fontFamily`         | The font family for `<kbd>` elements.                                                                           |
 | `fontWeight`            | `markVars.fontWeight`         | The font weight for `<kbd>` elements.                                                                           |
@@ -509,12 +509,12 @@ Here are the default `<code>` settings you can customize:
 | `borderWidth`           | `markVars.borderWidth`               | Border width for `<code>` elements.                                                                              |
 | `borderColor`           | `colorConfigVars.secondaryThin`      | Border color for `<code>` elements.                                                                              |
 | `borderRadius`          | `markVars.borderRadius`              | Border radius for `<code>` elements.                                                                             |
-| `marginBlockStart`      | `markVars.marginBlockStart`          | Block-start (top) margin for `<code>` elements.                                                                  |
-| `marginBlockEnd`        | `markVars.marginBlockEnd`            | Block-end (bottom) margin for `<code>` elements.                                                                 |
 | `paddingInlineStart`    | `markVars.paddingInlineStart`        | Inline-start (left in LTR) padding for `<code>` elements.                                                        |
 | `paddingInlineEnd`      | `markVars.paddingInlineEnd`          | Inline-end (right in LTR) padding for `<code>` elements.                                                         |
 | `paddingBlockStart`     | `markVars.paddingBlockStart`         | Block-start (top) padding for `<code>` elements.                                                                 |
 | `paddingBlockEnd`       | `markVars.paddingBlockEnd`           | Block-end (bottom) padding for `<code>` elements.                                                                |
+| `marginBlockStart`      | `markVars.marginBlockStart`          | Block-start (top) margin for `<code>` elements.                                                                  |
+| `marginBlockEnd`        | `markVars.marginBlockEnd`            | Block-end (bottom) margin for `<code>` elements.                                                                 |
 | `fontSize`              | `markVars.fontSize`                  | The font size for `<code>` elements.                                                                             |
 | `fontFamily`            | `typoConfigVars.fontFamilyMonospace` | The font family for `<code>` elements.                                                                           |
 | `fontWeight`            | `markVars.fontWeight`                | The font weight for `<code>` elements.                                                                           |
@@ -546,10 +546,10 @@ Here are the default horizontal separator settings you can customize:
 
 | Token                  | Value                    | Description                                                                                                          |
 | ---------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| `opacity`              | `0.25`                   | The opacity level for horizontal separators.                                                                         |
 | `borderStyle`          | `borderConfigVars.style` | Border style for horizontal separators.                                                                              |
 | `borderWidth`          | `borderConfigVars.width` | Border width for horizontal separators.                                                                              |
 | `borderColor`          | `currentcolor`           | Border color for horizontal separators.                                                                              |
+| `opacity`              | `0.25`                   | The opacity level for horizontal separators.                                                                         |
 | `marginInlineStart`    | `0em`                    | Inline-start (left in LTR) margin for horizontal separators.                                                         |
 | `marginInlineEnd`      | `0em`                    | Inline-end (right in LTR) margin for horizontal separators.                                                          |
 | `prevMarginBlockStart` | `1em`                    | Conditional block-start (top) margin when the horizontal separator follows another block-level typography element.   |
@@ -577,10 +577,10 @@ Here are the default vertical separator settings you can customize:
 
 | Token               | Value                           | Description                                                |
 | ------------------- | ------------------------------- | ---------------------------------------------------------- |
-| `opacity`           | `horzSeparatorVars.opacity`     | The opacity level for vertical separators.                 |
 | `borderStyle`       | `horzSeparatorVars.borderStyle` | Border style for vertical separators.                      |
 | `borderWidth`       | `horzSeparatorVars.borderWidth` | Border width for vertical separators.                      |
 | `borderColor`       | `horzSeparatorVars.borderColor` | Border color for vertical separators.                      |
+| `opacity`           | `horzSeparatorVars.opacity`     | The opacity level for vertical separators.                 |
 | `marginInlineStart` | `0em`                           | Inline-start (left in LTR) margin for vertical separators. |
 | `marginInlineEnd`   | `0em`                           | Inline-end (right in LTR) margin for vertical separators.  |
 | `marginBlockStart`  | `0em`                           | Block-start (top) margin for vertical separators.          |
